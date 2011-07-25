@@ -12,9 +12,11 @@ public:
 private:
     void chessboard();
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     QPointF m_cursor;
     QGraphicsPixmapItem *m_texture;
     QString m_texturePath;
+    QGraphicsRectItem *m_rectangle;
 };
 
 #endif // MYSCENE_H

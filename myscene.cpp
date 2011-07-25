@@ -4,6 +4,8 @@
 MyScene::MyScene()
 {
     chessboard();
+    m_rectangle = this->addRect(0,0,40,40);
+    m_rectangle->setFlag(QGraphicsItem::ItemIsMovable);
 }
 
 void MyScene::chessboard()
@@ -28,12 +30,17 @@ void MyScene::AddTexture(QString path)
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_cursor = event->scenePos();
+    this->addPixmap(m_texturePath)->setPos(m_cursor);
+}
+
+void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+
+    m_cursor.setX(event->scenePos().x());
+    m_cursor.setY(event->scenePos().y());
     if((int(m_cursor.x()) % 5) != 0)
         m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % 5));
     if((int(m_cursor.y()) % 5) != 0)
         m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % 5));
-
-    this->addPixmap(m_texturePath)->setPos(m_cursor);
-
+    m_rectangle->setPos(m_cursor);
 }
