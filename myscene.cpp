@@ -28,6 +28,12 @@ void MyScene::AddTexture(QString path)
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    this->addPixmap(m_texturePath)->setPos(event->scenePos());
+    m_cursor = event->scenePos();
+    if((int(m_cursor.x()) % 5) != 0)
+        m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % 5));
+    if((int(m_cursor.y()) % 5) != 0)
+        m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % 5));
+
+    this->addPixmap(m_texturePath)->setPos(m_cursor);
 
 }

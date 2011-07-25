@@ -12,7 +12,7 @@ public:
 private:
     void chessboard();
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    QPoint m_cursor;
+    QPointF m_cursor;
     QGraphicsPixmapItem *m_texture;
     QString m_texturePath;
 };

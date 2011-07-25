@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     MyScene *mainScene = new MyScene;
-    mainScene->AddTexture(":/images/online");
+    mainScene->AddTexture(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
 
