@@ -7,10 +7,14 @@ class MyScene: public QGraphicsScene
 {
 public:
     MyScene();
+    void AddTexture(QString path);
+
 private:
     void chessboard();
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QPoint m_cursor;
+    QGraphicsPixmapItem *m_texture;
+    QString m_texturePath;
 };
 
 #endif // MYSCENE_H

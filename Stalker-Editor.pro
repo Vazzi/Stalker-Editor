@@ -18,3 +18,6 @@ HEADERS  += mainwindow.h \
     myscene.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    MyResources.qrc
