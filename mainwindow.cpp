@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
 
+    ui->comboBox->addItem("None","None");
+    ui->comboBox->addItem("Chest",":/images/chest");
+
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), ui->graphicsView, SLOT(update()));
     timer->start(10);
@@ -25,3 +28,5 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+

@@ -9,8 +9,6 @@ MyScene::MyScene(int newPixle)
 
 }
 
-
-
 void MyScene::makeGrid()
 {
     QPen gPen(Qt::lightGray);
@@ -29,11 +27,15 @@ void MyScene::makeGrid()
 void MyScene::AddTexture(QString path)
 {
     m_texturePath = path;
+
 }
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    this->addPixmap(m_texturePath)->setPos(m_cursor);
+    if(event->button() == Qt::LeftButton)
+        this->addPixmap(m_texturePath)->setPos(m_cursor);
+    //if(event->button() == Qt::RightButton)
+        //pixmap remove
 }
 
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
