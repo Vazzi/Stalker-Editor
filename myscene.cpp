@@ -1,23 +1,25 @@
 #include "myscene.h"
 #include <QtGui>
 
-MyScene::MyScene(int newPixle)
+MyScene::MyScene(int newPixle, QString background)
 {
     m_pixle = newPixle;
+    m_background = this->addPixmap(background);
     makeGrid();
 }
 
 void MyScene::makeGrid()
 {
-    //Make a grid
+    //Make a grid with a little opacity
     QPen gPen(Qt::lightGray);
+    ;
     for(int i = m_pixle ; i < 800; i = i +m_pixle)
     {
-        this->addLine(i,0,i,600, gPen);
+        this->addLine(i,0,i,600, gPen)->setOpacity(0.2f);
     }
     for(int i = m_pixle; i < 600; i = i +m_pixle)
     {
-        this->addLine(0,i,800,i,gPen);
+        this->addLine(0,i,800,i,gPen)->setOpacity(0.2f);
     }
 
 
@@ -38,6 +40,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         m_images.append(this->addPixmap(m_imagePath));
+        m_images.last()->setData(0, m_imagePath);
         m_images.last()->setPos(m_cursor);
     }
     if(event->button() == Qt::RightButton)

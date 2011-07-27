@@ -7,18 +7,22 @@
 class MyScene: public QGraphicsScene
 {
 public:
-    MyScene(int newPixle);
+    MyScene(int newPixle, QString background);
     void setImage(QString path);
-    int getImages() { return m_images.length(); };
+    QString getImages() { return m_images.last()->data(0).toString(); }
+    bool readMap();
+    bool writeMap();
 private:
     void makeGrid();
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    QPointF m_cursor;
-    QList<QGraphicsPixmapItem *> m_images;
-    QString m_imagePath;
-    QGraphicsPixmapItem *m_cursorImage;
+
     int m_pixle;
+    QPointF m_cursor;
+    QString m_imagePath;
+    QList<QGraphicsPixmapItem *> m_images;
+    QGraphicsPixmapItem *m_cursorImage;
+    QGraphicsPixmapItem *m_background;
 };
 
 #endif // MYSCENE_H

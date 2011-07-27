@@ -11,14 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     //set up scene
     ui->setupUi(this);
-    mainScene = new MyScene(10);
+    mainScene = new MyScene(10, ":/images/background");
     mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
     //set up combobox
-    ui->comboBox->addItem("None","None");
     ui->comboBox->addItem("Chest",":/images/chest");
-
 }
 
 
@@ -31,5 +29,5 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     //set text on label how many pictures are in the mainscene
-    ui->label->setText(QString::number(mainScene->getImages()));
+    ui->label->setText(mainScene->getImages());
 }
