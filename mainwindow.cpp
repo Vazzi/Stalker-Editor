@@ -9,17 +9,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    //set up scene
     ui->setupUi(this);
     mainScene = new MyScene(10);
-    mainScene->AddTexture(":/images/chest");
+    mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
+    //set up combobox
     ui->comboBox->addItem("None","None");
     ui->comboBox->addItem("Chest",":/images/chest");
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), ui->graphicsView, SLOT(update()));
-    timer->start(10);
 }
 
 
@@ -31,5 +30,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    //set text on label how many pictures are in the mainscene
     ui->label->setText(QString::number(mainScene->getImages()));
 }
