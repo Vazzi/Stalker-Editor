@@ -3,17 +3,17 @@
 #include "myscene.h"
 #include <QtGui>
 
+MyScene *mainScene;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MyScene *mainScene = new MyScene(10);
+    mainScene = new MyScene(10);
     mainScene->AddTexture(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
-
     ui->comboBox->addItem("None","None");
     ui->comboBox->addItem("Chest",":/images/chest");
 
@@ -30,3 +30,8 @@ MainWindow::~MainWindow()
 }
 
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->label->setText(QString::number(mainScene->getImages()));
+}
