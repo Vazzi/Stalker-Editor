@@ -28,7 +28,7 @@ void MyScene::makeGrid()
 void MyScene::AddTexture(QString path)
 {
     m_texturePath = path;
-    m_rectangle = this->addPixmap(m_texturePath);
+    m_cursorImage = this->addPixmap(m_texturePath);
 
 }
 
@@ -61,8 +61,6 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_cursor.setX(800-40);
     if((m_cursor.y())+40>600)
         m_cursor.setY(600-40);
-    m_rectangle->setPos(m_cursor);
-
-
+    m_cursorImage->setPos(m_cursor);
 
 }

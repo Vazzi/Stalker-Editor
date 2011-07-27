@@ -17,7 +17,7 @@ private:
     QPointF m_cursor;
     QList<QGraphicsPixmapItem *> m_images;
     QString m_texturePath;
-    QGraphicsPixmapItem *m_rectangle;
+    QGraphicsPixmapItem *m_cursorImage;
     int m_pixle;
 };
 
