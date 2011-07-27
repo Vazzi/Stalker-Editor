@@ -21,7 +21,7 @@ private:
     QPointF m_cursor;
     QString m_imagePath;
     QList<QGraphicsPixmapItem *> m_images;
-    QGraphicsPixmapItem *m_cursorImage;
+    QGraphicsRectItem *m_cursorImage;
     QGraphicsPixmapItem *m_background;
 };
 

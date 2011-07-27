@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //set up scene
     ui->setupUi(this);
     mainScene = new MyScene(10, ":/images/background");
+
     mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);

@@ -6,6 +6,7 @@ MyScene::MyScene(int newPixle, QString background)
     m_pixle = newPixle;
     m_background = this->addPixmap(background);
     makeGrid();
+
 }
 
 void MyScene::makeGrid()
@@ -25,11 +26,18 @@ void MyScene::makeGrid()
 
 }
 
+
 void MyScene::setImage(QString path)
 {
     //set path to Image in resources and set the crusorImage
     m_imagePath = path;
-    m_cursorImage = this->addPixmap(m_imagePath);
+    //m_cursorImage = this->addPixmap(m_imagePath);
+    QPen *myPen = new QPen();
+    myPen->setColor(Qt::red);
+    myPen->setWidth(2);
+    m_cursorImage = this->addRect(0,0,40,40,*myPen,Qt::red);
+    m_cursorImage->setOpacity(0.5f);
+
 
 }
 
@@ -39,9 +47,38 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     //if left button then add picture if rigth butten remove picture
     if(event->button() == Qt::LeftButton)
     {
-        m_images.append(this->addPixmap(m_imagePath));
-        m_images.last()->setData(0, m_imagePath);
-        m_images.last()->setPos(m_cursor);
+        int index;
+        bool canPut = true;
+        for(index = 0; index < m_images.length();index++)
+        {
+            if(m_images[index]->pos().x() > m_cursorImage->pos().x() &&
+                    m_images[index]->pos().x() < m_cursorImage->pos().x() + 40
+                    || (m_images[index]->pos().x() + 40 > m_cursorImage->pos().x()
+                        && m_images[index]->pos().x() < m_cursorImage->pos().x()
+                        )
+                    || m_images[index]->pos().x() == m_cursorImage->pos().x()
+                    )
+            {
+                if(m_images[index]->pos().y() > m_cursorImage->pos().y() &&
+                        m_images[index]->pos().y() < m_cursorImage->pos().y() + 40
+                        || (m_images[index]->pos().y() + 40 > m_cursorImage->pos().y()
+                            && m_images[index]->pos().y() < m_cursorImage->pos().y()
+                            )
+                        || m_images[index]->pos().y() == m_cursorImage->pos().y()
+                        )
+                {
+                canPut = false;
+                break;
+                }
+            }
+        }
+        if(canPut)
+        {
+            m_images.append(this->addPixmap(m_imagePath));
+            m_images.last()->setData(0, m_imagePath);
+            m_images.last()->setPos(m_cursor);
+        }
+
     }
     if(event->button() == Qt::RightButton)
     {
@@ -71,16 +108,17 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if((int(m_cursor.y()) % m_pixle) != 0)
         m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
     //cursor in the midle of picture
-    m_cursor.operator -=(QPointF(m_cursorImage->pixmap().width() / 2,m_cursorImage->pixmap().height() / 2));
+    //m_cursor.operator -=(QPointF(m_cursorImage->pixmap().width() / 2,m_cursorImage->pixmap().height() / 2));
+    m_cursor.operator -=(QPointF(20,20));
     //picture cant get out of screen
     if(m_cursor.x()<0)
         m_cursor.setX(0);
     if(m_cursor.y()<0)
         m_cursor.setY(0);
-    if((m_cursor.x())+m_cursorImage->pixmap().width()>800)
-        m_cursor.setX(800-m_cursorImage->pixmap().width());
-    if((m_cursor.y())+m_cursorImage->pixmap().height()>600)
-        m_cursor.setY(600-m_cursorImage->pixmap().height());
+    if((m_cursor.x())+40>800)
+        m_cursor.setX(800-40);
+    if((m_cursor.y())+40>600)
+        m_cursor.setY(600-40);
     m_cursorImage->setPos(m_cursor);
 
 }
