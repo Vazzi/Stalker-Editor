@@ -42,6 +42,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
 void MainWindow::on_GridOnOff_stateChanged(int arg1)
 {
+    //hide or show grid
     if(arg1 == 0)
         mainScene->hideGrid();
     else
@@ -50,10 +51,12 @@ void MainWindow::on_GridOnOff_stateChanged(int arg1)
 
 void MainWindow::on_pushButtonFill_clicked()
 {
+    //fill the screen with images
     mainScene->paintImagesRect(QPointF(0,0),QPointF(800,600));
 }
 
 void MainWindow::on_pushButtonRemoveNone_clicked()
 {
+    //remove all none images
     mainScene->removeNone();
 }

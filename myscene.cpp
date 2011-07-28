@@ -33,15 +33,18 @@ void MyScene::makeGrid()
 }
 void MyScene::showGrid()
 {
+    //show lines
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->show();
 }
 void MyScene::hideGrid()
 {
+    //hide lines
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->hide();
 }
 void MyScene::removeNone(){
+    //remove none images from list
     for(int index = 0; index < m_images.length();index++){
         if(m_images[index]->data(0).toString() == m_none){
             this->removeItem(m_images[index]);
@@ -53,28 +56,29 @@ void MyScene::removeNone(){
 
 
 void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
+    //put pictures into the scene into the rectangle (leftCorner x rightCorner)
     for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
     for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
+        //if there is no picture in the way it add picture else none
         for(index = 0; index < m_images.length();index++){
             if(m_images[index]->pos().x() > x &&
                     m_images[index]->pos().x() < x + m_cursorImage->rect().width()
                     || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > x
-                        && m_images[index]->pos().x() < x
-                        )
+                        && m_images[index]->pos().x() < x)
                     || m_images[index]->pos().x() == x){
                 if(m_images[index]->pos().y() > y &&
                         m_images[index]->pos().y() < y + m_cursorImage->rect().height()
                         || (m_images[index]->pos().y() + m_images[index]->pixmap().height() > y
-                            && m_images[index]->pos().y() < y
-                            )
+                            && m_images[index]->pos().y() < y)
                         || m_images[index]->pos().y() == y){
                 canPut = false;
                 break;
                 }
             }
         }
+        //can i put a picture put else none
         if(canPut){
             m_images.append(this->addPixmap(m_imagePath));
             m_images.last()->setData(0, m_imagePath);
@@ -85,21 +89,23 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
 }
 
 void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
-    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
-    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
-        for(int index = 0; index < m_images.length(); index++){
-            if(m_images[index]->pos() == QPointF(x,y)){
-                this->removeItem(m_images[index]);
-                m_images.removeAt(index);
-                break;
+    //remove all pictures in the rectangle(leftCorner x rightCorner)
+    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y += 5){
+    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x += 5){
+                for(int index = 0; index < m_images.length(); index++){
+                    if(m_images[index]->pos() == QPointF(x,y)){
+                        this->removeItem(m_images[index]);
+                        m_images.removeAt(index);
+                        break;
+                    }
             }
-        }
-        }
+
+    }
     }
 }
 
 void MyScene::setImage(QString path){
-    //set path to Image in resources and set the crusorImage
+    //set path to Image in resources and set the crusorRectangle
     m_imagePath = path;
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
@@ -118,7 +124,7 @@ void MyScene::setImage(QString path){
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //active at mouse button press
-    //if left button then add picture if rigth butten remove picture
+    //if left button then add picture if rigth button remove picture
     if(event->button() == Qt::LeftButton)
          {
              if(m_shift){
@@ -162,6 +168,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
          if(event->button() == Qt::RightButton){
              //pixmap remove
+             //if only click then remove everything in the way else remove everyting in rectangle
              if(m_shift){
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                      removeImagesRect(m_shiftLeftCorner,m_cursor);
@@ -172,18 +179,10 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                  }
              }
              else{
-                 for(int index = 0; index < m_images.length(); index++){
-                     if(m_images[index]->pos() == m_cursor){
-                         this->removeItem(m_images[index]);
-                         m_images.removeAt(index);
-                         break;
-                     }
+                    removeImagesRect(m_cursor,m_cursor);
+
                  }
-         }
     }
-
-
-
 }
 
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -196,8 +195,6 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
     if((int(m_cursor.y()) % m_pixle) != 0)
         m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
-    //cursor in the midle of picture
-    m_cursor.operator -=(QPointF(m_cursorImage->rect().width(),m_cursorImage->rect().height()));
     //picture cant get out of screen
     if(m_cursor.x()<0)
         m_cursor.setX(0);
