@@ -37,6 +37,10 @@ void MyScene::setImage(QString path)
     myPen->setWidth(2);
     QPixmap newImage;
     newImage.load(m_imagePath);
+    if(m_cursorImage)
+    {
+        delete m_cursorImage;
+    }
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(1);
