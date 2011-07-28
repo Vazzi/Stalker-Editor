@@ -93,7 +93,7 @@
     <property name="geometry">
      <rect>
       <x>810</x>
-      <y>110</y>
+      <y>70</y>
       <width>114</width>
       <height>32</height>
      </rect>
@@ -102,44 +102,11 @@
      <string>Fill</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView_2">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>10</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>810</x>
-      <y>30</y>
-      <width>131</width>
-      <height>26</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>810</x>
-      <y>10</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>text</string>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="GridOnOff">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>80</y>
+      <x>820</x>
+      <y>270</y>
       <width>87</width>
       <height>20</height>
      </rect>
@@ -149,6 +116,41 @@
     </property>
     <property name="checked">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>10</y>
+      <width>169</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Textures:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRemoveNone">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>100</y>
+      <width>114</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Remove None</string>
     </property>
    </widget>
   </widget>

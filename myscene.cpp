@@ -2,9 +2,10 @@
 #include <QtGui>
 
 
-MyScene::MyScene(int newPixle, QString background)
+MyScene::MyScene(int newPixle, QString background, QString nonePath)
 {
     m_pixle = newPixle;
+    m_none = nonePath;
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(background);
@@ -40,6 +41,16 @@ void MyScene::hideGrid()
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->hide();
 }
+void MyScene::removeNone(){
+    for(int index = 0; index < m_images.length();index++){
+        if(m_images[index]->data(0).toString() == m_none){
+            this->removeItem(m_images[index]);
+            m_images.removeAt(index);
+            --index;
+        }
+    }
+}
+
 
 void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
     for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
@@ -72,6 +83,7 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
     }
     }
 }
+
 
 
 void MyScene::setImage(QString path){
@@ -161,7 +173,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if((int(m_cursor.y()) % m_pixle) != 0)
         m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
     //cursor in the midle of picture
-    m_cursor.operator -=(QPointF(m_cursorImage->rect().width() / 2,m_cursorImage->rect().height() / 2));
+    m_cursor.operator -=(QPointF(m_cursorImage->rect().width(),m_cursorImage->rect().height()));
     //picture cant get out of screen
     if(m_cursor.x()<0)
         m_cursor.setX(0);
@@ -175,11 +187,13 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 }
 
+
 void MyScene::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Shift)
         m_shift = true;
 }
+
 
 void MyScene::keyReleaseEvent(QKeyEvent *event)
 {

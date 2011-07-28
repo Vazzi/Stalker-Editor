@@ -3,5 +3,6 @@
         <file alias="background">Images/Background.png</file>
         <file alias="chest">Images/chest.png</file>
         <file alias="dirt">Images/dirt.png</file>
+        <file alias="none">Images/cross10x10.png</file>
     </qresource>
 </RCC>

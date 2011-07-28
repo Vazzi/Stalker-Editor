@@ -4,8 +4,7 @@
 #include <QtGui>
 
 MyScene *mainScene;
-QGraphicsScene *showTextureScene;
-QGraphicsPixmapItem *showTextureImage;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,15 +12,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     //set up scene
     ui->setupUi(this);
-    mainScene = new MyScene(10, ":/images/background");
+    mainScene = new MyScene(10, ":/images/background", ":/images/none");
     mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
-    showTextureScene = new QGraphicsScene;
-    showTextureImage = showTextureScene->addPixmap(QString(":/images/chest"));
-    ui->graphicsView_2->setScene(showTextureScene);
+
 
     //set up combobox
+    ui->comboBox->addItem("None",":/images/none");
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
 }
@@ -53,4 +51,9 @@ void MainWindow::on_GridOnOff_stateChanged(int arg1)
 void MainWindow::on_pushButtonFill_clicked()
 {
     mainScene->paintImagesRect(QPointF(0,0),QPointF(800,600));
+}
+
+void MainWindow::on_pushButtonRemoveNone_clicked()
+{
+    mainScene->removeNone();
 }

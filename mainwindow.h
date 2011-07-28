@@ -25,6 +25,8 @@ private slots:
 
     void on_pushButtonFill_clicked();
 
+    void on_pushButtonRemoveNone_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
