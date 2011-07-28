@@ -4,6 +4,8 @@
 #include <QtGui>
 
 MyScene *mainScene;
+QGraphicsScene *showTextureScene;
+QGraphicsPixmapItem *showTextureImage;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,9 +15,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     mainScene = new MyScene(10, ":/images/background");
     mainScene->setImage(":/images/chest");
-
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
+    showTextureScene = new QGraphicsScene;
+    showTextureImage = showTextureScene->addPixmap(QString(":/images/chest"));
+    ui->graphicsView_2->setScene(showTextureScene);
+
     //set up combobox
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
@@ -31,11 +36,21 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     //set text on label how many pictures are in the mainscene
-    ui->label->setText(mainScene->getImages());
+    //ui->label->setText(mainScene->getImages());
+    ui->label->setText(ui->comboBox->itemData(1).toString());
 }
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     //set image mainScene to current image in comboBox
     mainScene->setImage(ui->comboBox->itemData(index).toString());
+
+}
+
+void MainWindow::on_GridOnOff_stateChanged(int arg1)
+{
+    if(arg1 == 0)
+        mainScene->hideGrid();
+    else
+        mainScene->showGrid();
 }

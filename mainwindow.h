@@ -26,6 +26,8 @@ private slots:
 
     void on_comboBox_currentIndexChanged(int index);
 
+    void on_GridOnOff_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

@@ -16,14 +16,26 @@ void MyScene::makeGrid()
     ;
     for(int i = m_pixle ; i < 800; i = i +m_pixle)
     {
-        this->addLine(i,0,i,600, gPen)->setOpacity(0.2f);
+        m_grid.append(this->addLine(i,0,i,600, gPen));
+        m_grid.last()->setOpacity(0.2f);
     }
     for(int i = m_pixle; i < 600; i = i +m_pixle)
     {
-        this->addLine(0,i,800,i,gPen)->setOpacity(0.2f);
+        m_grid.append(this->addLine(0,i,800,i,gPen));
+        m_grid.last()->setOpacity(0.2f);
     }
 
+}
+void MyScene::showGrid()
+{
+    for(int index = 0; index < m_grid.length();index++)
+        m_grid[index]->show();
+}
 
+void MyScene::hideGrid()
+{
+    for(int index = 0; index < m_grid.length();index++)
+        m_grid[index]->hide();
 }
 
 
@@ -31,7 +43,6 @@ void MyScene::setImage(QString path)
 {
     //set path to Image in resources and set the crusorImage
     m_imagePath = path;
-    //m_cursorImage = this->addPixmap(m_imagePath);
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
     myPen->setWidth(2);
