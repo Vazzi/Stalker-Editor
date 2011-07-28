@@ -1,13 +1,17 @@
 #include "myscene.h"
 #include <QtGui>
 
+
 MyScene::MyScene(int newPixle, QString background)
 {
     m_pixle = newPixle;
+    m_shift = false;
+    m_shift1 = QPointF(-1,-1);
     m_background = this->addPixmap(background);
     makeGrid();
 
 }
+
 
 void MyScene::makeGrid()
 {
@@ -31,16 +35,47 @@ void MyScene::showGrid()
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->show();
 }
-
 void MyScene::hideGrid()
 {
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->hide();
 }
 
+void MyScene::paintImagesRect(){
+    for(int y = m_shift1.y();y < m_shift2.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
+    for(int x = m_shift1.x();x < m_shift2.x()+ m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
+    int index;
+        bool canPut = true;
+        for(index = 0; index < m_images.length();index++){
+            if(m_images[index]->pos().x() > x &&
+                    m_images[index]->pos().x() < x + m_cursorImage->rect().width()
+                    || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > x
+                        && m_images[index]->pos().x() < x
+                        )
+                    || m_images[index]->pos().x() == x){
+                if(m_images[index]->pos().y() > y &&
+                        m_images[index]->pos().y() < y + m_cursorImage->rect().height()
+                        || (m_images[index]->pos().y() + m_images[index]->pixmap().height() > y
+                            && m_images[index]->pos().y() < y
+                            )
+                        || m_images[index]->pos().y() == y){
+                canPut = false;
+                break;
+                }
+            }
+        }
+        if(canPut){
+            m_images.append(this->addPixmap(m_imagePath));
+            m_images.last()->setData(0, m_imagePath);
+            m_images.last()->setPos(QPoint(x,y));
+        }
+    }
+    }
+    m_shift1 = QPoint(-1,-1);
+}
 
-void MyScene::setImage(QString path)
-{
+
+void MyScene::setImage(QString path){
     //set path to Image in resources and set the crusorImage
     m_imagePath = path;
     QPen *myPen = new QPen();
@@ -57,59 +92,62 @@ void MyScene::setImage(QString path)
     m_cursorImage->setZValue(1);
 }
 
-void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
+void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //active at mouse button press
     //if left button then add picture if rigth butten remove picture
     if(event->button() == Qt::LeftButton)
-    {
-        int index;
-        bool canPut = true;
-        for(index = 0; index < m_images.length();index++)
-        {
-            if(m_images[index]->pos().x() > m_cursorImage->pos().x() &&
-                    m_images[index]->pos().x() < m_cursorImage->pos().x() + m_cursorImage->rect().width()
-                    || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > m_cursorImage->pos().x()
-                        && m_images[index]->pos().x() < m_cursorImage->pos().x()
-                        )
-                    || m_images[index]->pos().x() == m_cursorImage->pos().x()
-                    )
-            {
-                if(m_images[index]->pos().y() > m_cursorImage->pos().y() &&
-                        m_images[index]->pos().y() < m_cursorImage->pos().y() + m_cursorImage->rect().height()
-                        || (m_images[index]->pos().y() + m_images[index]->pixmap().height() > m_cursorImage->pos().y()
-                            && m_images[index]->pos().y() < m_cursorImage->pos().y()
-                            )
-                        || m_images[index]->pos().y() == m_cursorImage->pos().y()
-                        )
-                {
-                canPut = false;
-                break;
-                }
-            }
-        }
-        if(canPut)
-        {
-            m_images.append(this->addPixmap(m_imagePath));
-            m_images.last()->setData(0, m_imagePath);
-            m_images.last()->setPos(m_cursor);
-        }
+         {
+             if(m_shift){
+                 if(m_shift1 != QPointF(-1,-1)){
+                     m_shift2 = m_cursor;
+                     paintImagesRect();
+                 }
+                 else{
+                     m_shift1 = m_cursor;
+                 }
+             }
+             else{
+                 int index;
+                     bool canPut = true;
+                     for(index = 0; index < m_images.length();index++){
+                         if(m_images[index]->pos().x() > m_cursorImage->pos().x() &&
+                                 m_images[index]->pos().x() < m_cursorImage->pos().x() + m_cursorImage->rect().width()
+                                 || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > m_cursorImage->pos().x()
+                                     && m_images[index]->pos().x() < m_cursorImage->pos().x()
+                                     )
+                                 || m_images[index]->pos().x() == m_cursorImage->pos().x()){
+                             if(m_images[index]->pos().y() > m_cursorImage->pos().y() &&
+                                     m_images[index]->pos().y() < m_cursorImage->pos().y() + m_cursorImage->rect().height()
+                                     || (m_images[index]->pos().y() + m_images[index]->pixmap().height() > m_cursorImage->pos().y()
+                                         && m_images[index]->pos().y() < m_cursorImage->pos().y()
+                                         )
+                                     || m_images[index]->pos().y() == m_cursorImage->pos().y()){
+                             canPut = false;
+                             break;
+                             }
+                         }
+                     }
+                     if(canPut){
+                         m_images.append(this->addPixmap(m_imagePath));
+                         m_images.last()->setData(0, m_imagePath);
+                         m_images.last()->setPos(m_cursor);
+                     }
+             }
 
-    }
-    if(event->button() == Qt::RightButton)
-    {
-        //pixmap remove
-            int index;
-            for(index = 0; index < m_images.length(); index++)
-            {
-                if(m_images[index]->pos() == m_cursor)
-                {
-                    this->removeItem(m_images[index]);
-                    m_images.removeAt(index);
-                    break;
-                }
-            }
-    }
+         }
+         if(event->button() == Qt::RightButton){
+             //pixmap remove
+                 int index;
+                 for(index = 0; index < m_images.length(); index++){
+                     if(m_images[index]->pos() == m_cursor){
+                         this->removeItem(m_images[index]);
+                         m_images.removeAt(index);
+                         break;
+                     }
+                 }
+         }
+
+
 
 }
 
@@ -137,3 +175,16 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_cursorImage->setPos(m_cursor);
 
 }
+
+void MyScene::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Shift)
+        m_shift = true;
+}
+
+void MyScene::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Shift)
+        m_shift = false;
+}
+

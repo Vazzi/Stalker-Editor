@@ -20,11 +20,15 @@ public:
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 
     void makeGrid();
+    void paintImagesRect();
 
     int m_pixle;
+    bool m_shift;
+    QPointF m_shift1, m_shift2;
     QPointF m_cursor;
     QString m_imagePath;
     QList<QGraphicsPixmapItem *> m_images;
