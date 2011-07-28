@@ -10,6 +10,7 @@ public:
     MyScene(int newPixle, QString background, QString nonePath);
     void setImage(QString path);
     void paintImagesRect(QPointF leftCorner, QPointF rightCorner);
+    void removeImagesRect(QPointF leftCorner, QPointF rightCorner);
     void showGrid();
     void hideGrid();
     void removeNone();

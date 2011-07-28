@@ -84,7 +84,19 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
     }
 }
 
-
+void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
+    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
+    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
+        for(int index = 0; index < m_images.length(); index++){
+            if(m_images[index]->pos() == QPointF(x,y)){
+                this->removeItem(m_images[index]);
+                m_images.removeAt(index);
+                break;
+            }
+        }
+        }
+    }
+}
 
 void MyScene::setImage(QString path){
     //set path to Image in resources and set the crusorImage
@@ -102,6 +114,7 @@ void MyScene::setImage(QString path){
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(1);
 }
+
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //active at mouse button press
@@ -146,10 +159,20 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              }
 
          }
+
          if(event->button() == Qt::RightButton){
              //pixmap remove
-                 int index;
-                 for(index = 0; index < m_images.length(); index++){
+             if(m_shift){
+                 if(m_shiftLeftCorner != QPointF(-1,-1)){
+                     removeImagesRect(m_shiftLeftCorner,m_cursor);
+                     m_shiftLeftCorner = QPointF(-1,-1);
+                 }
+                 else{
+                     m_shiftLeftCorner = m_cursor;
+                 }
+             }
+             else{
+                 for(int index = 0; index < m_images.length(); index++){
                      if(m_images[index]->pos() == m_cursor){
                          this->removeItem(m_images[index]);
                          m_images.removeAt(index);
@@ -157,6 +180,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                      }
                  }
          }
+    }
 
 
 
