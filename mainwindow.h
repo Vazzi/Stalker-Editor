@@ -19,14 +19,11 @@ public:
 
 private slots:
 
-
-    void on_pushButton_clicked();
-
-
-
     void on_comboBox_currentIndexChanged(int index);
 
     void on_GridOnOff_stateChanged(int arg1);
+
+    void on_pushButtonFill_clicked();
 
 private:
     Ui::MainWindow *ui;

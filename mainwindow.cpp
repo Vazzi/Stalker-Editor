@@ -33,12 +33,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
-{
-    //set text on label how many pictures are in the mainscene
-    //ui->label->setText(mainScene->getImages());
-    ui->label->setText(ui->comboBox->itemData(1).toString());
-}
+
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
@@ -53,4 +48,9 @@ void MainWindow::on_GridOnOff_stateChanged(int arg1)
         mainScene->hideGrid();
     else
         mainScene->showGrid();
+}
+
+void MainWindow::on_pushButtonFill_clicked()
+{
+    mainScene->paintImagesRect(QPointF(0,0),QPointF(800,600));
 }

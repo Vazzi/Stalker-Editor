@@ -9,6 +9,7 @@ class MyScene: public QGraphicsScene
 public:
     MyScene(int newPixle, QString background);
     void setImage(QString path);
+    void paintImagesRect(QPointF leftCorner, QPointF rightCorner);
     void showGrid();
     void hideGrid();
 
@@ -17,6 +18,7 @@ public:
     bool readMap();
     bool writeMap();
 
+
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -24,12 +26,10 @@ private:
     void keyReleaseEvent(QKeyEvent *event);
 
     void makeGrid();
-    void paintImagesRect();
 
     int m_pixle;
     bool m_shift;
-    QPointF m_shift1, m_shift2;
-    QPointF m_cursor;
+    QPointF m_cursor, m_shiftLeftCorner;
     QString m_imagePath;
     QList<QGraphicsPixmapItem *> m_images;
     QList<QGraphicsLineItem *> m_grid;

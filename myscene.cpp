@@ -6,7 +6,7 @@ MyScene::MyScene(int newPixle, QString background)
 {
     m_pixle = newPixle;
     m_shift = false;
-    m_shift1 = QPointF(-1,-1);
+    m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(background);
     makeGrid();
 
@@ -41,9 +41,9 @@ void MyScene::hideGrid()
         m_grid[index]->hide();
 }
 
-void MyScene::paintImagesRect(){
-    for(int y = m_shift1.y();y < m_shift2.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
-    for(int x = m_shift1.x();x < m_shift2.x()+ m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
+void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
+    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
+    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
         for(index = 0; index < m_images.length();index++){
@@ -71,7 +71,6 @@ void MyScene::paintImagesRect(){
         }
     }
     }
-    m_shift1 = QPoint(-1,-1);
 }
 
 
@@ -98,12 +97,12 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     if(event->button() == Qt::LeftButton)
          {
              if(m_shift){
-                 if(m_shift1 != QPointF(-1,-1)){
-                     m_shift2 = m_cursor;
-                     paintImagesRect();
+                 if(m_shiftLeftCorner != QPointF(-1,-1)){
+                     paintImagesRect(m_shiftLeftCorner,m_cursor);
+                     m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
-                     m_shift1 = m_cursor;
+                     m_shiftLeftCorner = m_cursor;
                  }
              }
              else{
