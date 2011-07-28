@@ -33,12 +33,13 @@ void MyScene::setImage(QString path)
     m_imagePath = path;
     //m_cursorImage = this->addPixmap(m_imagePath);
     QPen *myPen = new QPen();
-    myPen->setColor(Qt::red);
+    myPen->setColor(Qt::green);
     myPen->setWidth(2);
-    m_cursorImage = this->addRect(0,0,40,40,*myPen,Qt::red);
-    m_cursorImage->setOpacity(0.5f);
-
-
+    QPixmap newImage;
+    newImage.load(m_imagePath);
+    m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
+    m_cursorImage->setOpacity(0.4f);
+    m_cursorImage->setZValue(1);
 }
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -52,16 +53,16 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         for(index = 0; index < m_images.length();index++)
         {
             if(m_images[index]->pos().x() > m_cursorImage->pos().x() &&
-                    m_images[index]->pos().x() < m_cursorImage->pos().x() + 40
-                    || (m_images[index]->pos().x() + 40 > m_cursorImage->pos().x()
+                    m_images[index]->pos().x() < m_cursorImage->pos().x() + m_cursorImage->rect().width()
+                    || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > m_cursorImage->pos().x()
                         && m_images[index]->pos().x() < m_cursorImage->pos().x()
                         )
                     || m_images[index]->pos().x() == m_cursorImage->pos().x()
                     )
             {
                 if(m_images[index]->pos().y() > m_cursorImage->pos().y() &&
-                        m_images[index]->pos().y() < m_cursorImage->pos().y() + 40
-                        || (m_images[index]->pos().y() + 40 > m_cursorImage->pos().y()
+                        m_images[index]->pos().y() < m_cursorImage->pos().y() + m_cursorImage->rect().height()
+                        || (m_images[index]->pos().y() + m_images[index]->pixmap().height() > m_cursorImage->pos().y()
                             && m_images[index]->pos().y() < m_cursorImage->pos().y()
                             )
                         || m_images[index]->pos().y() == m_cursorImage->pos().y()
@@ -108,17 +109,16 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if((int(m_cursor.y()) % m_pixle) != 0)
         m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
     //cursor in the midle of picture
-    //m_cursor.operator -=(QPointF(m_cursorImage->pixmap().width() / 2,m_cursorImage->pixmap().height() / 2));
-    m_cursor.operator -=(QPointF(20,20));
+    m_cursor.operator -=(QPointF(m_cursorImage->rect().width() / 2,m_cursorImage->rect().height() / 2));
     //picture cant get out of screen
     if(m_cursor.x()<0)
         m_cursor.setX(0);
     if(m_cursor.y()<0)
         m_cursor.setY(0);
-    if((m_cursor.x())+40>800)
-        m_cursor.setX(800-40);
-    if((m_cursor.y())+40>600)
-        m_cursor.setY(600-40);
+    if((m_cursor.x())+m_cursorImage->rect().width()>800)
+        m_cursor.setX(800-m_cursorImage->rect().width());
+    if((m_cursor.y())+m_cursorImage->rect().height()>600)
+        m_cursor.setY(600-m_cursorImage->rect().height());
     m_cursorImage->setPos(m_cursor);
 
 }

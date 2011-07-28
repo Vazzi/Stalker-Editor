@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     mainScene = new MyScene(10, ":/images/background");
 
-    mainScene->setImage(":/images/chest");
+    mainScene->setImage(":/images/dirt");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
     //set up combobox
