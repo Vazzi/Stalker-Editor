@@ -139,17 +139,21 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                      paintImagesRect(m_shiftLeftCorner,m_cursor);
                      m_shiftRect->setVisible(false);
+                     m_cursorImage->setVisible(true);
                      m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
                      m_shiftLeftCorner = m_cursor;
                      m_shiftRect->setVisible(true);
+                     m_cursorImage->setVisible(false);
                      m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
                  }
              }
              else{
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                        m_shiftRect->setVisible(false);
+                        m_cursorImage->setVisible(true);
+                        m_shiftRect->setBrush(Qt::lightGray);
                        m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
@@ -189,14 +193,28 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              if(m_shift){
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                      removeImagesRect(m_shiftLeftCorner,m_cursor);
+                     m_shiftRect->setVisible(false);
+                     m_cursorImage->setVisible(true);
+                     m_shiftRect->setBrush(Qt::lightGray);
                      m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
                      m_shiftLeftCorner = m_cursor;
+                     m_shiftRect->setVisible(true);
+                     m_cursorImage->setVisible(false);
+                     m_shiftRect->setBrush(Qt::red);
+                     m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
                  }
              }
              else{
-                    removeImagesRect(m_cursor,m_cursor);
+                     if(m_shiftLeftCorner != QPointF(-1,-1)){
+                           m_shiftRect->setVisible(false);
+                           m_cursorImage->setVisible(true);
+                           m_shiftRect->setBrush(Qt::lightGray);
+                           m_shiftLeftCorner = QPointF(-1,-1);
+                     }
+                     else
+                        removeImagesRect(m_cursor,m_cursor);
 
                  }
     }
