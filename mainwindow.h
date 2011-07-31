@@ -27,6 +27,8 @@ private slots:
 
     void on_pushButtonRemoveNone_clicked();
 
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

@@ -60,3 +60,12 @@ void MainWindow::on_pushButtonRemoveNone_clicked()
     //remove all none images
     mainScene->removeNone();
 }
+
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+    //show or hide cursor in scene
+    if(arg1 == 0)
+        ui->graphicsView->setCursor(Qt::BlankCursor);
+    else
+        ui->graphicsView->setCursor(Qt::ArrowCursor);
+}
