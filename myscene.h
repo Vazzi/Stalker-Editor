@@ -36,7 +36,7 @@ private:
     QString m_imagePath, m_none;
     QList<QGraphicsPixmapItem *> m_images;
     QList<QGraphicsLineItem *> m_grid;
-    QGraphicsRectItem *m_cursorImage;
+    QGraphicsRectItem *m_cursorImage, *m_shiftRect;
     QGraphicsPixmapItem *m_background;
 
 };

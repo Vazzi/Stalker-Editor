@@ -9,6 +9,13 @@ MyScene::MyScene(int newPixle, QString background, QString nonePath)
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(background);
+    QPen *myPen = new QPen();
+    myPen->setColor(Qt::green);
+    myPen->setWidth(2);
+    m_shiftRect = this->addRect(0,0,1,1,*myPen,Qt::lightGray);
+    m_shiftRect->setZValue(1);
+    m_shiftRect->setOpacity(0.4f);
+    m_shiftRect->setVisible(false);
     makeGrid();
 
 }
@@ -83,6 +90,7 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
             m_images.append(this->addPixmap(m_imagePath));
             m_images.last()->setData(0, m_imagePath);
             m_images.last()->setPos(QPoint(x,y));
+
         }
     }
     }
@@ -130,13 +138,21 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              if(m_shift){
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                      paintImagesRect(m_shiftLeftCorner,m_cursor);
+                     m_shiftRect->setVisible(false);
                      m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
                      m_shiftLeftCorner = m_cursor;
+                     m_shiftRect->setVisible(true);
+                     m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
                  }
              }
              else{
+                 if(m_shiftLeftCorner != QPointF(-1,-1)){
+                       m_shiftRect->setVisible(false);
+                       m_shiftLeftCorner = QPointF(-1,-1);
+                 }
+                 else{
                  int index;
                      bool canPut = true;
                      for(index = 0; index < m_images.length();index++){
@@ -162,6 +178,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                          m_images.last()->setData(0, m_imagePath);
                          m_images.last()->setPos(m_cursor);
                      }
+                 }
              }
 
          }
@@ -195,6 +212,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
     if((int(m_cursor.y()) % m_pixle) != 0)
         m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
+
     //picture cant get out of screen
     if(m_cursor.x()<0)
         m_cursor.setX(0);
@@ -204,6 +222,13 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_cursor.setX(800-m_cursorImage->rect().width());
     if((m_cursor.y())+m_cursorImage->rect().height()>600)
         m_cursor.setY(600-m_cursorImage->rect().height());
+
+    if(m_shiftRect->isVisible()){
+        m_shiftRect->setRect(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),
+                             (m_cursor.x() - m_shiftRect->rect().x()) + m_cursorImage->rect().width(),
+                             (m_cursor.y() - m_shiftRect->rect().y()) + m_cursorImage->rect().height());
+    }
+
     m_cursorImage->setPos(m_cursor);
 
 }
