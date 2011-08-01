@@ -17,8 +17,8 @@ MyScene::MyScene(int newPixle, QString background, QString nonePath)
     m_shiftRect->setOpacity(0.4f);
     m_shiftRect->setVisible(false);
     makeGrid();
-
 }
+
 
 
 void MyScene::makeGrid()
@@ -38,18 +38,19 @@ void MyScene::makeGrid()
     }
 
 }
-void MyScene::showGrid()
+void MyScene::showHideGrid(bool show)
 {
-    //show lines
+    if(show){
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->show();
-}
-void MyScene::hideGrid()
-{
-    //hide lines
+    }
+    else{
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->hide();
+    }
+
 }
+
 void MyScene::removeNone(){
     //remove none images from list
     for(int index = 0; index < m_images.length();index++){
@@ -94,6 +95,7 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
         }
     }
     }
+
 }
 
 void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
@@ -265,3 +267,10 @@ void MyScene::keyReleaseEvent(QKeyEvent *event)
         m_shift = false;
 }
 
+void MyScene::showHideBackgroudImage(bool show){
+    if(show)
+        m_background->show();
+    else
+        m_background->setVisible(false);
+
+}

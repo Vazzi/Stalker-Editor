@@ -11,9 +11,9 @@ public:
     void setImage(QString path);
     void paintImagesRect(QPointF leftCorner, QPointF rightCorner);
     void removeImagesRect(QPointF leftCorner, QPointF rightCorner);
-    void showGrid();
-    void hideGrid();
+    void showHideGrid(bool show);
     void removeNone();
+    void showHideBackgroudImage(bool show);
 
     QString getImages() { return m_images.last()->data(0).toString(); }
 

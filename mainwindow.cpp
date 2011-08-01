@@ -40,14 +40,6 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
 }
 
-void MainWindow::on_GridOnOff_stateChanged(int arg1)
-{
-    //hide or show grid
-    if(arg1 == 0)
-        mainScene->hideGrid();
-    else
-        mainScene->showGrid();
-}
 
 void MainWindow::on_pushButtonFill_clicked()
 {
@@ -61,11 +53,21 @@ void MainWindow::on_pushButtonRemoveNone_clicked()
     mainScene->removeNone();
 }
 
-void MainWindow::on_checkBox_stateChanged(int arg1)
+
+void MainWindow::on_backgroundOnOff_toggled(bool checked)
 {
-    //show or hide cursor in scene
-    if(arg1 == 0)
-        ui->graphicsView->setCursor(Qt::BlankCursor);
-    else
+    mainScene->showHideBackgroudImage(checked);
+}
+
+void MainWindow::on_GridOnOff_toggled(bool checked)
+{
+    mainScene->showHideGrid(checked);
+}
+
+void MainWindow::on_cursorOnOff_toggled(bool checked)
+{
+    if(checked)
         ui->graphicsView->setCursor(Qt::ArrowCursor);
+    else
+        ui->graphicsView->setCursor(Qt::BlankCursor);
 }

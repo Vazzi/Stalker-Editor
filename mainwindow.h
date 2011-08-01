@@ -21,13 +21,15 @@ private slots:
 
     void on_comboBox_currentIndexChanged(int index);
 
-    void on_GridOnOff_stateChanged(int arg1);
-
     void on_pushButtonFill_clicked();
 
     void on_pushButtonRemoveNone_clicked();
 
-    void on_checkBox_stateChanged(int arg1);
+    void on_backgroundOnOff_toggled(bool checked);
+
+    void on_GridOnOff_toggled(bool checked);
+
+    void on_cursorOnOff_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

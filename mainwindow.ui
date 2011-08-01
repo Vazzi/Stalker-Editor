@@ -102,22 +102,6 @@
      <string>Fill</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="GridOnOff">
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>270</y>
-      <width>87</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>show grid</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
@@ -153,20 +137,73 @@
      <string>Remove None</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>310</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>290</y>
-      <width>101</width>
-      <height>20</height>
+      <y>470</y>
+      <width>157</width>
+      <height>104</height>
      </rect>
     </property>
-    <property name="text">
-     <string>show cursor</string>
+    <property name="title">
+     <string>Setting:</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QCheckBox" name="GridOnOff">
+       <property name="text">
+        <string>show grid</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="backgroundOnOff">
+       <property name="text">
+        <string>show background</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="cursorOnOff">
+       <property name="text">
+        <string>show cursor</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QComboBox" name="comboBox_2">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>150</y>
+      <width>111</width>
+      <height>26</height>
+     </rect>
     </property>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
