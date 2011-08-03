@@ -14,6 +14,7 @@ public:
     void showHideGrid(bool show);
     void removeNone();
     void showHideBackgroudImage(bool show);
+    void setBackground(QString backgroundPath);
 
     QString getImages() { return m_images.last()->data(0).toString(); }
 

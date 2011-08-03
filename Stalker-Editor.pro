@@ -12,12 +12,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    myscene.cpp
+    myscene.cpp \
+    menu.cpp
 
 HEADERS  += mainwindow.h \
-    myscene.h
+    myscene.h \
+    menu.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    menu.ui
 
 RESOURCES += \
     MyResources.qrc

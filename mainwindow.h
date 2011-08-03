@@ -31,6 +31,10 @@ private slots:
 
     void on_cursorOnOff_toggled(bool checked);
 
+    void on_comboBox_2_currentIndexChanged(int index);
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

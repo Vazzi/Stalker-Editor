@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "myscene.h"
+#include "menu.h"
 #include <QtGui>
+
 
 MyScene *mainScene;
 QGraphicsScene *secondScene;
 QGraphicsPixmapItem *item;
+Menu *m;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    m = new Menu(this);
     //set up mainscene
     mainScene = new MyScene(10, ":/images/background", ":/images/none");
     mainScene->setImage(":/images/chest");
@@ -28,10 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView_2->setSceneRect(0,0,80,80);
     secondScene->setBackgroundBrush(Qt::lightGray);
 
-    //set up combobox
+    //set up combobox with items
     ui->comboBox->addItem("None",":/images/none");
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
+
+    //set up combobox with backgrounds
+    ui->comboBox_2->addItem("background1",":/images/background");
+    ui->comboBox_2->addItem("Dirt",":/images/dirt");
 }
 
 
@@ -97,4 +105,14 @@ void MainWindow::on_cursorOnOff_toggled(bool checked)
         ui->graphicsView->setCursor(Qt::ArrowCursor);
     else
         ui->graphicsView->setCursor(Qt::BlankCursor);
+}
+
+void MainWindow::on_comboBox_2_currentIndexChanged(int index)
+{
+    mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    m->show();
 }

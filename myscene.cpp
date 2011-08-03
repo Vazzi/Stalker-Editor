@@ -156,8 +156,8 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              else{
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                        m_shiftRect->setVisible(false);
-                        m_cursorImage->setVisible(true);
-                        m_shiftRect->setBrush(Qt::lightGray);
+                       m_cursorImage->setVisible(true);
+                       m_shiftRect->setBrush(Qt::lightGray);
                        m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
@@ -286,3 +286,10 @@ void MyScene::showHideBackgroudImage(bool show){
         m_background->setVisible(false);
 
 }
+
+void MyScene::setBackground(QString backgroundPath){
+    QPixmap newBackground;
+    newBackground.load(backgroundPath);
+    m_background->setPixmap(newBackground);
+}
+
