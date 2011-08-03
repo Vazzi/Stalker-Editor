@@ -50,8 +50,8 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     //show image in secondScene
     item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
-    ui->labelWidth->setText(QString::number(item->pixmap().width()) + "px");
-    ui->labelHeight->setText(QString::number(item->pixmap().height())+ "px");
+    ui->labelWidth->setText(QString::number(item->pixmap().width()) + " px");
+    ui->labelHeight->setText(QString::number(item->pixmap().height())+ " px");
     //resize if it is necessary
     if(item->pixmap().width() > 78)
         item->setPixmap(item->pixmap().scaledToHeight(78,Qt::FastTransformation));

@@ -129,6 +129,8 @@ void MyScene::setImage(QString path){
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(1);
+    if(m_shiftRect->isVisible())
+        m_cursorImage->setVisible(false);
 }
 
 
@@ -225,7 +227,8 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     //active when mouse move
-    //it change position of cursorImage where is cursor
+
+    //it changes position of cursorImage where cursor is
     m_cursor.setX(event->scenePos().x());
     m_cursor.setY(event->scenePos().y());
     if((int(m_cursor.x()) % m_pixle) != 0)
@@ -244,9 +247,18 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_cursor.setY(600-m_cursorImage->rect().height());
 
     if(m_shiftRect->isVisible()){
-        m_shiftRect->setRect(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),
-                             (m_cursor.x() - m_shiftRect->rect().x()) + m_cursorImage->rect().width(),
-                             (m_cursor.y() - m_shiftRect->rect().y()) + m_cursorImage->rect().height());
+        if(m_shift){
+            m_shiftRect->setRect(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),
+                                 (m_cursor.x() - m_shiftRect->rect().x()) + m_cursorImage->rect().width(),
+                                 (m_cursor.y() - m_shiftRect->rect().y()) + m_cursorImage->rect().height());
+        }
+        else{
+            m_shiftRect->setVisible(false);
+            m_cursorImage->setVisible(true);
+            m_shiftLeftCorner = QPointF(-1,-1);
+
+        }
+
     }
 
     m_cursorImage->setPos(m_cursor);
