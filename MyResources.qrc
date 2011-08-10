@@ -4,5 +4,8 @@
         <file alias="chest">Images/chest.png</file>
         <file alias="dirt">Images/dirt.png</file>
         <file alias="none">Images/cross10x10.png</file>
+        <file alias="online">Images/online.png</file>
+        <file alias="stone">Images/stone.png</file>
+        <file alias="wood">Images/wood.png</file>
     </qresource>
 </RCC>

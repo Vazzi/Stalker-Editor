@@ -36,10 +36,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->addItem("None",":/images/none");
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
+    ui->comboBox->addItem("Stone",":/images/stone");
+    ui->comboBox->addItem("Wood",":/images/wood");
+    ui->comboBox->addItem("Online",":/images/online");
 
     //set up combobox with backgrounds
     ui->comboBox_2->addItem("background1",":/images/background");
-    ui->comboBox_2->addItem("Dirt",":/images/dirt");
+
 }
 
 
