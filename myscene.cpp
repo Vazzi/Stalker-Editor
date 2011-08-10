@@ -228,13 +228,23 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     //active when mouse move
 
+
     //it changes position of cursorImage where cursor is
     m_cursor.setX(event->scenePos().x());
     m_cursor.setY(event->scenePos().y());
-    if((int(m_cursor.x()) % m_pixle) != 0)
-        m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
-    if((int(m_cursor.y()) % m_pixle) != 0)
-        m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
+    if(m_shiftRect->isVisible()){
+        if((int(m_cursor.x()) % int(m_cursorImage->rect().width())) != 0)
+            m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % int(m_cursorImage->rect().width())));
+        if((int(m_cursor.y()) % int(m_cursorImage->rect().height())) != 0)
+            m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % int(m_cursorImage->rect().height())));
+    }
+    else{
+        if((int(m_cursor.x()) % m_pixle) != 0)
+            m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
+        if((int(m_cursor.y()) % m_pixle) != 0)
+            m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
+    }
+
 
     //picture cant get out of screen
     if(m_cursor.x()<0)
