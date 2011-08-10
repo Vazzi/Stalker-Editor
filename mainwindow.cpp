@@ -75,6 +75,8 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     item->setPos(x,y);
 
 
+    ui->graphicsView->setFocus();
+
 
 }
 
@@ -83,23 +85,27 @@ void MainWindow::on_pushButtonFill_clicked()
 {
     //fill the screen with images
     mainScene->paintImagesRect(QPointF(0,0),QPointF(800,600));
+
 }
 
 void MainWindow::on_pushButtonRemoveNone_clicked()
 {
     //remove all none images
     mainScene->removeNone();
+
 }
 
 
 void MainWindow::on_backgroundOnOff_toggled(bool checked)
 {
     mainScene->showHideBackgroudImage(checked);
+
 }
 
 void MainWindow::on_GridOnOff_toggled(bool checked)
 {
     mainScene->showHideGrid(checked);
+
 }
 
 void MainWindow::on_cursorOnOff_toggled(bool checked)
@@ -108,11 +114,14 @@ void MainWindow::on_cursorOnOff_toggled(bool checked)
         ui->graphicsView->setCursor(Qt::ArrowCursor);
     else
         ui->graphicsView->setCursor(Qt::BlankCursor);
+
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 {
     mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
+    ui->graphicsView->setFocus();
+
 }
 
 void MainWindow::on_pushButton_clicked()
