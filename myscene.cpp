@@ -140,24 +140,15 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     if(event->button() == Qt::LeftButton)
          {
              if(m_shift){
-                 if(m_shiftLeftCorner != QPointF(-1,-1)){
                      paintImagesRect(m_shiftLeftCorner,m_cursor);
                      m_shiftRect->setVisible(false);
                      m_cursorImage->setVisible(true);
                      m_shiftLeftCorner = QPointF(-1,-1);
-                 }
-                 else{
-                     m_shiftLeftCorner = m_cursor;
-                     m_shiftRect->setVisible(true);
-                     m_cursorImage->setVisible(false);
-                     m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
-                 }
              }
              else{
                  if(m_shiftLeftCorner != QPointF(-1,-1)){
                        m_shiftRect->setVisible(false);
                        m_cursorImage->setVisible(true);
-                       m_shiftRect->setBrush(Qt::lightGray);
                        m_shiftLeftCorner = QPointF(-1,-1);
                  }
                  else{
@@ -195,26 +186,15 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              //pixmap remove
              //if only click then remove everything in the way else remove everyting in rectangle
              if(m_shift){
-                 if(m_shiftLeftCorner != QPointF(-1,-1)){
                      removeImagesRect(m_shiftLeftCorner,m_cursor);
                      m_shiftRect->setVisible(false);
                      m_cursorImage->setVisible(true);
-                     m_shiftRect->setBrush(Qt::lightGray);
                      m_shiftLeftCorner = QPointF(-1,-1);
-                 }
-                 else{
-                     m_shiftLeftCorner = m_cursor;
-                     m_shiftRect->setVisible(true);
-                     m_cursorImage->setVisible(false);
-                     m_shiftRect->setBrush(Qt::red);
-                     m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
-                 }
              }
              else{
                      if(m_shiftLeftCorner != QPointF(-1,-1)){
                            m_shiftRect->setVisible(false);
                            m_cursorImage->setVisible(true);
-                           m_shiftRect->setBrush(Qt::lightGray);
                            m_shiftLeftCorner = QPointF(-1,-1);
                      }
                      else
@@ -227,8 +207,6 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     //active when mouse move
-
-
     //it changes position of cursorImage where cursor is
     m_cursor.setX(event->scenePos().x());
     m_cursor.setY(event->scenePos().y());
@@ -272,14 +250,18 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 
     m_cursorImage->setPos(m_cursor);
-
 }
 
 
 void MyScene::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Shift)
+    if(event->key() == Qt::Key_Shift){
+        m_shiftLeftCorner = m_cursor;
+        m_shiftRect->setVisible(true);
+        m_cursorImage->setVisible(false);
+        m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
         m_shift = true;
+    }
 }
 
 
@@ -287,6 +269,7 @@ void MyScene::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Shift)
         m_shift = false;
+
 }
 
 void MyScene::showHideBackgroudImage(bool show){
