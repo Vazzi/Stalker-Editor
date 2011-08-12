@@ -33,7 +33,7 @@ private:
     void shiftRectangle(bool shift);
 
     int m_pixle;
-    bool m_shift;
+    bool m_shift, m_eraser;
     QPointF m_cursor, m_shiftLeftCorner;
     QString m_imagePath, m_none;
     QList<QGraphicsPixmapItem *> m_images;

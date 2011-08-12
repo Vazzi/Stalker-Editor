@@ -100,8 +100,8 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
 
 void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
     //remove all pictures in the rectangle(leftCorner x rightCorner)
-    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y += 5){
-    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x += 5){
+    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y += m_pixle){
+    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x += m_pixle){
                 for(int index = 0; index < m_images.length(); index++){
                     if(m_images[index]->pos() == QPointF(x,y)){
                         this->removeItem(m_images[index]);
@@ -118,16 +118,21 @@ void MyScene::setImage(QString path){
     //set path to Image in resources and set the crusorRectangle
     m_imagePath = path;
     QPen *myPen = new QPen();
+    myPen->setWidth(2);
     QPixmap newImage;
     if(m_imagePath==":/images/eraser"){
         myPen->setColor(Qt::red);
         newImage.load(m_none);
+        m_shiftRect->setPen(*myPen);
+        m_eraser = true;
     }
     else{
         myPen->setColor(Qt::green);
         newImage.load(m_imagePath);
+        m_shiftRect->setPen(*myPen);
+        m_eraser = false;
     }
-    myPen->setWidth(2);
+
     if(m_cursorImage)
     {
         delete m_cursorImage;
@@ -141,8 +146,18 @@ void MyScene::setImage(QString path){
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //active at mouse button press
-    //if left button then add picture if rigth button remove picture
+    //if eraser is active erase images else add images
     if(event->button() == Qt::LeftButton){
+        if(m_eraser){
+            //erase image
+            if(m_shift){
+                    removeImagesRect(m_shiftLeftCorner,m_cursor);
+            }
+            else{
+                removeImagesRect(m_cursor,m_cursor);
+            }
+         }
+        else{
              if(m_shift){
                      paintImagesRect(m_shiftLeftCorner,m_cursor);
              }
@@ -175,6 +190,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                  }
              }
 
+  }
 }
 
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
