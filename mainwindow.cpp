@@ -19,14 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m = new Menu(this);
     //set up mainscene
-    mainScene = new MyScene(10, ":/images/background", ":/images/none");
+    mainScene = new MyScene(10, ":/images/none", ":/images/background1");
     mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,800,600);
 
     //set up secondScene
     secondScene = new QGraphicsScene;
-    //secondScene->setBackgroundBrush(Qt::);
     item = new QGraphicsPixmapItem;
     item = secondScene->addPixmap(QString(":/images/none"));
     ui->graphicsView_2->setScene(secondScene);
@@ -35,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //set up combobox with items
     ui->comboBox->addItem("None",":/images/none");
+    ui->comboBox->addItem("Eraser",":/images/eraser");
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
     ui->comboBox->addItem("Stone",":/images/stone");
@@ -78,7 +78,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     y = (ui->graphicsView_2->height()/2) - (item->pixmap().height()/2);
     item->setPos(x,y);
 
-
+    //set focus on scene
     ui->graphicsView->setFocus();
 
 

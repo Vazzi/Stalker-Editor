@@ -2,7 +2,7 @@
 #include <QtGui>
 
 
-MyScene::MyScene(int newPixle, QString background, QString nonePath)
+MyScene::MyScene(int newPixle, QString nonePath, QString background)
 {
     m_pixle = newPixle;
     m_none = nonePath;
@@ -118,10 +118,16 @@ void MyScene::setImage(QString path){
     //set path to Image in resources and set the crusorRectangle
     m_imagePath = path;
     QPen *myPen = new QPen();
-    myPen->setColor(Qt::green);
-    myPen->setWidth(2);
     QPixmap newImage;
-    newImage.load(m_imagePath);
+    if(m_imagePath==":/images/eraser"){
+        myPen->setColor(Qt::red);
+        newImage.load(m_none);
+    }
+    else{
+        myPen->setColor(Qt::green);
+        newImage.load(m_imagePath);
+    }
+    myPen->setWidth(2);
     if(m_cursorImage)
     {
         delete m_cursorImage;
@@ -129,8 +135,7 @@ void MyScene::setImage(QString path){
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(1);
-    if(m_shiftRect->isVisible())
-        m_cursorImage->setVisible(false);
+    shiftRectangle(false);
 }
 
 
@@ -227,27 +232,16 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void MyScene::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Shift){
-        m_shiftLeftCorner = m_cursor;
-        m_shiftRect->setVisible(true);
-        m_cursorImage->setVisible(false);
-        m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
-        m_shift = true;
-    }
+    if(event->key() == Qt::Key_Shift)
+        shiftRectangle(true);
+
 }
 
 
 void MyScene::keyReleaseEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Shift){
-        m_shiftRect->setVisible(false);
-        m_cursorImage->setVisible(true);
-        m_shift = false;
-        m_shiftLeftCorner = QPointF(-1,-1);
-
-
-
-    }
+    if(event->key() == Qt::Key_Shift)
+        shiftRectangle(false);
 }
 
 void MyScene::showHideBackgroudImage(bool show){
@@ -264,3 +258,20 @@ void MyScene::setBackground(QString backgroundPath){
     m_background->setPixmap(newBackground);
 }
 
+void MyScene::shiftRectangle(bool shift){
+    if(shift){
+        m_shiftLeftCorner = m_cursor;
+        m_shiftRect->setVisible(true);
+        m_cursorImage->setVisible(false);
+        m_shiftRect->setRect(m_cursor.x(), m_cursor.y(),m_cursorImage->rect().width(),m_cursorImage->rect().height());
+        m_shift = true;
+    }
+    else{
+        m_shiftRect->setVisible(false);
+        m_cursorImage->setVisible(true);
+        m_shift = false;
+        m_shiftLeftCorner = QPointF(-1,-1);
+
+
+    }
+}

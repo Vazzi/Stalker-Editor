@@ -7,7 +7,7 @@
 class MyScene: public QGraphicsScene
 {
 public:
-    MyScene(int newPixle, QString background, QString nonePath);
+    MyScene(int newPixle, QString nonePath, QString background);
     void setImage(QString path);
     void paintImagesRect(QPointF leftCorner, QPointF rightCorner);
     void removeImagesRect(QPointF leftCorner, QPointF rightCorner);
@@ -30,6 +30,7 @@ private:
     void keyReleaseEvent(QKeyEvent *event);
 
     void makeGrid();
+    void shiftRectangle(bool shift);
 
     int m_pixle;
     bool m_shift;
