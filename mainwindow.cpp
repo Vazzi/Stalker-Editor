@@ -33,8 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     secondScene->setBackgroundBrush(Qt::lightGray);
 
     //set up combobox with items
-    ui->comboBox->addItem("None",":/images/none");
-    ui->comboBox->addItem("Eraser",":/images/eraser");
+    ui->comboBox->addItem("**None**",":/images/none");
+    ui->comboBox->addItem("**Eraser**",":/images/eraser");
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
     ui->comboBox->addItem("Stone",":/images/stone");
