@@ -9,6 +9,7 @@ MyScene *mainScene;
 QGraphicsScene *secondScene;
 QGraphicsPixmapItem *item;
 Menu *m;
+QTimer *timer;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,7 +43,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //set up combobox with backgrounds
     ui->comboBox_2->addItem("background1",":/images/background");
-
+    timer = new QTimer;
+    timer->setInterval(10);
+    connect(timer,SIGNAL(timeout()),this,SLOT(labelupdate()));
+    timer->start();
 }
 
 
@@ -127,4 +131,9 @@ void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 void MainWindow::on_pushButton_clicked()
 {
     m->show();
+}
+
+void MainWindow::labelupdate(){
+    ui->xlabel->setText(QString::number(mainScene->xyposition.x()));
+    ui->ylabel->setText(QString::number(mainScene->xyposition.y()));
 }

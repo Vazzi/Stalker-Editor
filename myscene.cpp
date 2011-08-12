@@ -208,13 +208,23 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     //active when mouse move
     //it changes position of cursorImage where cursor is
+    xyposition = event->scenePos();
+
     m_cursor.setX(event->scenePos().x());
     m_cursor.setY(event->scenePos().y());
-    if(m_shiftRect->isVisible()){
-        if((int(m_cursor.x()) % int(m_cursorImage->rect().width())) != 0)
-            m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % int(m_cursorImage->rect().width())));
-        if((int(m_cursor.y()) % int(m_cursorImage->rect().height())) != 0)
-            m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % int(m_cursorImage->rect().height())));
+
+      if(m_shiftRect->isVisible()){
+          if(m_cursor.x()<m_shiftLeftCorner.x())
+              m_cursor.setX(0);
+          else if(m_cursor.y()<m_shiftLeftCorner.y())
+              m_cursor.setY(0);
+          else{
+              if(((int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())) != 0)
+                  m_cursor.setX(int(m_cursor.x()) - int(int(int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())));
+              if((int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height())) != 0)
+                  m_cursor.setY(int(m_cursor.y()) - int(int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height())));
+          }
+
     }
     else{
         if((int(m_cursor.x()) % m_pixle) != 0)
@@ -237,8 +247,8 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if(m_shiftRect->isVisible()){
         if(m_shift){
             m_shiftRect->setRect(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),
-                                 (m_cursor.x() - m_shiftRect->rect().x()) + m_cursorImage->rect().width(),
-                                 (m_cursor.y() - m_shiftRect->rect().y()) + m_cursorImage->rect().height());
+                                 m_cursor.x()-m_shiftLeftCorner.x()+m_cursorImage->rect().width(),
+                                 m_cursor.y()-m_shiftLeftCorner.y()+m_cursorImage->rect().height());
         }
         else{
             m_shiftRect->setVisible(false);

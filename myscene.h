@@ -21,7 +21,7 @@ public:
     bool readMap();
     bool writeMap();
 
-
+    QPointF xyposition;
 
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

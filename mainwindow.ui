@@ -166,7 +166,7 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>800</x>
@@ -274,6 +274,32 @@
       </layout>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="xlabel">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>420</y>
+      <width>62</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ylabel">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>420</y>
+      <width>62</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
    </widget>
   </widget>
  </widget>

@@ -35,6 +35,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void labelupdate();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
