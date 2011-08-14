@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m = new Menu(this);
     //set up mainscene
     sceneWidth=1000;
-    mainScene = new MyScene(10, ":/images/none", ":/images/background1");
+    mainScene = new MyScene(10, ":/images/none", ":/images/background1", sceneWidth);
     mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
@@ -144,8 +144,6 @@ void MainWindow::labelupdate(){
     ui->xlabel->setText(QString::number(mainScene->xyposition.x()));
     ui->ylabel->setText(QString::number(mainScene->xyposition.y()));
 }
-
-
 
 
 void MainWindow::on_horizontalSlider_sliderMoved(int position)

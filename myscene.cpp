@@ -2,10 +2,11 @@
 #include <QtGui>
 
 
-MyScene::MyScene(int newPixle, QString nonePath, QString background)
+MyScene::MyScene(int newPixle, QString nonePath, QString background, int sceneWidth)
 {
     m_pixle = newPixle;
     m_none = nonePath;
+    m_sceneWidth = sceneWidth;
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(background);
@@ -26,14 +27,14 @@ void MyScene::makeGrid()
     //Make a grid with a little opacity
     QPen gPen(Qt::lightGray);
     ;
-    for(int i = m_pixle ; i < 800; i = i +m_pixle)
+    for(int i = m_pixle ; i < m_sceneWidth; i = i +m_pixle)
     {
         m_grid.append(this->addLine(i,0,i,600, gPen));
         m_grid.last()->setOpacity(0.2f);
     }
     for(int i = m_pixle; i < 600; i = i +m_pixle)
     {
-        m_grid.append(this->addLine(0,i,800,i,gPen));
+        m_grid.append(this->addLine(0,i,m_sceneWidth,i,gPen));
         m_grid.last()->setOpacity(0.2f);
     }
 
@@ -228,8 +229,8 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_cursor.setX(0);
     if(m_cursor.y()<0)
         m_cursor.setY(0);
-    if((m_cursor.x())+m_cursorImage->rect().width()>800)
-        m_cursor.setX(800-m_cursorImage->rect().width());
+    if((m_cursor.x())+m_cursorImage->rect().width()>m_sceneWidth)
+        m_cursor.setX(m_sceneWidth-m_cursorImage->rect().width());
     if((m_cursor.y())+m_cursorImage->rect().height()>600)
         m_cursor.setY(600-m_cursorImage->rect().height());
 
