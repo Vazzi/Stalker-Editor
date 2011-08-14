@@ -37,6 +37,9 @@ private slots:
 
     void labelupdate();
 
+
+    void on_horizontalSlider_sliderMoved(int position);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

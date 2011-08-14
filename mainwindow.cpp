@@ -10,19 +10,23 @@ QGraphicsScene *secondScene;
 QGraphicsPixmapItem *item;
 Menu *m;
 QTimer *timer;
+int sceneWidth;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
 
+
     ui->setupUi(this);
     m = new Menu(this);
     //set up mainscene
+    sceneWidth=1000;
     mainScene = new MyScene(10, ":/images/none", ":/images/background1");
     mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
-    ui->graphicsView->setSceneRect(0,0,800,600);
+    ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
+
 
     //set up secondScene
     secondScene = new QGraphicsScene;
@@ -47,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer->setInterval(10);
     connect(timer,SIGNAL(timeout()),this,SLOT(labelupdate()));
     timer->start();
+
 }
 
 
@@ -81,6 +86,8 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     //set focus on scene
     ui->graphicsView->setFocus();
 
+    ui->horizontalSlider->setMinimum(400);
+    ui->horizontalSlider->setMaximum(sceneWidth / 2);
 
 }
 
@@ -136,4 +143,12 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::labelupdate(){
     ui->xlabel->setText(QString::number(mainScene->xyposition.x()));
     ui->ylabel->setText(QString::number(mainScene->xyposition.y()));
+}
+
+
+
+
+void MainWindow::on_horizontalSlider_sliderMoved(int position)
+{
+    ui->graphicsView->centerOn(QPoint(position,300));
 }
