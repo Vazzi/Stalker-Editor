@@ -204,10 +204,14 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_cursor.setY(event->scenePos().y());
 
       if(m_shiftRect->isVisible()){
-          if(m_cursor.x()<m_shiftLeftCorner.x())
-              m_cursor.setX(0);
+          if(m_cursor.y()<m_shiftLeftCorner.y()&&m_cursor.x()<m_shiftLeftCorner.x()){
+              m_cursor.setX(m_shiftLeftCorner.x());
+              m_cursor.setY(m_shiftLeftCorner.y());
+          }
           else if(m_cursor.y()<m_shiftLeftCorner.y())
-              m_cursor.setY(0);
+              m_cursor.setY(m_shiftLeftCorner.y());
+          else if(m_cursor.x()<m_shiftLeftCorner.x())
+              m_cursor.setX(m_shiftLeftCorner.x());
           else{
               if(((int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())) != 0)
                   m_cursor.setX(int(m_cursor.x()) - int(int(int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())));
