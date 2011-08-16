@@ -117,9 +117,8 @@ void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
     }
 }
 
-void MyScene::setImage(QString path,int zValue){
-    //set path to Image in resources and set the crusorRectangle
-    m_zValue = zValue;
+void MyScene::setImage(QString path){
+    //set path to Image in resources and set the crusorRectangel
     m_imagePath = path;
     QPen *myPen = new QPen();
     myPen->setWidth(2);
@@ -310,4 +309,8 @@ void MyScene::shiftRectangle(bool shift){
 
 
     }
+}
+void MyScene::setItemZValue(int zValue){
+    m_zValue = zValue;
+
 }

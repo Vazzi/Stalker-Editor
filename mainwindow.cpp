@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //set up mainscene
     sceneWidth=1000;
     mainScene = new MyScene(10, ":/images/none", ":/images/background1", sceneWidth);
-    mainScene->setImage(":/images/chest",1);
+    mainScene->setImage(":/images/chest");
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
 
@@ -70,7 +70,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     //set image mainScene to current image in comboBox
-    mainScene->setImage(ui->comboBox->itemData(index).toString(), ui->spinBox->value());
+    mainScene->setImage(ui->comboBox->itemData(index).toString());
     //show image in secondScene
     item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
@@ -133,7 +133,6 @@ void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 {
     mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
     ui->graphicsView->setFocus();
-
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -150,4 +149,10 @@ void MainWindow::labelupdate(){
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
     ui->graphicsView->centerOn(QPoint(position,300));
+}
+
+void MainWindow::on_spinBox_valueChanged(int arg1)
+{
+    mainScene->setItemZValue(arg1);
+    ui->graphicsView->setFocus();
 }

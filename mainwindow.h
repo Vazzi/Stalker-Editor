@@ -40,6 +40,8 @@ private slots:
 
     void on_horizontalSlider_sliderMoved(int position);
 
+    void on_spinBox_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

@@ -8,13 +8,14 @@ class MyScene: public QGraphicsScene
 {
 public:
     MyScene(int newPixle, QString nonePath, QString background, int sceneWidth);
-    void setImage(QString path, int zValue);
+    void setImage(QString path);
     void paintImagesRect(QPointF leftCorner, QPointF rightCorner);
     void removeImagesRect(QPointF leftCorner, QPointF rightCorner);
     void showHideGrid(bool show);
     void removeNone();
     void showHideBackgroudImage(bool show);
     void setBackground(QString backgroundPath);
+    void setItemZValue(int zValue);
 
     QString getImages() { return m_images.last()->data(0).toString(); }
 
