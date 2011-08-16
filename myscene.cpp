@@ -90,8 +90,10 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
         //can i put a picture put else none
         if(canPut){
             m_images.append(this->addPixmap(m_imagePath));
+            m_images.last()->setZValue(m_zValue);
             m_images.last()->setData(0, m_imagePath);
             m_images.last()->setPos(QPoint(x,y));
+            m_images.last()->setData(1,m_zValue);
 
         }
     }
@@ -115,8 +117,9 @@ void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
     }
 }
 
-void MyScene::setImage(QString path){
+void MyScene::setImage(QString path,int zValue){
     //set path to Image in resources and set the crusorRectangle
+    m_zValue = zValue;
     m_imagePath = path;
     QPen *myPen = new QPen();
     myPen->setWidth(2);
@@ -140,8 +143,9 @@ void MyScene::setImage(QString path){
     }
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
-    m_cursorImage->setZValue(1);
+    m_cursorImage->setZValue(11);
     shiftRectangle(false);
+
 }
 
 
@@ -165,6 +169,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              else{
                  int index;
                      bool canPut = true;
+                     /*
                      for(index = 0; index < m_images.length();index++){
                          if(m_images[index]->pos().x() > m_cursorImage->pos().x() &&
                                  m_images[index]->pos().x() < m_cursorImage->pos().x() + m_cursorImage->rect().width()
@@ -183,8 +188,18 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                              }
                          }
                      }
+
+                     m_cursorImage->setVisible(false);
+                     if(this->itemAt(m_cursorImage->pos().x(),m_cursorImage->pos().y())->zValue()!=0){
+                        canPut=false;
+                        QMessageBox::information(0,"prd", QString::number(this->itemAt(m_cursorImage->pos().x(),m_cursorImage->pos().y())->zValue()));
+                     }
+                     m_cursorImage->setVisible(true);
+                     */
                      if(canPut){
                          m_images.append(this->addPixmap(m_imagePath));
+                         m_images.last()->setZValue(m_zValue);
+                         m_images.last()->setData(1,m_zValue);
                          m_images.last()->setData(0, m_imagePath);
                          m_images.last()->setPos(m_cursor);
                      }
@@ -204,7 +219,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_cursor.setY(event->scenePos().y());
 
       if(m_shiftRect->isVisible()){
-          if(m_cursor.y()<m_shiftLeftCorner.y()&&m_cursor.x()<m_shiftLeftCorner.x()){
+          if(m_cursor.y()<m_shiftLeftCorner.y()&m_cursor.x()<m_shiftLeftCorner.x()){
               m_cursor.setX(m_shiftLeftCorner.x());
               m_cursor.setY(m_shiftLeftCorner.y());
           }

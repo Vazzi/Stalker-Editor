@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //set up mainscene
     sceneWidth=1000;
     mainScene = new MyScene(10, ":/images/none", ":/images/background1", sceneWidth);
-    mainScene->setImage(":/images/chest");
+    mainScene->setImage(":/images/chest",1);
     ui->graphicsView->setScene(mainScene);
     ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
 
@@ -52,6 +52,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer,SIGNAL(timeout()),this,SLOT(labelupdate()));
     timer->start();
 
+    //set up slider
+    ui->horizontalSlider->setMinimum(400);
+    ui->horizontalSlider->setMaximum(sceneWidth / 2);
+
 }
 
 
@@ -66,7 +70,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     //set image mainScene to current image in comboBox
-    mainScene->setImage(ui->comboBox->itemData(index).toString());
+    mainScene->setImage(ui->comboBox->itemData(index).toString(), ui->spinBox->value());
     //show image in secondScene
     item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
@@ -85,9 +89,6 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
     //set focus on scene
     ui->graphicsView->setFocus();
-
-    ui->horizontalSlider->setMinimum(400);
-    ui->horizontalSlider->setMaximum(sceneWidth / 2);
 
 }
 

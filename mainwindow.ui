@@ -294,7 +294,7 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Scene slide:</string>
+            <string>Scene slider:</string>
            </property>
           </widget>
          </item>
