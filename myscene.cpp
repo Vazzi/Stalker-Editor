@@ -14,7 +14,7 @@ MyScene::MyScene(int newPixle, QString nonePath, QString background, int sceneWi
     myPen->setColor(Qt::green);
     myPen->setWidth(2);
     m_shiftRect = this->addRect(0,0,1,1,*myPen,Qt::lightGray);
-    m_shiftRect->setZValue(1);
+    m_shiftRect->setZValue(11);
     m_shiftRect->setOpacity(0.4f);
     m_shiftRect->setVisible(false);
     makeGrid();
@@ -59,19 +59,24 @@ void MyScene::removeNone(){
             this->removeItem(m_images[index]);
             m_images.removeAt(index);
             --index;
+
         }
     }
 }
 
 
+
 void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
     //put pictures into the scene into the rectangle (leftCorner x rightCorner)
+
     for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
     for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
         //if there is no picture in the way it add picture else none
         for(index = 0; index < m_images.length();index++){
+            if(m_images[index]->data(1)!=m_zValue)
+                continue;
             if(m_images[index]->pos().x() > x &&
                     m_images[index]->pos().x() < x + m_cursorImage->rect().width()
                     || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > x
@@ -106,6 +111,8 @@ void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
     for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y += m_pixle){
     for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x += m_pixle){
                 for(int index = 0; index < m_images.length(); index++){
+                    if(m_images[index]->data(1)!=m_zValue)
+                        continue;
                     if(m_images[index]->pos() == QPointF(x,y)){
                         this->removeItem(m_images[index]);
                         m_images.removeAt(index);
@@ -123,7 +130,7 @@ void MyScene::setImage(QString path){
     QPen *myPen = new QPen();
     myPen->setWidth(2);
     QPixmap newImage;
-    if(m_imagePath==":/images/eraser"){
+    if(m_imagePath==":/images/rubber"){
         myPen->setColor(Qt::red);
         newImage.load(m_none);
         m_shiftRect->setPen(*myPen);
@@ -168,8 +175,10 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              else{
                  int index;
                      bool canPut = true;
-                     /*
+
                      for(index = 0; index < m_images.length();index++){
+                         if(m_images[index]->data(1)!=m_zValue)
+                             continue;
                          if(m_images[index]->pos().x() > m_cursorImage->pos().x() &&
                                  m_images[index]->pos().x() < m_cursorImage->pos().x() + m_cursorImage->rect().width()
                                  || (m_images[index]->pos().x() + m_images[index]->pixmap().width() > m_cursorImage->pos().x()
@@ -186,8 +195,9 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                              break;
                              }
                          }
-                     }
 
+                     }
+                     /*
                      m_cursorImage->setVisible(false);
                      if(this->itemAt(m_cursorImage->pos().x(),m_cursorImage->pos().y())->zValue()!=0){
                         canPut=false;

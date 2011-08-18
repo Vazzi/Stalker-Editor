@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //set up combobox with items
     ui->comboBox->addItem("**None**",":/images/none");
-    ui->comboBox->addItem("**Eraser**",":/images/eraser");
+    ui->comboBox->addItem("**Eraser**",":/images/rubber");
     ui->comboBox->addItem("Chest",":/images/chest");
     ui->comboBox->addItem("Dirt",":/images/dirt");
     ui->comboBox->addItem("Stone",":/images/stone");
@@ -71,16 +71,23 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     //set image mainScene to current image in comboBox
     mainScene->setImage(ui->comboBox->itemData(index).toString());
+
+    //refresh labels
+    if(ui->comboBox->itemData(index).toString()==":images/rubber"){
+        ui->labelWidth->setText("10 px");
+        ui->labelHeight->setText("10 px");
+    }
+    else{
+        ui->labelWidth->setText(QString::number(item->pixmap().width()) + " px");
+        ui->labelHeight->setText(QString::number(item->pixmap().height())+ " px");
+        //resize if it is necessary
+        if(item->pixmap().width() > 78)
+            item->setPixmap(item->pixmap().scaledToHeight(78,Qt::FastTransformation));
+        else if(item->pixmap().height() > 78)
+            item->setPixmap(item->pixmap().scaledToWidth(78,Qt::FastTransformation));
+    }
     //show image in secondScene
     item->setPixmap(ui->comboBox->itemData(index).toString());
-    //refresh labels
-    ui->labelWidth->setText(QString::number(item->pixmap().width()) + " px");
-    ui->labelHeight->setText(QString::number(item->pixmap().height())+ " px");
-    //resize if it is necessary
-    if(item->pixmap().width() > 78)
-        item->setPixmap(item->pixmap().scaledToHeight(78,Qt::FastTransformation));
-    else if(item->pixmap().height() > 78)
-        item->setPixmap(item->pixmap().scaledToWidth(78,Qt::FastTransformation));
     //set pixmap position into the midle of graphicsview
     int x,y;
     x = (ui->graphicsView_2->width()/2) - (item->pixmap().width()/2);

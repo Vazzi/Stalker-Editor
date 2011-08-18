@@ -7,5 +7,6 @@
         <file alias="online">Images/online.png</file>
         <file alias="stone">Images/stone.png</file>
         <file alias="wood">Images/wood.png</file>
+        <file alias="rubber">Images/rubber.png</file>
     </qresource>
 </RCC>
