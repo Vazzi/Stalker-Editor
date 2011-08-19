@@ -295,7 +295,7 @@
           <item>
            <widget class="QCheckBox" name="checkBoxLayerZLock">
             <property name="text">
-             <string>Layer&amp;zValue Lock</string>
+             <string>Layer &amp;&amp; Z Lock</string>
             </property>
            </widget>
           </item>

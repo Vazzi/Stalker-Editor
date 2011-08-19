@@ -22,6 +22,5 @@ void Menu::on_pushButtonContinue_clicked()
 
 void Menu::on_pushButtonQuit_clicked()
 {
-    this->close();
-
+    exit(0);
 }
