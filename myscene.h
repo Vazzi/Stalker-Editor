@@ -16,6 +16,7 @@ public:
     void showHideBackgroudImage(bool show);
     void setBackground(QString backgroundPath);
     void setItemZValue(int zValue);
+    void showLayer(int layer);
 
     QString getImages() { return m_images.last()->data(0).toString(); }
 

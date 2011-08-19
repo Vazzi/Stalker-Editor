@@ -324,3 +324,18 @@ void MyScene::setItemZValue(int zValue){
     m_zValue = zValue;
 
 }
+
+void MyScene::showLayer(int layer){
+    if(layer==0){
+        for(int i = 0; i<m_images.length();i++)
+            m_images[i]->setVisible(true);
+    }
+    else{
+        for(int i = 0; i<m_images.length();i++){
+            if(m_images[i]->data(1).toInt()==layer)
+                m_images[i]->setVisible(true);
+            else
+                m_images[i]->setVisible(false);
+        }
+    }
+}

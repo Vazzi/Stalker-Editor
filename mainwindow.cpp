@@ -47,6 +47,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //set up combobox with backgrounds
     ui->comboBox_2->addItem("background1",":/images/background");
+
+    //set up combobox with layres
+    ui->comboBoxLayer->addItem("all *");
+    for(int i = 1; i < 11; i++)
+        ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
+
     timer = new QTimer;
     timer->setInterval(10);
     connect(timer,SIGNAL(timeout()),this,SLOT(labelupdate()));
@@ -55,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //set up slider
     ui->horizontalSlider->setMinimum(400);
     ui->horizontalSlider->setMaximum(sceneWidth / 2);
+
 
 }
 
@@ -71,9 +78,11 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     //set image mainScene to current image in comboBox
     mainScene->setImage(ui->comboBox->itemData(index).toString());
-
+    mainScene->setItemZValue(ui->spinBox->value());
+    //show image in secondScene
+    item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
-    if(ui->comboBox->itemData(index).toString()==":images/rubber"){
+    if(ui->comboBox->itemData(index).toString()==":/images/rubber"){
         ui->labelWidth->setText("10 px");
         ui->labelHeight->setText("10 px");
     }
@@ -86,8 +95,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         else if(item->pixmap().height() > 78)
             item->setPixmap(item->pixmap().scaledToWidth(78,Qt::FastTransformation));
     }
-    //show image in secondScene
-    item->setPixmap(ui->comboBox->itemData(index).toString());
+
     //set pixmap position into the midle of graphicsview
     int x,y;
     x = (ui->graphicsView_2->width()/2) - (item->pixmap().width()/2);
@@ -162,4 +170,10 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 {
     mainScene->setItemZValue(arg1);
     ui->graphicsView->setFocus();
+}
+
+void MainWindow::on_comboBoxLayer_currentIndexChanged(int index)
+{
+    mainScene->showLayer(index);
+
 }

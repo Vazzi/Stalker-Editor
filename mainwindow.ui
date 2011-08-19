@@ -172,7 +172,7 @@
       <x>800</x>
       <y>90</y>
       <width>201</width>
-      <height>423</height>
+      <height>455</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -201,6 +201,9 @@
            </item>
            <item>
             <widget class="QSpinBox" name="spinBox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
              <property name="maximum">
               <number>10</number>
              </property>
@@ -230,6 +233,16 @@
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Layer:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBoxLayer"/>
+         </item>
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
