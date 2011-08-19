@@ -11,6 +11,7 @@ QGraphicsPixmapItem *item;
 Menu *m;
 QTimer *timer;
 int sceneWidth;
+bool LayerZLock;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -174,6 +175,16 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 
 void MainWindow::on_comboBoxLayer_currentIndexChanged(int index)
 {
+    if(LayerZLock){
+        if(index!=0){
+            ui->spinBox->setValue(index);
+        }
+    }
     mainScene->showLayer(index);
     ui->graphicsView->setFocus();
+}
+
+void MainWindow::on_checkBoxLayerZLock_stateChanged(int arg1)
+{
+        LayerZLock=arg1;
 }

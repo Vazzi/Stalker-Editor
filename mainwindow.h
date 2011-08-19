@@ -44,6 +44,8 @@ private slots:
 
     void on_comboBoxLayer_currentIndexChanged(int index);
 
+    void on_checkBoxLayerZLock_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;

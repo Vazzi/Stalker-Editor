@@ -172,7 +172,7 @@
       <x>800</x>
       <y>90</y>
       <width>201</width>
-      <height>455</height>
+      <height>473</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -292,6 +292,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="checkBoxLayerZLock">
+            <property name="text">
+             <string>Layer&amp;zValue Lock</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -328,7 +335,7 @@
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>530</y>
+      <y>570</y>
       <width>62</width>
       <height>16</height>
      </rect>
@@ -341,7 +348,7 @@
     <property name="geometry">
      <rect>
       <x>910</x>
-      <y>530</y>
+      <y>570</y>
       <width>62</width>
       <height>16</height>
      </rect>
