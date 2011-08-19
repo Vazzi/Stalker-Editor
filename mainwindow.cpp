@@ -175,5 +175,5 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 void MainWindow::on_comboBoxLayer_currentIndexChanged(int index)
 {
     mainScene->showLayer(index);
-
+    ui->graphicsView->setFocus();
 }

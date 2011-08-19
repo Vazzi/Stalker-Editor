@@ -99,6 +99,8 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
             m_images.last()->setData(0, m_imagePath);
             m_images.last()->setPos(QPoint(x,y));
             m_images.last()->setData(1,m_zValue);
+            if(m_visibleLayer!=m_zValue && m_visibleLayer!=0)
+                m_images.last()->setVisible(false);
 
         }
     }
@@ -211,6 +213,9 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                          m_images.last()->setData(1,m_zValue);
                          m_images.last()->setData(0, m_imagePath);
                          m_images.last()->setPos(m_cursor);
+                         if(m_visibleLayer!=m_zValue && m_visibleLayer!=0)
+                             m_images.last()->setVisible(false);
+
                      }
                  }
              }
@@ -329,6 +334,7 @@ void MyScene::showLayer(int layer){
     if(layer==0){
         for(int i = 0; i<m_images.length();i++)
             m_images[i]->setVisible(true);
+
     }
     else{
         for(int i = 0; i<m_images.length();i++){
@@ -338,4 +344,5 @@ void MyScene::showLayer(int layer){
                 m_images[i]->setVisible(false);
         }
     }
+    m_visibleLayer=layer;
 }

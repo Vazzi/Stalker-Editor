@@ -34,7 +34,7 @@ private:
     void makeGrid();
     void shiftRectangle(bool shift);
 
-    int m_pixle,m_sceneWidth, m_zValue;
+    int m_pixle,m_sceneWidth, m_zValue, m_visibleLayer;
     bool m_shift, m_eraser;
     QPointF m_cursor, m_shiftLeftCorner;
     QString m_imagePath, m_none;
@@ -42,6 +42,7 @@ private:
     QList<QGraphicsLineItem *> m_grid;
     QGraphicsRectItem *m_cursorImage, *m_shiftRect;
     QGraphicsPixmapItem *m_background;
+
 
 };
 
