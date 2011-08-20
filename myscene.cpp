@@ -18,6 +18,7 @@ MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
     m_shiftRect->setOpacity(0.4f);
     m_shiftRect->setVisible(false);
     makeGrid();
+
 }
 
 
@@ -155,6 +156,7 @@ void MyScene::setImage(QString path){
     QPen *myPen = new QPen();
     myPen->setWidth(2);
     QPixmap newImage;
+    this->removeItem(m_cursorImage);
     if(m_imagePath==":/images/rubber"){
         myPen->setColor(Qt::red);
         newImage.load(m_none);
@@ -357,7 +359,6 @@ void MyScene::showLayer(int layer){
     if(layer==0){
         for(int i = 0; i<m_images.length();i++)
             m_images[i]->setVisible(true);
-
     }
     else{
         for(int i = 0; i<m_images.length();i++){
@@ -369,4 +370,40 @@ void MyScene::showLayer(int layer){
     }
     m_visibleLayer=layer;
 }
+
+void MyScene::clearlyNewScene(int sceneWidth){
+    for(int i = 0; i<m_images.length();i++)
+       this->removeItem(m_images[i]);
+    m_images.clear();
+
+    m_sceneWidth = sceneWidth;
+    for(int i = 0; i<m_grid.length();i++)
+       this->removeItem(m_grid[i]);
+    makeGrid();
+
+}
+
+void MyScene::fill(){
+    if(m_imagePath==":/images/rubber")
+        removeImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
+    else
+        paintImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

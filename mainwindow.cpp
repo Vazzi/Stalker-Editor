@@ -5,7 +5,6 @@
 #include <QtGui>
 
 
-MyScene *mainScene;
 QGraphicsScene *secondScene;
 QGraphicsPixmapItem *item;
 Menu *menuForm;
@@ -16,14 +15,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
 
-
     ui->setupUi(this);
 
     menuForm = new Menu(this);
 
-    //set up mainscene
-    NewMainScene(10, ":/images/none", 1000);
+    //set up m_mainScene
+    m_mainScene = new MyScene(10, ":/images/none", 1000);
+    ui->graphicsView->setScene(m_mainScene);
+    ui->graphicsView->setSceneRect(0,0,1000,600);
 
+    //set up slider
+    ui->horizontalSlider->setMinimum(400);
+    ui->horizontalSlider->setMaximum(1000 / 2);
+
+    ui->graphicsView->setScene(m_mainScene);
 
     //set up secondScene
     secondScene = new QGraphicsScene;
@@ -65,9 +70,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
-    //set image mainScene to current image in comboBox
-    mainScene->setImage(ui->comboBox->itemData(index).toString());
-    mainScene->setItemZValue(ui->spinBox->value());
+    //set image m_mainScene to current image in comboBox
+    m_mainScene->setImage(ui->comboBox->itemData(index).toString());
+    m_mainScene->setItemZValue(ui->spinBox->value());
     //show image in secondScene
     item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
@@ -101,28 +106,31 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 void MainWindow::on_pushButtonFill_clicked()
 {
     //fill the screen with images
-    mainScene->paintImagesRect(QPointF(0,0),QPointF(800,600));
+    m_mainScene->fill();
 
 }
 
 void MainWindow::on_pushButtonRemoveNone_clicked()
 {
     //remove all none images
-    mainScene->removeNone();
+    m_mainScene->removeNone();
+    ui->graphicsView->update();
+
 
 }
 
 
 void MainWindow::on_backgroundOnOff_toggled(bool checked)
 {
-    mainScene->showHideBackgroudImage(checked);
+    m_mainScene->showHideBackgroudImage(checked);
+    ui->graphicsView->setFocus();
 
 }
 
 void MainWindow::on_GridOnOff_toggled(bool checked)
 {
-    mainScene->showHideGrid(checked);
-
+    m_mainScene->showHideGrid(checked);
+    ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_cursorOnOff_toggled(bool checked)
@@ -131,69 +139,51 @@ void MainWindow::on_cursorOnOff_toggled(bool checked)
         ui->graphicsView->setCursor(Qt::ArrowCursor);
     else
         ui->graphicsView->setCursor(Qt::BlankCursor);
-
+    ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 {
-    mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
+    m_mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
     ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     menuForm->show();
-
-}
-
-void MainWindow::labelupdate(){
-    ui->xlabel->setText(QString::number(mainScene->xyposition.x()));
-    ui->ylabel->setText(QString::number(mainScene->xyposition.y()));
+    ui->graphicsView->setFocus();
 }
 
 
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
     ui->graphicsView->centerOn(QPoint(position,300));
-}
-
-void MainWindow::on_spinBox_valueChanged(int arg1)
-{
-    mainScene->setItemZValue(arg1);
     ui->graphicsView->setFocus();
 }
 
-void MainWindow::on_comboBoxLayer_currentIndexChanged(int index)
-{
+void MainWindow::on_spinBox_valueChanged(int arg1){
+    m_mainScene->setItemZValue(arg1);
+    ui->graphicsView->setFocus();
+}
+
+void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
     if(LayerZLock){
         if(index!=0){
             ui->spinBox->setValue(index);
         }
     }
-    mainScene->showLayer(index);
+    m_mainScene->showLayer(index);
     ui->graphicsView->setFocus();
 }
 
-void MainWindow::on_checkBoxLayerZLock_stateChanged(int arg1)
-{
-        LayerZLock=arg1;
+void MainWindow::on_checkBoxLayerZLock_stateChanged(int arg1){
+    LayerZLock=arg1;
 }
 
 void MainWindow::clearForm(){
-    NewMainScene(10, ":/images/none", 1000);
+    m_mainScene->clearlyNewScene(1500);
+    ui->graphicsView->setSceneRect(0,0,1500,600);
+    ui->horizontalSlider->setMaximum(1500 / 2);
+    ui->graphicsView->update();
 }
 
-void MainWindow::NewMainScene(int pixle, QString none, int sceneWidth){
-    mainScene = new MyScene(pixle, none, sceneWidth);
-    ui->graphicsView->setScene(mainScene);
-    ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
-
-    //set up slider
-    ui->horizontalSlider->setMinimum(400);
-    ui->horizontalSlider->setMaximum(sceneWidth / 2);
-
-    ui->comboBox->setCurrentIndex(0);
-    ui->comboBoxLayer->setCurrentIndex(0);
-    ui->comboBox_2->setCurrentIndex(0);
-
-}

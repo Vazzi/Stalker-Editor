@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtGui>
+#include "myscene.h"
 
 namespace Ui {
     class MainWindow;
@@ -35,8 +36,6 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void labelupdate();
-
     void on_horizontalSlider_sliderMoved(int position);
 
     void on_spinBox_valueChanged(int arg1);
@@ -49,9 +48,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
+    MyScene *m_mainScene;
 
-    void NewMainScene(int pixle, QString none, int scenewidth);
 
 public slots:
     void clearForm();

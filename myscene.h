@@ -17,6 +17,8 @@ public:
     void setBackground(QString backgroundPath);
     void setItemZValue(int zValue);
     void showLayer(int layer);
+    void clearlyNewScene(int sceneWidth);
+    void fill();
 
     QString getImages() { return m_images.last()->data(0).toString(); }
 
