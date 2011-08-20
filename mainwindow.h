@@ -37,7 +37,6 @@ private slots:
 
     void labelupdate();
 
-
     void on_horizontalSlider_sliderMoved(int position);
 
     void on_spinBox_valueChanged(int arg1);
@@ -46,10 +45,16 @@ private slots:
 
     void on_checkBoxLayerZLock_stateChanged(int arg1);
 
+
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    QGraphicsEllipseItem *ellipse;
+
+    void NewMainScene(int pixle, QString none, int scenewidth);
+
+public slots:
+    void clearForm();
 
 
 };

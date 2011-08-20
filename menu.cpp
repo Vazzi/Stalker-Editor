@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "ui_menu.h"
+#include "mainwindow.h"
 
 Menu::Menu(QWidget *parent) :
     QDialog(parent),
@@ -8,6 +9,8 @@ Menu::Menu(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowFlags(Qt::Popup);
+
+    connect(ui->pushButtonNew,SIGNAL(clicked()),parent,SLOT(clearForm()));
 }
 
 Menu::~Menu()
@@ -23,4 +26,9 @@ void Menu::on_pushButtonContinue_clicked()
 void Menu::on_pushButtonQuit_clicked()
 {
     exit(0);
+}
+
+void Menu::on_pushButtonNew_clicked()
+{
+    this->close();
 }

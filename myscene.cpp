@@ -2,14 +2,14 @@
 #include <QtGui>
 
 
-MyScene::MyScene(int newPixle, QString nonePath, QString background, int sceneWidth)
+MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
 {
     m_pixle = newPixle;
     m_none = nonePath;
     m_sceneWidth = sceneWidth;
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
-    m_background = this->addPixmap(background);
+    m_background = this->addPixmap(NULL);
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
     myPen->setWidth(2);
@@ -68,9 +68,20 @@ void MyScene::removeNone(){
 
 void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
     //put pictures into the scene into the rectangle (leftCorner x rightCorner)
+    int helper;
 
-    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
-    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
+    if(leftCorner.x() > rightCorner.x()){
+            helper = rightCorner.x();
+            rightCorner.setX(leftCorner.x());
+            leftCorner.setX(helper);
+    }
+    if(leftCorner.y() > rightCorner.y()){
+            helper = rightCorner.y();
+            rightCorner.setY(leftCorner.y());
+            leftCorner.setY(helper);
+    }
+    for(int y = leftCorner.y();y < rightCorner.y();y = y + m_cursorImage->rect().height()){
+    for(int x = leftCorner.x();x < rightCorner.x();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
         //if there is no picture in the way it add picture else none
@@ -110,6 +121,18 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
 
 void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
     //remove all pictures in the rectangle(leftCorner x rightCorner)
+    int helper;
+
+    if(leftCorner.x() > rightCorner.x()){
+            helper = rightCorner.x();
+            rightCorner.setX(leftCorner.x());
+            leftCorner.setX(helper);
+    }
+    if(leftCorner.y() > rightCorner.y()){
+            helper = rightCorner.y();
+            rightCorner.setY(leftCorner.y());
+            leftCorner.setY(helper);
+    }
     for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y += m_pixle){
     for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x += m_pixle){
                 for(int index = 0; index < m_images.length(); index++){
@@ -145,10 +168,10 @@ void MyScene::setImage(QString path){
         m_eraser = false;
     }
 
-    if(m_cursorImage)
+    /*if(m_cursorImage)
     {
         delete m_cursorImage;
-    }
+    }*/
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(11);
@@ -233,20 +256,26 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_cursor.setY(event->scenePos().y());
 
       if(m_shiftRect->isVisible()){
-          if(m_cursor.y()<m_shiftLeftCorner.y()&m_cursor.x()<m_shiftLeftCorner.x()){
-              m_cursor.setX(m_shiftLeftCorner.x());
-              m_cursor.setY(m_shiftLeftCorner.y());
-          }
-          else if(m_cursor.y()<m_shiftLeftCorner.y())
-              m_cursor.setY(m_shiftLeftCorner.y());
-          else if(m_cursor.x()<m_shiftLeftCorner.x())
-              m_cursor.setX(m_shiftLeftCorner.x());
-          else{
               if(((int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())) != 0)
                   m_cursor.setX(int(m_cursor.x()) - int(int(int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())));
               if((int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height())) != 0)
                   m_cursor.setY(int(m_cursor.y()) - int(int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height())));
+
+          QRect rectangle;
+          if(m_shiftLeftCorner.x() < m_cursor.x()){
+              if(m_shiftLeftCorner.y() < m_cursor.y())
+                  rectangle.setCoords(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),m_cursor.x(), m_cursor.y());
+              else
+                  rectangle.setCoords(m_shiftLeftCorner.x(),m_cursor.y(),m_cursor.x(), m_shiftLeftCorner.y());
           }
+          else{
+              if(m_shiftLeftCorner.y() < m_cursor.y())
+                  rectangle.setCoords(m_cursor.x(),m_shiftLeftCorner.y(),m_shiftLeftCorner.x(), m_cursor.y());
+              else
+                  rectangle.setCoords(m_cursor.x(),m_cursor.y(),m_shiftLeftCorner.x(), m_shiftLeftCorner.y());
+          }
+          m_shiftRect->setRect(rectangle);
+
 
     }
     else{
@@ -254,8 +283,8 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
         if((int(m_cursor.y()) % m_pixle) != 0)
             m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
+        m_cursorImage->setPos(m_cursor);
     }
-
 
     //picture cant get out of screen
     if(m_cursor.x()<0)
@@ -267,16 +296,10 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if((m_cursor.y())+m_cursorImage->rect().height()>600)
         m_cursor.setY(600-m_cursorImage->rect().height());
 
-    if(m_shiftRect->isVisible()){
-        if(m_shift){
-            m_shiftRect->setRect(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),
-                                 m_cursor.x()-m_shiftLeftCorner.x()+m_cursorImage->rect().width(),
-                                 m_cursor.y()-m_shiftLeftCorner.y()+m_cursorImage->rect().height());
-        }
 
-    }
 
-    m_cursorImage->setPos(m_cursor);
+
+
 }
 
 
@@ -346,3 +369,4 @@ void MyScene::showLayer(int layer){
     }
     m_visibleLayer=layer;
 }
+

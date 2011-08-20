@@ -8,9 +8,7 @@
 MyScene *mainScene;
 QGraphicsScene *secondScene;
 QGraphicsPixmapItem *item;
-Menu *m;
-QTimer *timer;
-int sceneWidth;
+Menu *menuForm;
 bool LayerZLock;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,13 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->setupUi(this);
-    m = new Menu(this);
+
+    menuForm = new Menu(this);
+
     //set up mainscene
-    sceneWidth=1000;
-    mainScene = new MyScene(10, ":/images/none", ":/images/background1", sceneWidth);
-    mainScene->setImage(":/images/chest");
-    ui->graphicsView->setScene(mainScene);
-    ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
+    NewMainScene(10, ":/images/none", 1000);
 
 
     //set up secondScene
@@ -48,20 +44,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //set up combobox with backgrounds
     ui->comboBox_2->addItem("background1",":/images/background");
+    ui->comboBox_2->addItem("background1",":/images/background");
 
     //set up combobox with layres
     ui->comboBoxLayer->addItem("all *");
     for(int i = 1; i < 11; i++)
         ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
-
-    timer = new QTimer;
-    timer->setInterval(10);
-    connect(timer,SIGNAL(timeout()),this,SLOT(labelupdate()));
-    timer->start();
-
-    //set up slider
-    ui->horizontalSlider->setMinimum(400);
-    ui->horizontalSlider->setMaximum(sceneWidth / 2);
 
 
 }
@@ -105,6 +93,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
     //set focus on scene
     ui->graphicsView->setFocus();
+
 
 }
 
@@ -153,7 +142,8 @@ void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 
 void MainWindow::on_pushButton_clicked()
 {
-    m->show();
+    menuForm->show();
+
 }
 
 void MainWindow::labelupdate(){
@@ -187,4 +177,23 @@ void MainWindow::on_comboBoxLayer_currentIndexChanged(int index)
 void MainWindow::on_checkBoxLayerZLock_stateChanged(int arg1)
 {
         LayerZLock=arg1;
+}
+
+void MainWindow::clearForm(){
+    NewMainScene(10, ":/images/none", 1000);
+}
+
+void MainWindow::NewMainScene(int pixle, QString none, int sceneWidth){
+    mainScene = new MyScene(pixle, none, sceneWidth);
+    ui->graphicsView->setScene(mainScene);
+    ui->graphicsView->setSceneRect(0,0,sceneWidth,600);
+
+    //set up slider
+    ui->horizontalSlider->setMinimum(400);
+    ui->horizontalSlider->setMaximum(sceneWidth / 2);
+
+    ui->comboBox->setCurrentIndex(0);
+    ui->comboBoxLayer->setCurrentIndex(0);
+    ui->comboBox_2->setCurrentIndex(0);
+
 }
