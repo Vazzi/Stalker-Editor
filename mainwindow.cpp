@@ -5,11 +5,6 @@
 #include <QtGui>
 
 
-QGraphicsScene *secondScene;
-QGraphicsPixmapItem *item;
-Menu *menuForm;
-bool LayerZLock;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -62,6 +57,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete item;
+    delete secondScene;
+    delete m_mainScene;
     delete ui;
 }
 

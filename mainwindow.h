@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtGui>
 #include "myscene.h"
+#include "menu.h"
 
 namespace Ui {
     class MainWindow;
@@ -49,6 +50,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
+    QGraphicsScene *secondScene;
+    QGraphicsPixmapItem *item;
+    Menu *menuForm;
+    bool LayerZLock;
 
 
 public slots:

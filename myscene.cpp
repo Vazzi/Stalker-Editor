@@ -2,6 +2,7 @@
 #include <QtGui>
 
 
+
 MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
 {
     m_pixle = newPixle;
@@ -134,8 +135,8 @@ void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
             rightCorner.setY(leftCorner.y());
             leftCorner.setY(helper);
     }
-    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y += m_pixle){
-    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x += m_pixle){
+    for(int y = leftCorner.y();y < rightCorner.y();y += m_pixle){
+    for(int x = leftCorner.x();x < rightCorner.x();x += m_pixle){
                 for(int index = 0; index < m_images.length(); index++){
                     if(m_images[index]->data(1)!=m_zValue)
                         continue;
@@ -257,13 +258,30 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_cursor.setX(event->scenePos().x());
     m_cursor.setY(event->scenePos().y());
 
-      if(m_shiftRect->isVisible()){
-              if(((int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())) != 0)
-                  m_cursor.setX(int(m_cursor.x()) - int(int(int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width())));
-              if((int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height())) != 0)
-                  m_cursor.setY(int(m_cursor.y()) - int(int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height())));
+    if(m_shiftRect->isVisible()){
+        int intRemainder = ((int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width()));
+        if(m_cursor.x()>m_shiftLeftCorner.x())
+            m_cursor.setX((int(m_cursor.x()) - intRemainder)+m_cursorImage->rect().width());
+        else
+            m_cursor.setX((int(m_cursor.x()) - intRemainder)-m_cursorImage->rect().width());
 
-          QRect rectangle;
+        intRemainder =(int(int(m_cursor.y()) - int(m_shiftLeftCorner.y())) % int(m_cursorImage->rect().height()));
+        if(m_cursor.y()>m_shiftLeftCorner.y())
+            m_cursor.setY((int(m_cursor.y()) - intRemainder)+m_cursorImage->rect().height());
+        else
+            m_cursor.setY((int(m_cursor.y()) - intRemainder)-m_cursorImage->rect().height());
+
+
+        if(m_cursor.x()>m_sceneWidth)
+            m_cursor.setX(m_cursor.x()-m_cursorImage->rect().width());
+        else if(m_cursor.x()<0)
+            m_cursor.setX(m_cursor.x()+m_cursorImage->rect().width());
+        if(m_cursor.y()>600)
+            m_cursor.setY(m_cursor.y()-m_cursorImage->rect().height());
+        else if(m_cursor.y()<0)
+            m_cursor.setY(m_cursor.y()+m_cursorImage->rect().height());
+
+        QRect rectangle;
           if(m_shiftLeftCorner.x() < m_cursor.x()){
               if(m_shiftLeftCorner.y() < m_cursor.y())
                   rectangle.setCoords(m_shiftLeftCorner.x(),m_shiftLeftCorner.y(),m_cursor.x(), m_cursor.y());
@@ -276,6 +294,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
               else
                   rectangle.setCoords(m_cursor.x(),m_cursor.y(),m_shiftLeftCorner.x(), m_shiftLeftCorner.y());
           }
+
           m_shiftRect->setRect(rectangle);
 
 
@@ -285,21 +304,18 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
         if((int(m_cursor.y()) % m_pixle) != 0)
             m_cursor.setY(int(m_cursor.y()) - (int(m_cursor.y()) % m_pixle));
+        //picture cant get out of screen
+            if(m_cursor.x()<0)
+                m_cursor.setX(0);
+            if(m_cursor.y()<0)
+                m_cursor.setY(0);
+            if((m_cursor.x())+m_cursorImage->rect().width()>m_sceneWidth)
+                m_cursor.setX(m_sceneWidth-m_cursorImage->rect().width());
+            if((m_cursor.y())+m_cursorImage->rect().height()>600)
+                m_cursor.setY(600-m_cursorImage->rect().height());
         m_cursorImage->setPos(m_cursor);
+
     }
-
-    //picture cant get out of screen
-    if(m_cursor.x()<0)
-        m_cursor.setX(0);
-    if(m_cursor.y()<0)
-        m_cursor.setY(0);
-    if((m_cursor.x())+m_cursorImage->rect().width()>m_sceneWidth)
-        m_cursor.setX(m_sceneWidth-m_cursorImage->rect().width());
-    if((m_cursor.y())+m_cursorImage->rect().height()>600)
-        m_cursor.setY(600-m_cursorImage->rect().height());
-
-
-
 
 
 }
