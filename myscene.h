@@ -8,6 +8,7 @@ class MyScene: public QGraphicsScene
 {
 public:
     MyScene(int newPixle, QString nonePath, int sceneWidth);
+    ~MyScene();
     void setImage(QString path);
     void paintImagesRect(QPointF leftCorner, QPointF rightCorner);
     void removeImagesRect(QPointF leftCorner, QPointF rightCorner);

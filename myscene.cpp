@@ -1,27 +1,34 @@
 #include "myscene.h"
 #include <QtGui>
 
-
+int ZValueCursorImage;
 
 MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
 {
+    ZValueCursorImage = 11;
     m_pixle = newPixle;
     m_none = nonePath;
     m_sceneWidth = sceneWidth;
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(NULL);
+    m_cursorImage = new QGraphicsRectItem;
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
     myPen->setWidth(2);
     m_shiftRect = this->addRect(0,0,1,1,*myPen,Qt::lightGray);
-    m_shiftRect->setZValue(11);
+    m_shiftRect->setZValue(ZValueCursorImage);
     m_shiftRect->setOpacity(0.4f);
     m_shiftRect->setVisible(false);
     makeGrid();
 
 }
-
+MyScene::~MyScene()
+{
+    delete m_cursorImage;
+    delete m_shiftRect;
+    delete m_background;
+}
 
 
 void MyScene::makeGrid()
@@ -82,8 +89,8 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
             rightCorner.setY(leftCorner.y());
             leftCorner.setY(helper);
     }
-    for(int y = leftCorner.y();y < rightCorner.y();y = y + m_cursorImage->rect().height()){
-    for(int x = leftCorner.x();x < rightCorner.x();x = x + m_cursorImage->rect().width()){
+    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
+    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
         //if there is no picture in the way it add picture else none
@@ -157,7 +164,8 @@ void MyScene::setImage(QString path){
     QPen *myPen = new QPen();
     myPen->setWidth(2);
     QPixmap newImage;
-    this->removeItem(m_cursorImage);
+    if(m_cursorImage != NULL)
+        this->removeItem(m_cursorImage);
     if(m_imagePath==":/images/rubber"){
         myPen->setColor(Qt::red);
         newImage.load(m_none);
@@ -177,7 +185,7 @@ void MyScene::setImage(QString path){
     }*/
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
-    m_cursorImage->setZValue(11);
+    m_cursorImage->setZValue(ZValueCursorImage);
     shiftRectangle(false);
 
 }

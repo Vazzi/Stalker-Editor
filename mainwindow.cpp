@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalSlider->setMinimum(400);
     ui->horizontalSlider->setMaximum(1000 / 2);
 
-    ui->graphicsView->setScene(m_mainScene);
 
     //set up secondScene
     secondScene = new QGraphicsScene;
@@ -62,9 +61,6 @@ MainWindow::~MainWindow()
     delete m_mainScene;
     delete ui;
 }
-
-
-
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
