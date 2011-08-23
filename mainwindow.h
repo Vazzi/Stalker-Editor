@@ -47,6 +47,8 @@ private slots:
 
     void on_actionLayer_zValue_Lock_triggered(bool checked);
 
+    void on_checkBoxBackgRepeat_toggled(bool checked);
+
 private:
     void clearForm();
 

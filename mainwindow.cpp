@@ -133,7 +133,7 @@ void MainWindow::on_cursorOnOff_toggled(bool checked)
 */
 void MainWindow::on_comboBox_2_currentIndexChanged(int index){
     //select background
-    m_mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
+    m_mainScene->setBackground(ui->comboBox_2->itemData(index).toString(),ui->checkBoxBackgRepeat->checkState());
     ui->graphicsView->setFocus();
 }
 
@@ -206,4 +206,10 @@ void MainWindow::on_actionShow_Cursor_triggered(bool checked){
 void MainWindow::on_actionLayer_zValue_Lock_triggered(bool checked)
 {
     LayerZLock = checked;
+}
+
+void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)
+{
+    QString background = ui->comboBox_2->itemData(ui->comboBox_2->currentIndex()).toString();
+    m_mainScene->setBackground(background,checked);
 }

@@ -12,7 +12,7 @@ MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
     m_sceneWidth = sceneWidth;
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
-    m_background = this->addPixmap(NULL);
+    m_background.append(this->addPixmap(NULL));
     m_cursorImage = this->addRect(0,0,0,0);
     //m_cursorImage = new QGraphicsRectItem;
     // set shift rectangle
@@ -31,7 +31,6 @@ MyScene::~MyScene()
 {
     delete m_cursorImage;
     delete m_shiftRect;
-    delete m_background;
 }
 
 
@@ -360,18 +359,36 @@ void MyScene::keyReleaseEvent(QKeyEvent *event)
 
 void MyScene::showHideBackgroudImage(bool show){
     //show hide bacground
-    if(show)
-        m_background->show();
-    else
-        m_background->setVisible(false);
+    if(show){
+        for(int index = 0; index < m_background.length();index++)
+            m_background[index]->setVisible(true);
+    }
+    else{
+        for(int index = 0; index < m_background.length();index++)
+            m_background[index]->setVisible(false);
+    }
+
 
 }
 
-void MyScene::setBackground(QString backgroundPath){
+void MyScene::setBackground(QString backgroundPath, bool repeat){
     //set new background
     QPixmap newBackground;
     newBackground.load(backgroundPath);
-    m_background->setPixmap(newBackground);
+    for(int i = 0; i < m_background.length(); i++)
+        this->removeItem(m_background[i]);
+    m_background.clear();
+    if(repeat){
+        for(int number = 0;number < int(m_sceneWidth / newBackground.width())+1;number++){
+            m_background.append(this->addPixmap(newBackground));
+            m_background[number]->setPos(int(newBackground.width()*number), 0);
+            m_background[number]->setZValue(-1);
+        }
+    }
+    else{
+        m_background.append(this->addPixmap(newBackground));
+        m_background[0]->setZValue(-1);
+    }
 }
 
 void MyScene::shiftRectangle(bool shift){
@@ -435,6 +452,7 @@ void MyScene::fill(){
     else
         paintImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
 }
+
 
 
 

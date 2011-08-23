@@ -15,7 +15,7 @@ public:
     void showHideGrid(bool show);
     void removeNone();
     void showHideBackgroudImage(bool show);
-    void setBackground(QString backgroundPath);
+    void setBackground(QString backgroundPath,bool repeat);
     void setItemZValue(int zValue);
     void showLayer(int layer);
     void clearlyNewScene(int sceneWidth);
@@ -44,7 +44,7 @@ private:
     QList<QGraphicsPixmapItem *> m_images;
     QList<QGraphicsLineItem *> m_grid;
     QGraphicsRectItem *m_cursorImage, *m_shiftRect;
-    QGraphicsPixmapItem *m_background;
+    QList <QGraphicsPixmapItem *> m_background;
 
 };
 
