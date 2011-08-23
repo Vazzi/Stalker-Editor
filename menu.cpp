@@ -7,9 +7,9 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
+    //set clear form without frame and buttons
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowFlags(Qt::Popup);
-
     connect(ui->pushButtonNew,SIGNAL(clicked()),parent,SLOT(clearForm()));
 }
 
@@ -20,15 +20,19 @@ Menu::~Menu()
 
 void Menu::on_pushButtonContinue_clicked()
 {
+    //continue button
     this->close();
 }
 
 void Menu::on_pushButtonQuit_clicked()
 {
+    //exit button
     exit(0);
 }
 
 void Menu::on_pushButtonNew_clicked()
 {
+    //new button
+    //clear form
     this->close();
 }

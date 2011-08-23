@@ -70,6 +70,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     //show image in secondScene
     item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
+    //if user select **eraser** set the specific objects
     if(ui->comboBox->itemData(index).toString()==":/images/rubber"){
         ui->labelWidth->setText("10 px");
         ui->labelHeight->setText("10 px");
@@ -116,6 +117,7 @@ void MainWindow::on_pushButtonRemoveNone_clicked()
 
 void MainWindow::on_backgroundOnOff_toggled(bool checked)
 {
+    //set background on or off
     m_mainScene->showHideBackgroudImage(checked);
     ui->graphicsView->setFocus();
 
@@ -123,12 +125,15 @@ void MainWindow::on_backgroundOnOff_toggled(bool checked)
 
 void MainWindow::on_GridOnOff_toggled(bool checked)
 {
+    //show or hide GRID
     m_mainScene->showHideGrid(checked);
     ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_cursorOnOff_toggled(bool checked)
 {
+    //set cursor
+    //doesnt work in Windows OS
     if(checked)
         ui->graphicsView->setCursor(Qt::ArrowCursor);
     else
@@ -138,12 +143,14 @@ void MainWindow::on_cursorOnOff_toggled(bool checked)
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index)
 {
+    //select background
     m_mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
     ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
+    //show menu form
     menuForm->show();
     ui->graphicsView->setFocus();
 }
@@ -151,16 +158,20 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_horizontalSlider_sliderMoved(int position)
 {
+    //move with scene in graphicsView
     ui->graphicsView->centerOn(QPoint(position,300));
     ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_spinBox_valueChanged(int arg1){
+    //set z value of item
     m_mainScene->setItemZValue(arg1);
     ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
+    //show only selected layer or all if 0
+    //if layer & z value is locked it change value of ZValue spinbox
     if(LayerZLock){
         if(index!=0){
             ui->spinBox->setValue(index);
@@ -171,10 +182,12 @@ void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
 }
 
 void MainWindow::on_checkBoxLayerZLock_stateChanged(int arg1){
+    //set Layer & Z Value lock
     LayerZLock=arg1;
 }
 
 void MainWindow::clearForm(){
+    //slot witch clears the scene
     m_mainScene->clearlyNewScene(1500);
     ui->graphicsView->setSceneRect(0,0,1500,600);
     ui->horizontalSlider->setMaximum(1500 / 2);

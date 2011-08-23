@@ -5,6 +5,7 @@ int ZValueCursorImage;
 
 MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
 {
+    //set values
     ZValueCursorImage = 11;
     m_pixle = newPixle;
     m_none = nonePath;
@@ -13,6 +14,7 @@ MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(NULL);
     m_cursorImage = new QGraphicsRectItem;
+    // set shift rectangle
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
     myPen->setWidth(2);
@@ -20,6 +22,7 @@ MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
     m_shiftRect->setZValue(ZValueCursorImage);
     m_shiftRect->setOpacity(0.4f);
     m_shiftRect->setVisible(false);
+    //paint grid into scene
     makeGrid();
 
 }
@@ -35,7 +38,6 @@ void MyScene::makeGrid()
 {
     //Make a grid with a little opacity
     QPen gPen(Qt::lightGray);
-    ;
     for(int i = m_pixle ; i < m_sceneWidth; i = i +m_pixle)
     {
         m_grid.append(this->addLine(i,0,i,600, gPen));
@@ -50,6 +52,7 @@ void MyScene::makeGrid()
 }
 void MyScene::showHideGrid(bool show)
 {
+    //show or hide grid lines
     if(show){
     for(int index = 0; index < m_grid.length();index++)
         m_grid[index]->show();
@@ -78,7 +81,7 @@ void MyScene::removeNone(){
 void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
     //put pictures into the scene into the rectangle (leftCorner x rightCorner)
     int helper;
-
+    //set rights corners
     if(leftCorner.x() > rightCorner.x()){
             helper = rightCorner.x();
             rightCorner.setX(leftCorner.x());
@@ -89,11 +92,13 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
             rightCorner.setY(leftCorner.y());
             leftCorner.setY(helper);
     }
+    //take all space and detect if can put a new item here
     for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
     for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
-        //if there is no picture in the way it add picture else none
+        //if there is no picture in the way add picture else none
+        //take all pictures from list of added pictures and check if there can put
         for(index = 0; index < m_images.length();index++){
             if(m_images[index]->data(1)!=m_zValue)
                 continue;
@@ -119,6 +124,7 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
             m_images.last()->setData(0, m_imagePath);
             m_images.last()->setPos(QPoint(x,y));
             m_images.last()->setData(1,m_zValue);
+            //if the layer where is picture is invisible set invisible to picture
             if(m_visibleLayer!=m_zValue && m_visibleLayer!=0)
                 m_images.last()->setVisible(false);
 
@@ -131,7 +137,7 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
 void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
     //remove all pictures in the rectangle(leftCorner x rightCorner)
     int helper;
-
+     //set rights corners
     if(leftCorner.x() > rightCorner.x()){
             helper = rightCorner.x();
             rightCorner.setX(leftCorner.x());
@@ -142,6 +148,7 @@ void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
             rightCorner.setY(leftCorner.y());
             leftCorner.setY(helper);
     }
+    //remove all pictures in area and right ZValue
     for(int y = leftCorner.y();y < rightCorner.y();y += m_pixle){
     for(int x = leftCorner.x();x < rightCorner.x();x += m_pixle){
                 for(int index = 0; index < m_images.length(); index++){
@@ -166,6 +173,7 @@ void MyScene::setImage(QString path){
     QPixmap newImage;
     if(m_cursorImage != NULL)
         this->removeItem(m_cursorImage);
+    //if user use rubber set specific values else normal
     if(m_imagePath==":/images/rubber"){
         myPen->setColor(Qt::red);
         newImage.load(m_none);
@@ -178,11 +186,7 @@ void MyScene::setImage(QString path){
         m_shiftRect->setPen(*myPen);
         m_eraser = false;
     }
-
-    /*if(m_cursorImage)
-    {
-        delete m_cursorImage;
-    }*/
+    //set cursor image information and hide shift rectangle
     m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(ZValueCursorImage);
@@ -192,9 +196,10 @@ void MyScene::setImage(QString path){
 
 
 void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    //active at mouse button press
-    //if eraser is active erase images else add images
+
+
     if(event->button() == Qt::LeftButton){
+        //if eraser is active erase images else add images
         if(m_eraser){
             //erase image
             if(m_shift){
@@ -211,7 +216,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
              else{
                  int index;
                      bool canPut = true;
-
+                    //check if can put selected item on a selected place
                      for(index = 0; index < m_images.length();index++){
                          if(m_images[index]->data(1)!=m_zValue)
                              continue;
@@ -234,6 +239,8 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
                      }
                      /*
+
+                     // alternative algorithm
                      m_cursorImage->setVisible(false);
                      if(this->itemAt(m_cursorImage->pos().x(),m_cursorImage->pos().y())->zValue()!=0){
                         canPut=false;
@@ -242,6 +249,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                      m_cursorImage->setVisible(true);
                      */
                      if(canPut){
+
                          m_images.append(this->addPixmap(m_imagePath));
                          m_images.last()->setZValue(m_zValue);
                          m_images.last()->setData(1,m_zValue);
@@ -259,14 +267,15 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    //active when mouse move
-    //it changes position of cursorImage where cursor is
-    xyposition = event->scenePos();
+    //changes position of cursorImage depends on cursor position
 
     m_cursor.setX(event->scenePos().x());
     m_cursor.setY(event->scenePos().y());
-
+    //if shift rectangle is visible set rectangle else set cursor image
     if(m_shiftRect->isVisible()){
+        //rectangle size increase or decrease by cursor image size
+        // if image is 40x40 the size of rectangle increase/decrease by size 40
+        //size increase by steps
         int intRemainder = ((int(m_cursor.x()) - int(m_shiftLeftCorner.x())) % int(m_cursorImage->rect().width()));
         if(m_cursor.x()>m_shiftLeftCorner.x())
             m_cursor.setX((int(m_cursor.x()) - intRemainder)+m_cursorImage->rect().width());
@@ -279,7 +288,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         else
             m_cursor.setY((int(m_cursor.y()) - intRemainder)-m_cursorImage->rect().height());
 
-
+        //control if curosr isnt out of screen
         if(m_cursor.x()>m_sceneWidth)
             m_cursor.setX(m_cursor.x()-m_cursorImage->rect().width());
         else if(m_cursor.x()<0)
@@ -289,6 +298,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         else if(m_cursor.y()<0)
             m_cursor.setY(m_cursor.y()+m_cursorImage->rect().height());
 
+        //set rectangle rights points
         QRect rectangle;
           if(m_shiftLeftCorner.x() < m_cursor.x()){
               if(m_shiftLeftCorner.y() < m_cursor.y())
@@ -308,6 +318,8 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     }
     else{
+        //if shift rectangle is invisible set cursor image
+        //move by steps
         if((int(m_cursor.x()) % m_pixle) != 0)
             m_cursor.setX(int(m_cursor.x()) - (int(m_cursor.x()) % m_pixle));
         if((int(m_cursor.y()) % m_pixle) != 0)
@@ -331,6 +343,7 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void MyScene::keyPressEvent(QKeyEvent *event)
 {
+    //set that shift is active
     if(event->key() == Qt::Key_Shift)
         shiftRectangle(true);
 
@@ -339,11 +352,13 @@ void MyScene::keyPressEvent(QKeyEvent *event)
 
 void MyScene::keyReleaseEvent(QKeyEvent *event)
 {
+    //set that shift is inactive
     if(event->key() == Qt::Key_Shift)
         shiftRectangle(false);
 }
 
 void MyScene::showHideBackgroudImage(bool show){
+    //show hide bacground
     if(show)
         m_background->show();
     else
@@ -352,12 +367,14 @@ void MyScene::showHideBackgroudImage(bool show){
 }
 
 void MyScene::setBackground(QString backgroundPath){
+    //set new background
     QPixmap newBackground;
     newBackground.load(backgroundPath);
     m_background->setPixmap(newBackground);
 }
 
 void MyScene::shiftRectangle(bool shift){
+    //set shift rectangle or unset and set cursor image
     if(shift){
         m_shiftLeftCorner = m_cursor;
         m_shiftRect->setVisible(true);
@@ -380,6 +397,8 @@ void MyScene::setItemZValue(int zValue){
 }
 
 void MyScene::showLayer(int layer){
+    //hide images in unselected layer
+    //show all images if layer is 0
     if(layer==0){
         for(int i = 0; i<m_images.length();i++)
             m_images[i]->setVisible(true);
@@ -396,10 +415,11 @@ void MyScene::showLayer(int layer){
 }
 
 void MyScene::clearlyNewScene(int sceneWidth){
+    //remove all images from scene and list of images
     for(int i = 0; i<m_images.length();i++)
        this->removeItem(m_images[i]);
     m_images.clear();
-
+    //reset grid
     m_sceneWidth = sceneWidth;
     for(int i = 0; i<m_grid.length();i++)
        this->removeItem(m_grid[i]);
@@ -408,6 +428,7 @@ void MyScene::clearlyNewScene(int sceneWidth){
 }
 
 void MyScene::fill(){
+    //fill images into scene or remove all images if rubber
     if(m_imagePath==":/images/rubber")
         removeImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
     else
