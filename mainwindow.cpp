@@ -4,6 +4,7 @@
 #include "menu.h"
 #include <QtGui>
 
+Menu *menuForm;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //set up slider
     ui->horizontalSlider->setMinimum(400);
-    ui->horizontalSlider->setMaximum(1000 / 2);
+    ui->horizontalSlider->setMaximum(1000 - 400);
 
 
     //set up secondScene
@@ -190,7 +191,7 @@ void MainWindow::clearForm(){
     //slot witch clears the scene
     m_mainScene->clearlyNewScene(1500);
     ui->graphicsView->setSceneRect(0,0,1500,600);
-    ui->horizontalSlider->setMaximum(1500 / 2);
+    ui->horizontalSlider->setMaximum(1500 - 400);
     ui->graphicsView->update();
 }
 

@@ -52,7 +52,6 @@ private:
     MyScene *m_mainScene;
     QGraphicsScene *secondScene;
     QGraphicsPixmapItem *item;
-    Menu *menuForm;
     bool LayerZLock;
 
 
