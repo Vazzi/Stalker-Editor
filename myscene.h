@@ -46,7 +46,6 @@ private:
     QGraphicsRectItem *m_cursorImage, *m_shiftRect;
     QGraphicsPixmapItem *m_background;
 
-
 };
 
 #endif // MYSCENE_H

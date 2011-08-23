@@ -1,10 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "myscene.h"
-#include "menu.h"
 #include <QtGui>
 
-Menu *menuForm;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,8 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
-
-    menuForm = new Menu(this);
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
@@ -94,28 +90,21 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
     //set focus on scene
     ui->graphicsView->setFocus();
-
-
 }
 
 
-void MainWindow::on_pushButtonFill_clicked()
-{
+void MainWindow::on_pushButtonFill_clicked(){
     //fill the screen with images
     m_mainScene->fill();
-
 }
 
-void MainWindow::on_pushButtonRemoveNone_clicked()
-{
+void MainWindow::on_pushButtonRemoveNone_clicked(){
     //remove all none images
     m_mainScene->removeNone();
     ui->graphicsView->update();
-
-
 }
 
-
+/*
 void MainWindow::on_backgroundOnOff_toggled(bool checked)
 {
     //set background on or off
@@ -141,24 +130,14 @@ void MainWindow::on_cursorOnOff_toggled(bool checked)
         ui->graphicsView->setCursor(Qt::BlankCursor);
     ui->graphicsView->setFocus();
 }
-
-void MainWindow::on_comboBox_2_currentIndexChanged(int index)
-{
+*/
+void MainWindow::on_comboBox_2_currentIndexChanged(int index){
     //select background
     m_mainScene->setBackground(ui->comboBox_2->itemData(index).toString());
     ui->graphicsView->setFocus();
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    //show menu form
-    menuForm->show();
-    ui->graphicsView->setFocus();
-}
-
-
-void MainWindow::on_horizontalSlider_sliderMoved(int position)
-{
+void MainWindow::on_horizontalSlider_sliderMoved(int position){
     //move with scene in graphicsView
     ui->graphicsView->centerOn(QPoint(position,300));
     ui->graphicsView->setFocus();
@@ -182,11 +161,6 @@ void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
     ui->graphicsView->setFocus();
 }
 
-void MainWindow::on_checkBoxLayerZLock_stateChanged(int arg1){
-    //set Layer & Z Value lock
-    LayerZLock=arg1;
-}
-
 void MainWindow::clearForm(){
     //slot witch clears the scene
     m_mainScene->clearlyNewScene(1500);
@@ -195,3 +169,41 @@ void MainWindow::clearForm(){
     ui->graphicsView->update();
 }
 
+
+void MainWindow::on_actionNew_triggered(){
+    if(QMessageBox::warning(this,"New Map", "All data will be lost!",QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok){
+        this->clearForm();
+    }
+}
+
+void MainWindow::on_actionQuit_triggered(){
+    if(QMessageBox::question(this,"Quit", "Really want to quit?",QMessageBox::Yes, QMessageBox::No)==QMessageBox::Yes){
+        this->close();
+    }
+}
+
+
+
+void MainWindow::on_actionShow_Grid_triggered(bool checked){
+    //show or hide GRID
+    m_mainScene->showHideGrid(checked);
+}
+
+void MainWindow::on_actionShow_Background_triggered(bool checked){
+    //set background on or off
+    m_mainScene->showHideBackgroudImage(checked);
+}
+
+void MainWindow::on_actionShow_Cursor_triggered(bool checked){
+    //doesnt work in Windows OS
+    if(checked)
+        ui->graphicsView->setCursor(Qt::ArrowCursor);
+    else
+        ui->graphicsView->setCursor(Qt::BlankCursor);
+    ui->graphicsView->setFocus();
+}
+
+void MainWindow::on_actionLayer_zValue_Lock_triggered(bool checked)
+{
+    LayerZLock = checked;
+}

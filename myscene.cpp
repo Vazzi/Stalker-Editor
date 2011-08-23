@@ -13,7 +13,8 @@ MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
     m_shift = false;
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background = this->addPixmap(NULL);
-    m_cursorImage = new QGraphicsRectItem;
+    m_cursorImage = this->addRect(0,0,0,0);
+    //m_cursorImage = new QGraphicsRectItem;
     // set shift rectangle
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
@@ -93,8 +94,8 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
             leftCorner.setY(helper);
     }
     //take all space and detect if can put a new item here
-    for(int y = leftCorner.y();y < rightCorner.y() + m_cursorImage->rect().height();y = y + m_cursorImage->rect().height()){
-    for(int x = leftCorner.x();x < rightCorner.x() + m_cursorImage->rect().width();x = x + m_cursorImage->rect().width()){
+    for(int y = leftCorner.y();y < rightCorner.y();y = y + m_cursorImage->rect().height()){
+    for(int x = leftCorner.x();x < rightCorner.x();x = x + m_cursorImage->rect().width()){
     int index;
         bool canPut = true;
         //if there is no picture in the way add picture else none
@@ -171,8 +172,6 @@ void MyScene::setImage(QString path){
     QPen *myPen = new QPen();
     myPen->setWidth(2);
     QPixmap newImage;
-    if(m_cursorImage != NULL)
-        this->removeItem(m_cursorImage);
     //if user use rubber set specific values else normal
     if(m_imagePath==":/images/rubber"){
         myPen->setColor(Qt::red);
@@ -187,7 +186,9 @@ void MyScene::setImage(QString path){
         m_eraser = false;
     }
     //set cursor image information and hide shift rectangle
-    m_cursorImage = this->addRect(0,0,newImage.width(),newImage.height(),*myPen,Qt::white);
+    m_cursorImage->setRect(0,0,newImage.width(),newImage.height());
+    m_cursorImage->setBrush(Qt::white);
+    m_cursorImage->setPen(*myPen);
     m_cursorImage->setOpacity(0.4f);
     m_cursorImage->setZValue(ZValueCursorImage);
     shiftRectangle(false);

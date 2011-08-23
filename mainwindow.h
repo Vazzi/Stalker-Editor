@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtGui>
 #include "myscene.h"
-#include "menu.h"
+
 
 namespace Ui {
     class MainWindow;
@@ -27,15 +27,7 @@ private slots:
 
     void on_pushButtonRemoveNone_clicked();
 
-    void on_backgroundOnOff_toggled(bool checked);
-
-    void on_GridOnOff_toggled(bool checked);
-
-    void on_cursorOnOff_toggled(bool checked);
-
     void on_comboBox_2_currentIndexChanged(int index);
-
-    void on_pushButton_clicked();
 
     void on_horizontalSlider_sliderMoved(int position);
 
@@ -43,11 +35,21 @@ private slots:
 
     void on_comboBoxLayer_currentIndexChanged(int index);
 
-    void on_checkBoxLayerZLock_stateChanged(int arg1);
+    void on_actionNew_triggered();
 
+    void on_actionQuit_triggered();
 
+    void on_actionShow_Grid_triggered(bool checked);
+
+    void on_actionShow_Background_triggered(bool checked);
+
+    void on_actionShow_Cursor_triggered(bool checked);
+
+    void on_actionLayer_zValue_Lock_triggered(bool checked);
 
 private:
+    void clearForm();
+
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
     QGraphicsScene *secondScene;
@@ -55,8 +57,6 @@ private:
     bool LayerZLock;
 
 
-public slots:
-    void clearForm();
 
 
 };
