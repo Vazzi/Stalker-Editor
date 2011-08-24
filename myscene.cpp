@@ -441,6 +441,7 @@ void MyScene::clearlyNewScene(int sceneWidth){
     m_sceneWidth = sceneWidth;
     for(int i = 0; i<m_grid.length();i++)
        this->removeItem(m_grid[i]);
+    m_grid.clear();
     makeGrid();
 
 }

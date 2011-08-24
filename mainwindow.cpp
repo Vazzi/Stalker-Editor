@@ -146,9 +146,10 @@ void MainWindow::clearForm(int width,QString mapName){
     ui->graphicsView->setSceneRect(0,0,width,600);
     ui->horizontalSlider->setMaximum(width - 400);
     ui->graphicsView->update();
+    ui->actionShow_Grid->setChecked(true);
+    ui->actionShow_Background->setChecked(true);
     ui->checkBoxBackgRepeat->setChecked(false);
 
-    QMessageBox::information(this,"New Map",mapName);
 }
 
 
