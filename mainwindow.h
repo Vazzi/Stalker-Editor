@@ -50,7 +50,6 @@ private slots:
     void on_checkBoxBackgRepeat_toggled(bool checked);
 
 private:
-    void clearForm();
 
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
@@ -58,6 +57,8 @@ private:
     QGraphicsPixmapItem *item;
     bool LayerZLock;
 
+public slots:
+    void clearForm(int width,QString mapName);
 
 
 

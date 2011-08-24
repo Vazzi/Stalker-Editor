@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "myscene.h"
+#include "dialognewmap.h"
 #include <QtGui>
 
+DialogNewMap *newMap;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -46,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBoxLayer->addItem("all *");
     for(int i = 1; i < 11; i++)
         ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
+
+    newMap =new DialogNewMap(this);
+    connect(newMap,SIGNAL(newAccepted(int,QString)),this,SLOT(clearForm(int,QString)));
 
 
 }
@@ -104,33 +109,6 @@ void MainWindow::on_pushButtonRemoveNone_clicked(){
     ui->graphicsView->update();
 }
 
-/*
-void MainWindow::on_backgroundOnOff_toggled(bool checked)
-{
-    //set background on or off
-    m_mainScene->showHideBackgroudImage(checked);
-    ui->graphicsView->setFocus();
-
-}
-
-void MainWindow::on_GridOnOff_toggled(bool checked)
-{
-    //show or hide GRID
-    m_mainScene->showHideGrid(checked);
-    ui->graphicsView->setFocus();
-}
-
-void MainWindow::on_cursorOnOff_toggled(bool checked)
-{
-    //set cursor
-    //doesnt work in Windows OS
-    if(checked)
-        ui->graphicsView->setCursor(Qt::ArrowCursor);
-    else
-        ui->graphicsView->setCursor(Qt::BlankCursor);
-    ui->graphicsView->setFocus();
-}
-*/
 void MainWindow::on_comboBox_2_currentIndexChanged(int index){
     //select background
     m_mainScene->setBackground(ui->comboBox_2->itemData(index).toString(),ui->checkBoxBackgRepeat->checkState());
@@ -161,19 +139,21 @@ void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
     ui->graphicsView->setFocus();
 }
 
-void MainWindow::clearForm(){
+void MainWindow::clearForm(int width,QString mapName){
+
     //slot witch clears the scene
-    m_mainScene->clearlyNewScene(1500);
-    ui->graphicsView->setSceneRect(0,0,1500,600);
-    ui->horizontalSlider->setMaximum(1500 - 400);
+    m_mainScene->clearlyNewScene(width);
+    ui->graphicsView->setSceneRect(0,0,width,600);
+    ui->horizontalSlider->setMaximum(width - 400);
     ui->graphicsView->update();
+    ui->checkBoxBackgRepeat->setChecked(false);
+
+    QMessageBox::information(this,"New Map",mapName);
 }
 
 
 void MainWindow::on_actionNew_triggered(){
-    if(QMessageBox::warning(this,"New Map", "All data will be lost!",QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok){
-        this->clearForm();
-    }
+    newMap->show();
 }
 
 void MainWindow::on_actionQuit_triggered(){

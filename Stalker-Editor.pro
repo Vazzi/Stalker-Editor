@@ -12,12 +12,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    myscene.cpp
+    myscene.cpp \
+    dialognewmap.cpp
 
 HEADERS  += mainwindow.h \
-        myscene.h
+        myscene.h \
+    dialognewmap.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dialognewmap.ui
 
 RESOURCES += \
     MyResources.qrc
