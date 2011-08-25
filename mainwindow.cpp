@@ -149,6 +149,7 @@ void MainWindow::clearForm(int width,QString mapName){
     ui->actionShow_Grid->setChecked(true);
     ui->actionShow_Background->setChecked(true);
     ui->checkBoxBackgRepeat->setChecked(false);
+    ui->horizontalSlider->setValue(0);
 
 }
 

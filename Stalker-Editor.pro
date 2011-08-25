@@ -13,11 +13,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     myscene.cpp \
-    dialognewmap.cpp
+    dialognewmap.cpp \
+    mapfile.cpp \
+    mapinfo.cpp
 
 HEADERS  += mainwindow.h \
         myscene.h \
-    dialognewmap.h
+    dialognewmap.h \
+    mapfile.h \
+    mapinfo.h
 
 FORMS    += mainwindow.ui \
     dialognewmap.ui
