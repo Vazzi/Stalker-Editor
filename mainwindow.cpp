@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "myscene.h"
 #include "dialognewmap.h"
+#include "mapinfo.h"
 #include <QtGui>
 
 DialogNewMap *newMap;
@@ -12,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
+
+    m_layerZLock = false;
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
@@ -24,12 +27,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //set up secondScene
-    secondScene = new QGraphicsScene;
-    item = new QGraphicsPixmapItem;
-    item = secondScene->addPixmap(QString(":/images/none"));
-    ui->graphicsView_2->setScene(secondScene);
+    m_secondScene = new QGraphicsScene;
+    m_item = new QGraphicsPixmapItem;
+    m_item = m_secondScene->addPixmap(QString(":/images/none"));
+    ui->graphicsView_2->setScene(m_secondScene);
     ui->graphicsView_2->setSceneRect(0,0,80,80);
-    secondScene->setBackgroundBrush(Qt::lightGray);
+    m_secondScene->setBackgroundBrush(Qt::lightGray);
 
     //set up combobox with items
     ui->comboBox->addItem("**None**",":/images/none");
@@ -58,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete item;
-    delete secondScene;
+    delete m_item;
+    delete m_secondScene;
     delete m_mainScene;
     delete ui;
 }
@@ -70,7 +73,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
     m_mainScene->setImage(ui->comboBox->itemData(index).toString());
     m_mainScene->setItemZValue(ui->spinBox->value());
     //show image in secondScene
-    item->setPixmap(ui->comboBox->itemData(index).toString());
+    m_item->setPixmap(ui->comboBox->itemData(index).toString());
     //refresh labels
     //if user select **eraser** set the specific objects
     if(ui->comboBox->itemData(index).toString()==":/images/rubber"){
@@ -78,20 +81,20 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         ui->labelHeight->setText("10 px");
     }
     else{
-        ui->labelWidth->setText(QString::number(item->pixmap().width()) + " px");
-        ui->labelHeight->setText(QString::number(item->pixmap().height())+ " px");
+        ui->labelWidth->setText(QString::number(m_item->pixmap().width()) + " px");
+        ui->labelHeight->setText(QString::number(m_item->pixmap().height())+ " px");
         //resize if it is necessary
-        if(item->pixmap().width() > 78)
-            item->setPixmap(item->pixmap().scaledToHeight(78,Qt::FastTransformation));
-        else if(item->pixmap().height() > 78)
-            item->setPixmap(item->pixmap().scaledToWidth(78,Qt::FastTransformation));
+        if(m_item->pixmap().width() > 78)
+            m_item->setPixmap(m_item->pixmap().scaledToHeight(78,Qt::FastTransformation));
+        else if(m_item->pixmap().height() > 78)
+            m_item->setPixmap(m_item->pixmap().scaledToWidth(78,Qt::FastTransformation));
     }
 
     //set pixmap position into the midle of graphicsview
     int x,y;
-    x = (ui->graphicsView_2->width()/2) - (item->pixmap().width()/2);
-    y = (ui->graphicsView_2->height()/2) - (item->pixmap().height()/2);
-    item->setPos(x,y);
+    x = (ui->graphicsView_2->width()/2) - (m_item->pixmap().width()/2);
+    y = (ui->graphicsView_2->height()/2) - (m_item->pixmap().height()/2);
+    m_item->setPos(x,y);
 
     //set focus on scene
     ui->graphicsView->setFocus();
@@ -101,12 +104,15 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 void MainWindow::on_pushButtonFill_clicked(){
     //fill the screen with images
     m_mainScene->fill();
+    ui->graphicsView->update();
+    ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_pushButtonRemoveNone_clicked(){
     //remove all none images
     m_mainScene->removeNone();
     ui->graphicsView->update();
+    ui->graphicsView->setFocus();
 }
 
 void MainWindow::on_comboBox_2_currentIndexChanged(int index){
@@ -118,6 +124,7 @@ void MainWindow::on_comboBox_2_currentIndexChanged(int index){
 void MainWindow::on_horizontalSlider_sliderMoved(int position){
     //move with scene in graphicsView
     ui->graphicsView->centerOn(QPoint(position,300));
+    ui->graphicsView->update();
     ui->graphicsView->setFocus();
 }
 
@@ -130,7 +137,7 @@ void MainWindow::on_spinBox_valueChanged(int arg1){
 void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
     //show only selected layer or all if 0
     //if layer & z value is locked it change value of ZValue spinbox
-    if(LayerZLock){
+    if(m_layerZLock){
         if(index!=0){
             ui->spinBox->setValue(index);
         }
@@ -177,7 +184,8 @@ void MainWindow::on_actionShow_Background_triggered(bool checked){
 }
 
 void MainWindow::on_actionShow_Cursor_triggered(bool checked){
-    //doesnt work in Windows OS
+    //still doesnt work in Windows OS
+    //its seems that scene is over cursor so its "invisible"
     if(checked)
         ui->graphicsView->setCursor(Qt::ArrowCursor);
     else
@@ -187,7 +195,11 @@ void MainWindow::on_actionShow_Cursor_triggered(bool checked){
 
 void MainWindow::on_actionLayer_zValue_Lock_triggered(bool checked)
 {
-    LayerZLock = checked;
+    m_layerZLock = checked;
+    //testing
+    MapInfo test;
+    test.setItems(m_mainScene->m_images);
+    ui->label_7->setText(test.itemsToString());
 }
 
 void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)

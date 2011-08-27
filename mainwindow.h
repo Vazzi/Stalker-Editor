@@ -53,9 +53,9 @@ private:
 
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
-    QGraphicsScene *secondScene;
-    QGraphicsPixmapItem *item;
-    bool LayerZLock;
+    QGraphicsScene *m_secondScene;
+    QGraphicsPixmapItem *m_item;
+    bool m_layerZLock;
 
 public slots:
     void clearForm(int width,QString mapName);

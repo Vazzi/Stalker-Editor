@@ -28,6 +28,9 @@ public:
 
     QPointF xyposition;
 
+
+    QList<QGraphicsPixmapItem *> m_images;
+
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -41,7 +44,7 @@ private:
     bool m_shift, m_eraser;
     QPointF m_cursor, m_shiftLeftCorner;
     QString m_imagePath, m_none;
-    QList<QGraphicsPixmapItem *> m_images;
+
     QList<QGraphicsLineItem *> m_grid;
     QGraphicsRectItem *m_cursorImage, *m_shiftRect;
     QList <QGraphicsPixmapItem *> m_background;

@@ -8,9 +8,19 @@ class MapInfo
 public:
     MapInfo();
 
+    void setItems(QList <QGraphicsPixmapItem *> items);
+    void setBackground(QGraphicsPixmapItem background, bool repeat);
+    QString itemsToString();
+    QString backgroundToString();
+
+
 private:
-    QList <QString> m_items;
-    QString m_background, m_mapName,m_sceneWidth,m_info;
+    QList <QGraphicsPixmapItem *> m_items;
+    QGraphicsPixmapItem* m_background;
+    QString m_mapName, m_info;
+    int m_sceneWidth;
+    bool m_bRepeat;
+
 };
 
 #endif // MAPINFO_H
