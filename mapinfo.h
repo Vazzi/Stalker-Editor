@@ -9,14 +9,14 @@ public:
     MapInfo();
 
     void setItems(QList <QGraphicsPixmapItem *> items);
-    void setBackground(QGraphicsPixmapItem background, bool repeat);
+    void setBackground(QGraphicsPixmapItem newBackground, bool repeat);
     QString itemsToString();
     QString backgroundToString();
 
 
 private:
     QList <QGraphicsPixmapItem *> m_items;
-    QGraphicsPixmapItem* m_background;
+    QGraphicsPixmapItem *m_background;
     QString m_mapName, m_info;
     int m_sceneWidth;
     bool m_bRepeat;

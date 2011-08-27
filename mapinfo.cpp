@@ -9,8 +9,8 @@ void MapInfo::setItems(QList<QGraphicsPixmapItem *> items){
     m_items = items;
 }
 
-void MapInfo::setBackground(QGraphicsPixmapItem background, bool repeat){
-    //m_background = *background;
+void MapInfo::setBackground(QGraphicsPixmapItem newBackground, bool repeat){
+    m_background = &newBackground;
     m_bRepeat = repeat;
 }
 
@@ -30,7 +30,7 @@ QString MapInfo::itemsToString(){
 
 QString MapInfo::backgroundToString(){
     QString background;
-    //background.append(m_background.data(0).toString());
+    background.append(m_background->data(0).toString());
     background += ",";
     background.append(QString::number(m_bRepeat));
 

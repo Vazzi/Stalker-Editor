@@ -196,10 +196,7 @@ void MainWindow::on_actionShow_Cursor_triggered(bool checked){
 void MainWindow::on_actionLayer_zValue_Lock_triggered(bool checked)
 {
     m_layerZLock = checked;
-    //testing
-    MapInfo test;
-    test.setItems(m_mainScene->m_images);
-    ui->label_7->setText(test.itemsToString());
+
 }
 
 void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)
