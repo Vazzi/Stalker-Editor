@@ -12,6 +12,9 @@ public:
     void setBackground(QGraphicsPixmapItem newBackground, bool repeat);
     QString itemsToString();
     QString backgroundToString();
+    void setMap(QString name, int width, QString info );
+    QString mapToString();
+
 
 
 private:
