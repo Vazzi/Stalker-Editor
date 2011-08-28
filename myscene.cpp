@@ -1,4 +1,5 @@
 #include "myscene.h"
+#include "mapinfo.h"
 #include <QtGui>
 
 int ZValueCursorImage;
@@ -381,6 +382,7 @@ void MyScene::setBackground(QString backgroundPath, bool repeat){
     if(repeat){
         for(int number = 0;number < int(m_sceneWidth / newBackground.width())+1;number++){
             m_background.append(this->addPixmap(newBackground));
+            m_background.last()->setData(0,backgroundPath);
             m_background[number]->setPos(int(newBackground.width()*number), 0);
             m_background[number]->setZValue(-1);
         }
@@ -454,9 +456,22 @@ void MyScene::fill(){
         paintImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
 }
 
+QString MyScene::getImages(){
+    MapInfo images;
+    images.setItems(m_images);
+    return images.itemsToString();
+}
 
-
-
+QString MyScene::getBackground(){
+    MapInfo background;
+    bool repeat;
+    if(m_background.count() == 1)
+        repeat = false;
+    else
+        repeat = true;
+    background.setBackground(m_background.first(),repeat);
+    return background.backgroundToString();
+}
 
 
 

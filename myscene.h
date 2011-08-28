@@ -20,15 +20,14 @@ public:
     void showLayer(int layer);
     void clearlyNewScene(int sceneWidth);
     void fill();
-
-    QString getImages() { return m_images.last()->data(0).toString(); }
+    void getItems();
+    QString getImages();
+    QString getBackground();
 
     bool readMap();
     bool writeMap();
 
     QPointF xyposition;
-
-QList <QGraphicsPixmapItem *> m_background;
 
 
 private:
@@ -47,6 +46,8 @@ private:
     QList<QGraphicsPixmapItem *> m_images;
     QList<QGraphicsLineItem *> m_grid;
     QGraphicsRectItem *m_cursorImage, *m_shiftRect;
+    QList <QGraphicsPixmapItem *> m_background;
+
 
 
 

@@ -204,3 +204,11 @@ void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)
     QString background = ui->comboBox_2->itemData(ui->comboBox_2->currentIndex()).toString();
     m_mainScene->setBackground(background,checked);
 }
+
+void MainWindow::on_actionSave_triggered()
+{
+
+    QMessageBox::information(this,"test", m_mainScene->getBackground());
+
+
+}

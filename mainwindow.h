@@ -49,6 +49,8 @@ private slots:
 
     void on_checkBoxBackgRepeat_toggled(bool checked);
 
+    void on_actionSave_triggered();
+
 private:
 
     Ui::MainWindow *ui;

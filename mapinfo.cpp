@@ -10,10 +10,10 @@ void MapInfo::setItems(QList<QGraphicsPixmapItem *> items){
     m_items = items;
 }
 
-void MapInfo::setBackground(QGraphicsPixmapItem newBackground, bool repeat){
+void MapInfo::setBackground(QGraphicsPixmapItem* newBackground, bool repeat){
     //set background and bRepeat
     //if background repeat true else false
-    m_background = &newBackground;
+    m_background = newBackground;
     m_bRepeat = repeat;
 }
 
