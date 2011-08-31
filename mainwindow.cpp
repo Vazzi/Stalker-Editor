@@ -207,8 +207,6 @@ void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)
 
 void MainWindow::on_actionSave_triggered()
 {
-
-    QMessageBox::information(this,"test", m_mainScene->getBackground());
-
-
+    QFileDialog *saveDialog = new QFileDialog();
+    saveDialog->show();
 }

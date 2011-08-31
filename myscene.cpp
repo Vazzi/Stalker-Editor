@@ -389,7 +389,8 @@ void MyScene::setBackground(QString backgroundPath, bool repeat){
     }
     else{
         m_background.append(this->addPixmap(newBackground));
-        m_background[0]->setZValue(-1);
+        m_background.last()->setData(0,backgroundPath);
+        m_background.last()->setZValue(-1);
     }
 }
 
