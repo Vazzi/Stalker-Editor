@@ -1,4 +1,6 @@
 #include "mapinfo.h"
+#include <QtGui>
+
 
 MapInfo::MapInfo()
 {
@@ -58,4 +60,17 @@ QString MapInfo::mapToString(){
     QString infoString;
     infoString.append(m_mapName + ";" + m_info + ";" + QString::number(m_sceneWidth)+ ";");
     return infoString;
+}
+
+bool MapInfo::saveFile(QString filePath){
+    QFile saveMap(filePath);
+    if(!saveMap.open(QFile::WriteOnly | QFile::Text))
+        return false;
+    QTextStream out(&saveMap);
+    out << mapToString();
+    out << backgroundToString();
+    out << itemsToString();
+    saveMap.close();
+    return true;
+
 }

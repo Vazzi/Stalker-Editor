@@ -6,6 +6,7 @@
 #include "myscene.h"
 
 
+
 namespace Ui {
     class MainWindow;
 }
@@ -59,8 +60,9 @@ private:
     QGraphicsPixmapItem *m_item;
     bool m_layerZLock;
 
+
 public slots:
-    void clearForm(int width,QString mapName);
+    void clearForm(int width,QString mapName,QString info);
     void saveMap();
 
 

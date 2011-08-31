@@ -1,12 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "myscene.h"
 #include "dialognewmap.h"
-#include "mapinfo.h"
-#include <QtGui>
+
 
 DialogNewMap *newMap;
 QFileDialog *saveDialog;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,8 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 1; i < 11; i++)
         ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
 
-    newMap =new DialogNewMap(this);
-    connect(newMap,SIGNAL(newAccepted(int,QString)),this,SLOT(clearForm(int,QString)));
+    newMap = new DialogNewMap(this);
+    connect(newMap,SIGNAL(newAccepted(int,QString,QString)),this,SLOT(clearForm(int,QString,QString)));
 
 
 }
@@ -65,6 +64,7 @@ MainWindow::~MainWindow()
     delete m_item;
     delete m_secondScene;
     delete m_mainScene;
+    delete saveDialog;
     delete ui;
 
 }
@@ -148,10 +148,10 @@ void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
     ui->graphicsView->setFocus();
 }
 
-void MainWindow::clearForm(int width,QString mapName){
+void MainWindow::clearForm(int width,QString mapName,QString info){
 
     //slot witch clears the scene
-    m_mainScene->clearlyNewScene(width);
+    m_mainScene->clearlyNewScene(width,mapName,info);
     ui->graphicsView->setSceneRect(0,0,width,600);
     ui->horizontalSlider->setMaximum(width - 400);
     ui->graphicsView->update();
@@ -168,9 +168,7 @@ void MainWindow::on_actionNew_triggered(){
 }
 
 void MainWindow::on_actionQuit_triggered(){
-    if(QMessageBox::question(this,"Quit", "Really want to quit?",QMessageBox::Yes, QMessageBox::No)==QMessageBox::Yes){
-        this->close();
-    }
+    this->close();
 }
 
 
@@ -217,5 +215,7 @@ void MainWindow::on_actionSave_triggered()
 }
 
 void MainWindow::saveMap(){
-    QMessageBox::information(this, "info ", QString(saveDialog->selectedFiles().last()));
+    if(!m_mainScene->saveMap(saveDialog->selectedFiles().last()))
+        QMessageBox::warning(this, "Saveing Map", "Cant save file!");
+
 }

@@ -2,7 +2,7 @@
 #define MYSCENE_H
 
 #include <QtGui>
-
+#include "mapinfo.h"
 
 class MyScene: public QGraphicsScene
 {
@@ -18,14 +18,9 @@ public:
     void setBackground(QString backgroundPath,bool repeat);
     void setItemZValue(int zValue);
     void showLayer(int layer);
-    void clearlyNewScene(int sceneWidth);
+    void clearlyNewScene(int sceneWidth,QString mapName, QString info);
     void fill();
-    void getItems();
-    QString getImages();
-    QString getBackground();
-
-    bool readMap();
-    bool writeMap();
+    bool saveMap(QString mapPath);
 
     QPointF xyposition;
 
@@ -36,17 +31,20 @@ private:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 
+
     void makeGrid();
     void shiftRectangle(bool shift);
 
     int m_pixle,m_sceneWidth, m_zValue, m_visibleLayer;
     bool m_shift, m_eraser;
     QPointF m_cursor, m_shiftLeftCorner;
-    QString m_imagePath, m_none;
+    QString m_imagePath, m_none,m_mapName,m_info;
     QList<QGraphicsPixmapItem *> m_images;
     QList<QGraphicsLineItem *> m_grid;
     QGraphicsRectItem *m_cursorImage, *m_shiftRect;
     QList <QGraphicsPixmapItem *> m_background;
+    MapInfo m_map;
+
 
 
 

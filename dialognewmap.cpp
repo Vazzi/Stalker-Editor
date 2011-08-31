@@ -22,9 +22,10 @@ void DialogNewMap::on_pushButtonOk_clicked()
 {
     int width = ui->spinBoxWidth->value();
     QString name = ui->lineEditName->text().trimmed();
+    QString information = ui->plainTextEdit->toPlainText().trimmed();
     if(name!= ""){
         if(width % 10 == 0){
-            emit newAccepted(width,name);
+            emit newAccepted(width,name,information);
             this->close();
         }
         else{

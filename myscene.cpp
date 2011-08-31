@@ -1,6 +1,4 @@
 #include "myscene.h"
-#include "mapinfo.h"
-#include <QtGui>
 
 int ZValueCursorImage;
 
@@ -435,13 +433,15 @@ void MyScene::showLayer(int layer){
     m_visibleLayer=layer;
 }
 
-void MyScene::clearlyNewScene(int sceneWidth){
+void MyScene::clearlyNewScene(int sceneWidth, QString mapName, QString info){
+    m_mapName = mapName;
+    m_info = info;
+    m_sceneWidth = sceneWidth;
     //remove all images from scene and list of images
     for(int i = 0; i<m_images.length();i++)
        this->removeItem(m_images[i]);
     m_images.clear();
     //reset grid
-    m_sceneWidth = sceneWidth;
     for(int i = 0; i<m_grid.length();i++)
        this->removeItem(m_grid[i]);
     m_grid.clear();
@@ -457,21 +457,23 @@ void MyScene::fill(){
         paintImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
 }
 
-QString MyScene::getImages(){
-    MapInfo images;
-    images.setItems(m_images);
-    return images.itemsToString();
-}
 
-QString MyScene::getBackground(){
-    MapInfo background;
+
+
+bool MyScene::saveMap(QString mapPath){
+    //map informations
+    m_map.setMap(m_mapName,m_sceneWidth,m_info);
+    //background informations
     bool repeat;
     if(m_background.count() == 1)
         repeat = false;
     else
         repeat = true;
-    background.setBackground(m_background.first(),repeat);
-    return background.backgroundToString();
+    m_map.setBackground(m_background.first(),repeat);
+    //items informations
+    m_map.setItems(m_images);
+    //save map
+    return m_map.saveFile(mapPath);
 }
 
 

@@ -14,6 +14,7 @@ public:
     QString backgroundToString();
     void setMap(QString name, int width, QString info );
     QString mapToString();
+    bool saveFile(QString filePath);
 
 
 

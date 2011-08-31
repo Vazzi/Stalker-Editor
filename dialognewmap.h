@@ -25,7 +25,7 @@ private:
     Ui::DialogNewMap *ui;
 
 signals:
-    void newAccepted(int,QString);
+    void newAccepted(int,QString,QString);
 };
 
 #endif // DIALOGNEWMAP_H
