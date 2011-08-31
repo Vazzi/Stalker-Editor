@@ -6,6 +6,7 @@
 #include <QtGui>
 
 DialogNewMap *newMap;
+QFileDialog *saveDialog;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -65,6 +66,7 @@ MainWindow::~MainWindow()
     delete m_secondScene;
     delete m_mainScene;
     delete ui;
+
 }
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
@@ -207,6 +209,13 @@ void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)
 
 void MainWindow::on_actionSave_triggered()
 {
-    QFileDialog *saveDialog = new QFileDialog();
+    saveDialog = new QFileDialog(this, Qt::Sheet);
+    saveDialog->setFilter("Maps (*.map)");
+    saveDialog->setAcceptMode(QFileDialog::AcceptSave);
+    connect(saveDialog,SIGNAL(accepted()),this,SLOT(saveMap()));
     saveDialog->show();
+}
+
+void MainWindow::saveMap(){
+    QMessageBox::information(this, "info ", QString(saveDialog->selectedFiles().last()));
 }

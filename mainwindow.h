@@ -61,6 +61,7 @@ private:
 
 public slots:
     void clearForm(int width,QString mapName);
+    void saveMap();
 
 
 
