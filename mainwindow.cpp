@@ -8,6 +8,7 @@
 DialogNewMap *newMap;
 QFileDialog *saveDialog;
 DialogInfoSet *setInfoMap;
+QString fileSavePath;
 
 
 
@@ -43,6 +44,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::start(){
     m_layerZLock = false;
+    m_saved= false;
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
@@ -211,18 +213,24 @@ void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked){
     m_mainScene->setBackground(background,checked);
 }
 
-void MainWindow::on_actionSave_triggered()
-{
-    saveDialog = new QFileDialog(this, Qt::Sheet);
-    saveDialog->setFilter("Maps (*.map)");
-    saveDialog->setAcceptMode(QFileDialog::AcceptSave);
-    connect(saveDialog,SIGNAL(accepted()),this,SLOT(saveMap()));
-    saveDialog->show();
+void MainWindow::on_actionSave_triggered(){
+    if(m_saved){
+        if(!m_mainScene->saveMap(fileSavePath))
+            QMessageBox::warning(this, "Saving Map", "Cant save file!");
+        m_saved = true;
+    }
+    else
+        saveAs();
 }
 
 void MainWindow::saveMap(){
-    if(!m_mainScene->saveMap(saveDialog->selectedFiles().last()))
+
+    fileSavePath = saveDialog->selectedFiles().last();
+
+    if(!m_mainScene->saveMap(fileSavePath))
         QMessageBox::warning(this, "Saving Map", "Cant save file!");
+    else
+        m_saved = true;
 
 }
 
@@ -235,4 +243,16 @@ void MainWindow::setMapInfo(QString mapName, QString info){
 void MainWindow::on_actionInformation_2_triggered(){
     setInfoMap->setlinesText(m_mainScene->getName(), m_mainScene->getInfo());
     setInfoMap->show();
+}
+
+void MainWindow::saveAs(){
+    saveDialog = new QFileDialog(this, Qt::Sheet);
+    saveDialog->setFilter("Maps (*.map)");
+    saveDialog->setAcceptMode(QFileDialog::AcceptSave);
+    connect(saveDialog,SIGNAL(accepted()),this,SLOT(saveMap()));
+    saveDialog->show();
+}
+
+void MainWindow::on_actionSave_as_triggered(){
+    saveAs();
 }

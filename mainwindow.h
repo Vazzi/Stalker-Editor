@@ -23,44 +23,34 @@ public:
 private slots:
 
     void on_comboBox_currentIndexChanged(int index);
-
     void on_pushButtonFill_clicked();
-
     void on_pushButtonRemoveNone_clicked();
-
     void on_comboBox_2_currentIndexChanged(int index);
-
     void on_horizontalSlider_sliderMoved(int position);
-
     void on_spinBox_valueChanged(int arg1);
-
     void on_comboBoxLayer_currentIndexChanged(int index);
-
     void on_actionNew_triggered();
-
     void on_actionQuit_triggered();
-
     void on_actionShow_Grid_triggered(bool checked);
-
     void on_actionShow_Background_triggered(bool checked);
-
     void on_actionLayer_zValue_Lock_triggered(bool checked);
-
     void on_checkBoxBackgRepeat_toggled(bool checked);
-
     void on_actionSave_triggered();
-
     void on_actionInformation_2_triggered();
+
+    void on_actionSave_as_triggered();
 
 private:
 
     void start();
+    void saveAs();
+
 
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
     QGraphicsScene *m_secondScene;
     QGraphicsPixmapItem *m_item;
-    bool m_layerZLock;
+    bool m_layerZLock, m_saved;
 
 
 public slots:
