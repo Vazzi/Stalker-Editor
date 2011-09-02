@@ -22,6 +22,8 @@ public:
     void setInfo(QString mapName, QString info);
     QString getName() {return m_mapName;};
     QString getInfo() {return m_info;};
+    bool isChanged() {return m_saved; };
+    void setSaved(bool saved) {m_saved = saved;};
     void fill();
     bool saveMap(QString mapPath);
 
@@ -39,7 +41,7 @@ private:
     void shiftRectangle(bool shift);
 
     int m_pixle,m_sceneWidth, m_zValue, m_visibleLayer;
-    bool m_shift, m_eraser;
+    bool m_shift, m_eraser, m_saved;
     QPointF m_cursor, m_shiftLeftCorner;
     QString m_imagePath, m_none,m_mapName,m_info;
     QList<QGraphicsPixmapItem *> m_images;

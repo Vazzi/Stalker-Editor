@@ -25,6 +25,7 @@ MyScene::MyScene(int newPixle = 10, QString nonePath = ":/images/none", int scen
     //paint grid into scene
     makeGrid();
 
+
 }
 MyScene::~MyScene()
 {
@@ -130,7 +131,7 @@ void MyScene::paintImagesRect(QPointF leftCorner, QPointF rightCorner){
         }
     }
     }
-
+    m_saved = false;
 }
 
 void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
@@ -162,6 +163,7 @@ void MyScene::removeImagesRect(QPointF leftCorner, QPointF rightCorner){
 
     }
     }
+    m_saved = false;
 }
 
 void MyScene::setImage(QString path){
@@ -260,6 +262,7 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
                      }
                  }
              }
+        m_saved = false;
 
   }
 }
@@ -390,6 +393,7 @@ void MyScene::setBackground(QString backgroundPath, bool repeat){
         m_background.last()->setData(0,backgroundPath);
         m_background.last()->setZValue(-1);
     }
+    m_saved = false;
 }
 
 void MyScene::shiftRectangle(bool shift){
@@ -446,6 +450,7 @@ void MyScene::clearlyNewScene(int sceneWidth, QString mapName, QString info){
        this->removeItem(m_grid[i]);
     m_grid.clear();
     makeGrid();
+    m_saved = false;
 
 }
 
@@ -455,6 +460,7 @@ void MyScene::fill(){
         removeImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
     else
         paintImagesRect(QPoint(0,0),QPoint(m_sceneWidth,600));
+
 }
 
 
@@ -474,12 +480,14 @@ bool MyScene::saveMap(QString mapPath){
     m_map.setItems(m_images);
     //save map
     return m_map.saveFile(mapPath);
+
 }
 
 
 void MyScene::setInfo(QString mapName, QString info){
     m_mapName = mapName;
     m_info = info;
+    m_saved = false;
 }
 
 

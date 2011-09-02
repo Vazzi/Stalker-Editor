@@ -44,7 +44,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::start(){
     m_layerZLock = false;
-    m_saved= false;
+
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
@@ -53,6 +53,7 @@ void MainWindow::start(){
     ui->graphicsView->setScene(m_mainScene);
     ui->graphicsView->setSceneRect(0,0,1000,600);
     m_mainScene->setInfo("Delault", "");
+
 
     //set up slider
     ui->horizontalSlider->setMinimum(400);
@@ -85,7 +86,7 @@ void MainWindow::start(){
         ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
 
 
-
+    m_mainScene->setSaved(true);
 }
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
@@ -119,6 +120,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
     //set focus on scene
     ui->graphicsView->setFocus();
+
 }
 
 
@@ -153,6 +155,7 @@ void MainWindow::on_spinBox_valueChanged(int arg1){
     //set z value of item
     m_mainScene->setItemZValue(arg1);
     ui->graphicsView->setFocus();
+
 }
 
 void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
@@ -165,6 +168,7 @@ void MainWindow::on_comboBoxLayer_currentIndexChanged(int index){
     }
     m_mainScene->showLayer(index);
     ui->graphicsView->setFocus();
+
 }
 
 void MainWindow::clearForm(int width,QString mapName,QString info){
@@ -178,6 +182,7 @@ void MainWindow::clearForm(int width,QString mapName,QString info){
     ui->actionShow_Background->setChecked(true);
     ui->checkBoxBackgRepeat->setChecked(false);
     ui->horizontalSlider->setValue(0);
+    m_mainScene->setSaved(false);
 
 }
 
@@ -187,7 +192,14 @@ void MainWindow::on_actionNew_triggered(){
 }
 
 void MainWindow::on_actionQuit_triggered(){
-    this->close();
+    if(!m_mainScene->isChanged()){
+        if(QMessageBox::question(this,"Quit", "Map is not saved! Do you really want to quit? ", QMessageBox::Yes, QMessageBox::No)
+                ==QMessageBox::Yes){
+            this->close();
+        }
+    }
+    else
+        this->close();
 }
 
 
@@ -214,10 +226,10 @@ void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked){
 }
 
 void MainWindow::on_actionSave_triggered(){
-    if(m_saved){
+    if(m_mainScene->isChanged()){
         if(!m_mainScene->saveMap(fileSavePath))
             QMessageBox::warning(this, "Saving Map", "Cant save file!");
-        m_saved = true;
+        m_mainScene->setSaved(true);
     }
     else
         saveAs();
@@ -230,7 +242,7 @@ void MainWindow::saveMap(){
     if(!m_mainScene->saveMap(fileSavePath))
         QMessageBox::warning(this, "Saving Map", "Cant save file!");
     else
-        m_saved = true;
+        m_mainScene->setSaved(true);
 
 }
 
@@ -256,3 +268,5 @@ void MainWindow::saveAs(){
 void MainWindow::on_actionSave_as_triggered(){
     saveAs();
 }
+
+
