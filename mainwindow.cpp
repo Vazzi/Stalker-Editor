@@ -44,7 +44,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::start(){
     m_layerZLock = false;
-
+    m_saved = false;
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
@@ -183,12 +183,20 @@ void MainWindow::clearForm(int width,QString mapName,QString info){
     ui->checkBoxBackgRepeat->setChecked(false);
     ui->horizontalSlider->setValue(0);
     m_mainScene->setSaved(false);
-
+    m_saved = false;
 }
 
 
 void MainWindow::on_actionNew_triggered(){
-    newMap->show();
+    if(!m_mainScene->isChanged()){
+        if(QMessageBox::question(this,"New Map", "Map is not saved! Do you really want to create new map? ", QMessageBox::Yes, QMessageBox::No)
+                ==QMessageBox::Yes){
+            newMap->show();
+        }
+    }
+    else
+        newMap->show();
+
 }
 
 void MainWindow::on_actionQuit_triggered(){
@@ -226,7 +234,7 @@ void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked){
 }
 
 void MainWindow::on_actionSave_triggered(){
-    if(m_mainScene->isChanged()){
+    if(m_saved){
         if(!m_mainScene->saveMap(fileSavePath))
             QMessageBox::warning(this, "Saving Map", "Cant save file!");
         m_mainScene->setSaved(true);
@@ -241,15 +249,16 @@ void MainWindow::saveMap(){
 
     if(!m_mainScene->saveMap(fileSavePath))
         QMessageBox::warning(this, "Saving Map", "Cant save file!");
-    else
+    else{
         m_mainScene->setSaved(true);
+        m_saved = true;
+    }
 
 }
 
 void MainWindow::setMapInfo(QString mapName, QString info){
     m_mainScene->setInfo(mapName, info);
 }
-
 
 
 void MainWindow::on_actionInformation_2_triggered(){
