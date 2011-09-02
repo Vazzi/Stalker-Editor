@@ -2,7 +2,7 @@
 
 int ZValueCursorImage;
 
-MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
+MyScene::MyScene(int newPixle = 10, QString nonePath = ":/images/none", int sceneWidth = 800)
 {
     //set values
     ZValueCursorImage = 11;
@@ -477,7 +477,10 @@ bool MyScene::saveMap(QString mapPath){
 }
 
 
-
+void MyScene::setInfo(QString mapName, QString info){
+    m_mapName = mapName;
+    m_info = info;
+}
 
 
 

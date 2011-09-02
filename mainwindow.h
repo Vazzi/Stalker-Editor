@@ -44,15 +44,17 @@ private slots:
 
     void on_actionShow_Background_triggered(bool checked);
 
-    void on_actionShow_Cursor_triggered(bool checked);
-
     void on_actionLayer_zValue_Lock_triggered(bool checked);
 
     void on_checkBoxBackgRepeat_toggled(bool checked);
 
     void on_actionSave_triggered();
 
+    void on_actionInformation_2_triggered();
+
 private:
+
+    void start();
 
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
@@ -63,7 +65,9 @@ private:
 
 public slots:
     void clearForm(int width,QString mapName,QString info);
+    void setMapInfo(QString mapName,QString info);
     void saveMap();
+
 
 
 

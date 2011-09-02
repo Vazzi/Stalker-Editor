@@ -57,7 +57,7 @@
      </size>
     </property>
     <property name="cursor" stdset="0">
-     <cursorShape>BlankCursor</cursorShape>
+     <cursorShape>ArrowCursor</cursorShape>
     </property>
     <property name="mouseTracking">
      <bool>true</bool>
@@ -354,7 +354,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -373,7 +373,6 @@
     </property>
     <addaction name="actionShow_Grid"/>
     <addaction name="actionShow_Background"/>
-    <addaction name="actionShow_Cursor"/>
     <addaction name="actionLayer_zValue_Lock"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -383,7 +382,14 @@
     <addaction name="actionAbout"/>
     <addaction name="actionInformation"/>
    </widget>
+   <widget class="QMenu" name="menuMap">
+    <property name="title">
+     <string>Map</string>
+    </property>
+    <addaction name="actionInformation_2"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuMap"/>
    <addaction name="menuSetting"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -429,14 +435,6 @@
     <string>Show Background</string>
    </property>
   </action>
-  <action name="actionShow_Cursor">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Show Cursor</string>
-   </property>
-  </action>
   <action name="actionLayer_zValue_Lock">
    <property name="checkable">
     <bool>true</bool>
@@ -458,6 +456,11 @@
   <action name="actionInformation">
    <property name="text">
     <string>Informations</string>
+   </property>
+  </action>
+  <action name="actionInformation_2">
+   <property name="text">
+    <string>Information</string>
    </property>
   </action>
  </widget>

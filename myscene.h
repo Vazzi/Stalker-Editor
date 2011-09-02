@@ -19,6 +19,9 @@ public:
     void setItemZValue(int zValue);
     void showLayer(int layer);
     void clearlyNewScene(int sceneWidth,QString mapName, QString info);
+    void setInfo(QString mapName, QString info);
+    QString getName() {return m_mapName;};
+    QString getInfo() {return m_info;};
     void fill();
     bool saveMap(QString mapPath);
 

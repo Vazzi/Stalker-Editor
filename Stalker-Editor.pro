@@ -14,15 +14,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     myscene.cpp \
     dialognewmap.cpp \
-    mapinfo.cpp
+    mapinfo.cpp \
+    dialoginfoset.cpp
 
 HEADERS  += mainwindow.h \
         myscene.h \
     dialognewmap.h \
-    mapinfo.h
+    mapinfo.h \
+    dialoginfoset.h
 
 FORMS    += mainwindow.ui \
-    dialognewmap.ui
+    dialognewmap.ui \
+    dialoginfoset.ui
 
 RESOURCES += \
     MyResources.qrc

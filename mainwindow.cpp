@@ -1,10 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialognewmap.h"
+#include "dialoginfoset.h"
+
 
 
 DialogNewMap *newMap;
 QFileDialog *saveDialog;
+DialogInfoSet *setInfoMap;
+
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,12 +19,38 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
+    newMap = new DialogNewMap(this);
+    setInfoMap = new DialogInfoSet(this);
+    saveDialog = new QFileDialog (this);
+    start();
+
+    connect(newMap,SIGNAL(newAccepted(int,QString,QString)),this,SLOT(clearForm(int,QString,QString)));
+    connect(setInfoMap, SIGNAL(newAccepted(QString,QString)), this,SLOT(setMapInfo(QString,QString)));
+}
+
+
+MainWindow::~MainWindow()
+{
+    delete m_item;
+    delete m_secondScene;
+    delete m_mainScene;
+    delete saveDialog;
+    delete newMap;
+    delete setInfoMap;
+    delete ui;
+
+}
+
+void MainWindow::start(){
     m_layerZLock = false;
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
+    m_secondScene = new QGraphicsScene;
+    m_item = new QGraphicsPixmapItem;
     ui->graphicsView->setScene(m_mainScene);
     ui->graphicsView->setSceneRect(0,0,1000,600);
+    m_mainScene->setInfo("Delault", "");
 
     //set up slider
     ui->horizontalSlider->setMinimum(400);
@@ -27,8 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //set up secondScene
-    m_secondScene = new QGraphicsScene;
-    m_item = new QGraphicsPixmapItem;
+
     m_item = m_secondScene->addPixmap(QString(":/images/none"));
     ui->graphicsView_2->setScene(m_secondScene);
     ui->graphicsView_2->setSceneRect(0,0,80,80);
@@ -52,20 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 1; i < 11; i++)
         ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
 
-    newMap = new DialogNewMap(this);
-    connect(newMap,SIGNAL(newAccepted(int,QString,QString)),this,SLOT(clearForm(int,QString,QString)));
 
-
-}
-
-
-MainWindow::~MainWindow()
-{
-    delete m_item;
-    delete m_secondScene;
-    delete m_mainScene;
-    delete saveDialog;
-    delete ui;
 
 }
 
@@ -183,24 +200,13 @@ void MainWindow::on_actionShow_Background_triggered(bool checked){
     m_mainScene->showHideBackgroudImage(checked);
 }
 
-void MainWindow::on_actionShow_Cursor_triggered(bool checked){
-    //still doesnt work in Windows OS
-    //its seems that scene is over cursor so its "invisible"
-    if(checked)
-        ui->graphicsView->setCursor(Qt::ArrowCursor);
-    else
-        ui->graphicsView->setCursor(Qt::BlankCursor);
-    ui->graphicsView->setFocus();
-}
 
-void MainWindow::on_actionLayer_zValue_Lock_triggered(bool checked)
-{
+void MainWindow::on_actionLayer_zValue_Lock_triggered(bool checked){
     m_layerZLock = checked;
 
 }
 
-void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked)
-{
+void MainWindow::on_checkBoxBackgRepeat_toggled(bool checked){
     QString background = ui->comboBox_2->itemData(ui->comboBox_2->currentIndex()).toString();
     m_mainScene->setBackground(background,checked);
 }
@@ -216,6 +222,17 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::saveMap(){
     if(!m_mainScene->saveMap(saveDialog->selectedFiles().last()))
-        QMessageBox::warning(this, "Saveing Map", "Cant save file!");
+        QMessageBox::warning(this, "Saving Map", "Cant save file!");
 
+}
+
+void MainWindow::setMapInfo(QString mapName, QString info){
+    m_mainScene->setInfo(mapName, info);
+}
+
+
+
+void MainWindow::on_actionInformation_2_triggered(){
+    setInfoMap->setlinesText(m_mainScene->getName(), m_mainScene->getInfo());
+    setInfoMap->show();
 }

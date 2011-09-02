@@ -7,6 +7,7 @@ DialogNewMap::DialogNewMap(QWidget *parent) :
     ui(new Ui::DialogNewMap)
 {
     ui->setupUi(this);
+    m_enableCancel = true;
 }
 
 DialogNewMap::~DialogNewMap()
@@ -41,3 +42,5 @@ void DialogNewMap::on_pushButtonCancel_clicked()
 {
     this->close();
 }
+
+

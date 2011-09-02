@@ -15,6 +15,7 @@ public:
     explicit DialogNewMap(QWidget *parent = 0);
     ~DialogNewMap();
 
+
 private slots:
 
     void on_pushButtonOk_clicked();
@@ -23,6 +24,7 @@ private slots:
 
 private:
     Ui::DialogNewMap *ui;
+    bool m_enableCancel;
 
 signals:
     void newAccepted(int,QString,QString);
