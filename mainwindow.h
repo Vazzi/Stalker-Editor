@@ -40,6 +40,8 @@ private slots:
 
     void on_actionSave_as_triggered();
 
+    void on_actionLoad_triggered();
+
 private:
 
     void start();
@@ -57,6 +59,7 @@ public slots:
     void clearForm(int width,QString mapName,QString info);
     void setMapInfo(QString mapName,QString info);
     void saveMap();
+    void loadMap();
 
 
 

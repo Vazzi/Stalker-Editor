@@ -24,8 +24,13 @@ public:
     QString getInfo() {return m_info;};
     bool isChanged() {return m_saved; };
     void setSaved(bool saved) {m_saved = saved;};
+    int getSceneWidth() {return m_sceneWidth;};
+    QString getBgPath(){return m_background.first()->data(0).toString();};
+    bool getBgRepeat();
     void fill();
     bool saveMap(QString mapPath);
+    bool loadMap(QString mapPath);
+    void setBgIndividualy(QString bgPath, int repeat);
 
     QPointF xyposition;
 

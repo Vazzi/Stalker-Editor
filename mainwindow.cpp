@@ -7,6 +7,7 @@
 
 DialogNewMap *newMap;
 QFileDialog *saveDialog;
+QFileDialog *loadDialog;
 DialogInfoSet *setInfoMap;
 QString fileSavePath;
 
@@ -22,11 +23,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     newMap = new DialogNewMap(this);
     setInfoMap = new DialogInfoSet(this);
-    saveDialog = new QFileDialog (this);
+    saveDialog = new QFileDialog(this, Qt::Sheet);
+
+    loadDialog = new QFileDialog(this, Qt::Sheet);
+
     start();
 
     connect(newMap,SIGNAL(newAccepted(int,QString,QString)),this,SLOT(clearForm(int,QString,QString)));
     connect(setInfoMap, SIGNAL(newAccepted(QString,QString)), this,SLOT(setMapInfo(QString,QString)));
+    connect(saveDialog,SIGNAL(accepted()),this,SLOT(saveMap()));
+    connect(loadDialog,SIGNAL(accepted()),this,SLOT(loadMap()));
 }
 
 
@@ -45,6 +51,12 @@ MainWindow::~MainWindow()
 void MainWindow::start(){
     m_layerZLock = false;
     m_saved = false;
+
+    saveDialog->setFilter("*.map");
+    saveDialog->setAcceptMode(QFileDialog::AcceptSave);
+
+    loadDialog->setFilter("*.map");
+    loadDialog->setAcceptMode(QFileDialog::AcceptOpen);
 
     //set up m_mainScene
     m_mainScene = new MyScene(10, ":/images/none", 1000);
@@ -78,7 +90,7 @@ void MainWindow::start(){
 
     //set up combobox with backgrounds
     ui->comboBox_2->addItem("background1",":/images/background");
-    ui->comboBox_2->addItem("background1",":/images/background");
+    ui->comboBox_2->addItem("online",":/images/online");
 
     //set up combobox with layres
     ui->comboBoxLayer->addItem("all *");
@@ -267,10 +279,6 @@ void MainWindow::on_actionInformation_2_triggered(){
 }
 
 void MainWindow::saveAs(){
-    saveDialog = new QFileDialog(this, Qt::Sheet);
-    saveDialog->setFilter("Maps (*.map)");
-    saveDialog->setAcceptMode(QFileDialog::AcceptSave);
-    connect(saveDialog,SIGNAL(accepted()),this,SLOT(saveMap()));
     saveDialog->show();
 }
 
@@ -279,3 +287,44 @@ void MainWindow::on_actionSave_as_triggered(){
 }
 
 
+
+void MainWindow::on_actionLoad_triggered()
+{
+
+    if(!m_mainScene->isChanged()){
+        if(QMessageBox::question(this,"Load Map", "Map is not saved! Do you really want to load map? ", QMessageBox::Yes, QMessageBox::No)
+                ==QMessageBox::Yes){
+            loadDialog->show();
+        }
+    }
+    else
+        loadDialog->show();
+}
+
+void MainWindow::loadMap(){
+    if(m_mainScene->loadMap(loadDialog->selectedFiles().last())){
+        fileSavePath = loadDialog->selectedFiles().last();
+        m_saved = true;
+        int width = m_mainScene->getSceneWidth();
+        ui->graphicsView->setSceneRect(0,0,width,600);
+        ui->horizontalSlider->setMaximum(width - 400);
+        ui->graphicsView->update();
+        ui->actionShow_Grid->setChecked(true);
+        ui->actionShow_Background->setChecked(true);
+        ui->horizontalSlider->setValue(0);
+        QString bgPathTemp = m_mainScene->getBgPath();
+        bool bgRepeatTemp = m_mainScene->getBgRepeat();
+        for(int i = 0 ; i < ui->comboBox_2->count();i++){
+            if(ui->comboBox_2->itemData(i).toString() == bgPathTemp){
+                ui->comboBox_2->setCurrentIndex(i);
+                break;
+            }
+        }
+        ui->checkBoxBackgRepeat->setChecked(bgRepeatTemp);
+        m_mainScene->setBgIndividualy(bgPathTemp, bgRepeatTemp);
+        m_mainScene->setSaved(true);
+    }
+    else
+        QMessageBox::warning(this, "Loading Map", "Cant load file!");
+
+}

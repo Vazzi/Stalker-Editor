@@ -490,7 +490,38 @@ void MyScene::setInfo(QString mapName, QString info){
     m_saved = false;
 }
 
+bool MyScene::loadMap(QString mapPath){
+    if(m_map.loadFile(mapPath))
+    {
+        clearlyNewScene(m_map.getWidth(),m_map.getName(),m_map.getInfo());
 
+        setBackground(m_map.getBgPath(), m_map.getBgRepeat());
+        for(int i = 0 ; i < m_map.getItemsCount();i++){
+
+            m_images.append(this->addPixmap(m_map.getItemPath(i)));
+            m_images.last()->setZValue(m_map.getItemZ(i));
+            m_images.last()->setData(1, m_map.getItemZ(i));
+            m_images.last()->setData(0, m_map.getItemPath(i));
+            m_images.last()->setPos(QPointF(m_map.getItemX(i),m_map.getItemY(i)));
+
+        }
+        return true;
+    }
+    else
+        return false;
+}
+
+bool MyScene::getBgRepeat(){
+    if(m_background.count()==1)
+        return false;
+    else
+        return true;
+}
+
+void MyScene::setBgIndividualy(QString bgPath, int repeat){
+    setBackground(bgPath, repeat);
+
+}
 
 
 
