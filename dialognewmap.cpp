@@ -24,10 +24,15 @@ void DialogNewMap::on_pushButtonOk_clicked()
     int width = ui->spinBoxWidth->value();
     QString name = ui->lineEditName->text().trimmed();
     QString information = ui->plainTextEdit->toPlainText().trimmed();
-    if(name!= ""){
+    if(name!= "" && !name.contains(";", Qt::CaseSensitive)){
         if(width % 10 == 0){
-            emit newAccepted(width,name,information);
-            this->close();
+            if(!information.contains(";", Qt::CaseSensitive)){
+                emit newAccepted(width,name,information);
+                this->close();
+            }
+            else
+               ui->plainTextEdit->setFocus();
+
         }
         else{
             ui->spinBoxWidth->setFocus();

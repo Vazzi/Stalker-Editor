@@ -24,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     newMap = new DialogNewMap(this);
     setInfoMap = new DialogInfoSet(this);
     saveDialog = new QFileDialog(this, Qt::Sheet);
-
     loadDialog = new QFileDialog(this, Qt::Sheet);
+
+
 
     start();
 
@@ -42,6 +43,7 @@ MainWindow::~MainWindow()
     delete m_secondScene;
     delete m_mainScene;
     delete saveDialog;
+    delete loadDialog;
     delete newMap;
     delete setInfoMap;
     delete ui;
@@ -257,7 +259,7 @@ void MainWindow::on_actionSave_triggered(){
 
 void MainWindow::saveMap(){
 
-    fileSavePath = saveDialog->selectedFiles().last();
+    fileSavePath = saveDialog->selectedFiles().last() + ".map";
 
     if(!m_mainScene->saveMap(fileSavePath))
         QMessageBox::warning(this, "Saving Map", "Cant save file!");

@@ -476,6 +476,7 @@ bool MyScene::saveMap(QString mapPath){
     else
         repeat = true;
     m_map.setBackground(m_background.first(),repeat);
+    removeNone();
     //items informations
     m_map.setItems(m_images);
     //save map

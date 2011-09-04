@@ -19,13 +19,18 @@ void DialogInfoSet::on_pushButtonOK_clicked()
 {
     QString name = ui->lineEdit->text().trimmed();
     QString information = ui->plainTextEdit->toPlainText().trimmed();
-    if(name!= ""){
-        emit newAccepted(name,information);
-        this->close();
+    if(name!= "" && !name.contains(";", Qt::CaseSensitive)){
+        if(!information.contains(";", Qt::CaseSensitive)){
+            emit newAccepted(name,information);
+            this->close();
+        }
+        else
+           ui->plainTextEdit->setFocus();
     }
     else{
         ui->lineEdit->setFocus();
     }
+
 }
 
 void DialogInfoSet::on_pushButtonCancel_clicked()
