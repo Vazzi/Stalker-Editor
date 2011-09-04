@@ -63,41 +63,57 @@ QString MapInfo::mapToString(){
 }
 
 bool MapInfo::saveFile(QString filePath){
+    //save file
     QFile saveMap(filePath);
+    //control if can save
     if(!saveMap.open(QFile::WriteOnly | QFile::Text))
         return false;
+    //save text
     QTextStream out(&saveMap);
     out << mapToString();
     out << backgroundToString();
     out << itemsToString();
     saveMap.close();
+    //return true if everything is OK
     return true;
 
 }
 
 bool MapInfo::loadFile(QString filePath){
+
+    //load file
+    //file structure:
+        // name;info;width;backround;item_1;item_2;...item_n;
     QFile loadMap(filePath);
     int i;
     QList <QString> itemsInStr, members, bgInStr,membersInItems;
     QString data;
 
-
+    //control if can work with file
     if(!loadMap.open(QFile::ReadOnly | QFile::Text))
         return false;
+
     data = loadMap.readAll();
     members = data.split(";");
+    //control basics
+
     if(members[0] == "")
         return false;
     m_mapName = members[0];
     m_info = members[1];
+
+    //width
     bool ok;
     m_sceneWidth = members[2].toInt(&ok , 10);
     if(!ok)
         return false;
 
+    //background
     bgInStr = members[3].split(",");
     m_bgPath = bgInStr[0];
     m_bgRepeat = bgInStr[1].toInt(&ok, 10);
+
+    //get all items
     i = 4;
     while(members[i] != ""){
         itemsInStr.append(members[i++]);

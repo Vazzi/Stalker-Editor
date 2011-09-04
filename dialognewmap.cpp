@@ -21,10 +21,14 @@ DialogNewMap::~DialogNewMap()
 
 void DialogNewMap::on_pushButtonOk_clicked()
 {
+    //save users values
     int width = ui->spinBoxWidth->value();
     QString name = ui->lineEditName->text().trimmed();
     QString information = ui->plainTextEdit->toPlainText().trimmed();
+    //control users values
+    //if name is empty or has ";" cant accept dialog
     if(name!= "" && !name.contains(";", Qt::CaseSensitive)){
+        //width must divisible by 10
         if(width % 10 == 0){
             if(!information.contains(";", Qt::CaseSensitive)){
                 emit newAccepted(width,name,information);
@@ -45,6 +49,7 @@ void DialogNewMap::on_pushButtonOk_clicked()
 
 void DialogNewMap::on_pushButtonCancel_clicked()
 {
+    //cancel button
     this->close();
 }
 

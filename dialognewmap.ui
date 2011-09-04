@@ -23,7 +23,7 @@
    <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Name:</string>
+      <string>Name:*</string>
      </property>
     </widget>
    </item>
@@ -33,7 +33,7 @@
    <item>
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Information:</string>
+      <string>Information:*</string>
      </property>
     </widget>
    </item>
@@ -91,6 +91,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>* Do not write &quot;;&quot;</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

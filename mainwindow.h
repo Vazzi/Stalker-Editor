@@ -42,6 +42,8 @@ private slots:
 
     void on_actionLoad_triggered();
 
+    void on_actionAbout_triggered();
+
 private:
 
     void start();

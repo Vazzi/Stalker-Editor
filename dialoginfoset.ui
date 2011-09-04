@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Map name:</string>
+      <string>Map name:*</string>
      </property>
     </widget>
    </item>
@@ -30,12 +30,24 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Map info:</string>
+      <string>Map info:*</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPlainTextEdit" name="plainTextEdit"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>* Do not write &quot;;&quot;</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

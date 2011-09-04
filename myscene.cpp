@@ -2,7 +2,7 @@
 
 int ZValueCursorImage;
 
-MyScene::MyScene(int newPixle = 10, QString nonePath = ":/images/none", int sceneWidth = 800)
+MyScene::MyScene(int newPixle, QString nonePath, int sceneWidth)
 {
     //set values
     ZValueCursorImage = 11;
@@ -13,7 +13,6 @@ MyScene::MyScene(int newPixle = 10, QString nonePath = ":/images/none", int scen
     m_shiftLeftCorner = QPointF(-1,-1);
     m_background.append(this->addPixmap(NULL));
     m_cursorImage = this->addRect(0,0,0,0);
-    //m_cursorImage = new QGraphicsRectItem;
     // set shift rectangle
     QPen *myPen = new QPen();
     myPen->setColor(Qt::green);
@@ -486,17 +485,23 @@ bool MyScene::saveMap(QString mapPath){
 
 
 void MyScene::setInfo(QString mapName, QString info){
+    //set informations about map
     m_mapName = mapName;
     m_info = info;
     m_saved = false;
 }
 
 bool MyScene::loadMap(QString mapPath){
+    //load map
     if(m_map.loadFile(mapPath))
     {
+        //if map has been loaded clean scene andset new values
         clearlyNewScene(m_map.getWidth(),m_map.getName(),m_map.getInfo());
 
+        //set new background
         setBackground(m_map.getBgPath(), m_map.getBgRepeat());
+
+        //paint images
         for(int i = 0 ; i < m_map.getItemsCount();i++){
 
             m_images.append(this->addPixmap(m_map.getItemPath(i)));
@@ -506,6 +511,8 @@ bool MyScene::loadMap(QString mapPath){
             m_images.last()->setPos(QPointF(m_map.getItemX(i),m_map.getItemY(i)));
 
         }
+
+        //return true if OK
         return true;
     }
     else
@@ -513,6 +520,7 @@ bool MyScene::loadMap(QString mapPath){
 }
 
 bool MyScene::getBgRepeat(){
+    //return if background is repeated
     if(m_background.count()==1)
         return false;
     else
@@ -520,6 +528,7 @@ bool MyScene::getBgRepeat(){
 }
 
 void MyScene::setBgIndividualy(QString bgPath, int repeat){
+    //set background
     setBackground(bgPath, repeat);
 
 }
