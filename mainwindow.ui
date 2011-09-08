@@ -92,13 +92,13 @@
      </rectf>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>810</x>
       <y>10</y>
       <width>181</width>
-      <height>361</height>
+      <height>435</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -270,7 +270,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -303,6 +303,8 @@
      <string>Map</string>
     </property>
     <addaction name="actionInformation_2"/>
+    <addaction name="actionImport_Item"/>
+    <addaction name="actionImport_Background"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMap"/>
@@ -377,6 +379,16 @@
   <action name="actionInformation_2">
    <property name="text">
     <string>Information</string>
+   </property>
+  </action>
+  <action name="actionImport_Item">
+   <property name="text">
+    <string>Import Item</string>
+   </property>
+  </action>
+  <action name="actionImport_Background">
+   <property name="text">
+    <string>Import Background</string>
    </property>
   </action>
  </widget>

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtGui>
 #include "myscene.h"
+enum importType{background, item};
 
 
 
@@ -44,11 +45,17 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_actionImport_Item_triggered();
+
+    void on_actionImport_Background_triggered();
+
 private:
 
     void start();
     void saveAs();
-
+    void importImage(QString path, importType whatImporting);
+    void saveMap(QString path);
+    void loadMap(QString path);
 
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
@@ -60,8 +67,8 @@ private:
 public slots:
     void clearForm(int width,QString mapName,QString info);
     void setMapInfo(QString mapName,QString info);
-    void saveMap();
-    void loadMap();
+
+
 
 
 

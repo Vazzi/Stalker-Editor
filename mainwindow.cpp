@@ -6,10 +6,10 @@
 
 
 DialogNewMap *newMap;
-QFileDialog *saveDialog;
-QFileDialog *loadDialog;
 DialogInfoSet *setInfoMap;
 QString fileSavePath;
+int itemsCount, bgCount;
+
 
 
 
@@ -23,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     newMap = new DialogNewMap(this);
     setInfoMap = new DialogInfoSet(this);
-    saveDialog = new QFileDialog(this, Qt::Sheet);
-    loadDialog = new QFileDialog(this, Qt::Sheet);
 
 
 
@@ -32,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(newMap,SIGNAL(newAccepted(int,QString,QString)),this,SLOT(clearForm(int,QString,QString)));
     connect(setInfoMap, SIGNAL(newAccepted(QString,QString)), this,SLOT(setMapInfo(QString,QString)));
-    connect(saveDialog,SIGNAL(accepted()),this,SLOT(saveMap()));
-    connect(loadDialog,SIGNAL(accepted()),this,SLOT(loadMap()));
 }
 
 
@@ -42,66 +38,13 @@ MainWindow::~MainWindow()
     delete m_item;
     delete m_secondScene;
     delete m_mainScene;
-    delete saveDialog;
-    delete loadDialog;
     delete newMap;
     delete setInfoMap;
     delete ui;
 
 }
 
-void MainWindow::start(){
-    m_layerZLock = false;
-    m_saved = false;
 
-    //set dialogs to load and save maps
-    saveDialog->setFilter("*.map");
-    saveDialog->setAcceptMode(QFileDialog::AcceptSave);
-
-    loadDialog->setFilter("*.map");
-    loadDialog->setAcceptMode(QFileDialog::AcceptOpen);
-
-    //set up m_mainScene
-    m_mainScene = new MyScene(10, ":/images/none", 1000);
-    ui->graphicsView->setScene(m_mainScene);
-    ui->graphicsView->setSceneRect(0,0,1000,600);
-    m_mainScene->setInfo("Delault", "");
-
-
-    //set up slider
-    ui->horizontalSlider->setMinimum(400);
-    ui->horizontalSlider->setMaximum(1000 - 400);
-
-
-    //set up secondScene
-    m_secondScene = new QGraphicsScene;
-    m_item = new QGraphicsPixmapItem;
-    m_item = m_secondScene->addPixmap(QString(":/images/none"));
-    ui->graphicsView_2->setScene(m_secondScene);
-    ui->graphicsView_2->setSceneRect(0,0,80,80);
-    m_secondScene->setBackgroundBrush(Qt::lightGray);
-
-    //set up combobox with items
-    ui->comboBox->addItem("**None**",":/images/none");
-    ui->comboBox->addItem("**Eraser**",":/images/rubber");
-    ui->comboBox->addItem("Chest",":/images/chest");
-    ui->comboBox->addItem("Dirt",":/images/dirt");
-    ui->comboBox->addItem("Stone",":/images/stone");
-    ui->comboBox->addItem("Wood",":/images/wood");
-    ui->comboBox->addItem("Online",":/images/online");
-
-    //set up combobox with backgrounds
-    ui->comboBox_2->addItem("background1",":/images/background");
-    ui->comboBox_2->addItem("online",":/images/online");
-
-    //set up combobox with layres
-    ui->comboBoxLayer->addItem("all *");
-    for(int i = 1; i < 11; i++)
-        ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
-
-
-    m_mainScene->setSaved(true);
-}
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
@@ -258,10 +201,7 @@ void MainWindow::on_actionInformation_2_triggered(){
     setInfoMap->show();
 }
 
-void MainWindow::saveAs(){
-    //show dialog to save map as
-    saveDialog->show();
-}
+
 
 void MainWindow::on_actionSave_as_triggered(){
     saveAs();
@@ -273,11 +213,16 @@ void MainWindow::on_actionLoad_triggered(){
     if(!m_mainScene->isChanged()){
         if(QMessageBox::question(this,"Load Map", "Map is not saved! Do you really want to load map? ", QMessageBox::Yes, QMessageBox::No)
                 ==QMessageBox::Yes){
-            loadDialog->show();
+            QString path = QFileDialog::getOpenFileName(this, "Open File",0,"*.map");
+            if(path!="")
+                loadMap(path);
         }
     }
-    else
-        loadDialog->show();
+    else{
+        QString path = QFileDialog::getOpenFileName(this, "Open File",0,"*.map");
+        if(path!="")
+            loadMap(path);
+    }
 }
 
 
@@ -293,37 +238,127 @@ void MainWindow::on_actionAbout_triggered(){
 
 }
 
-//---------------------------SLOTS----------------------------
 
-void MainWindow::clearForm(int width,QString mapName,QString info){
+void MainWindow::on_actionImport_Item_triggered(){
+    if(m_saved){
+        QString path = QFileDialog::getOpenFileName(this, "Open File",0,"*.png");
+        if(path!="")
+            importImage(path,item);
+     }
+    else
+        QMessageBox::information(this,"Import", "You must save map first!");
+}
 
-    //slot witch clears the scene
-    m_mainScene->clearlyNewScene(width,mapName,info);
-    //set objects to default values
-    ui->graphicsView->setSceneRect(0,0,width,600);
-    ui->horizontalSlider->setMaximum(width - 400);
-    ui->graphicsView->update();
-    ui->actionShow_Grid->setChecked(true);
-    ui->actionShow_Background->setChecked(true);
-    ui->checkBoxBackgRepeat->setChecked(false);
-    ui->horizontalSlider->setValue(0);
 
-    //set saved
-    m_mainScene->setSaved(false);
+void MainWindow::on_actionImport_Background_triggered(){
+    if(m_saved){
+        QString path = QFileDialog::getOpenFileName(this, "Open File",0,"*.png");
+        if(path!="")
+            importImage(path,background);
+     }
+    else
+        QMessageBox::information(this,"Import", "You must save map first!");
+
+}
+
+//---------------------------PRIVATE FUNCTIONS----------------------------
+
+void MainWindow::start(){
+    m_layerZLock = false;
     m_saved = false;
+
+    //set up m_mainScene
+    m_mainScene = new MyScene(10, ":/images/none", 1000);
+    ui->graphicsView->setScene(m_mainScene);
+    ui->graphicsView->setSceneRect(0,0,1000,600);
+    m_mainScene->setInfo("Delault", "");
+
+
+    //set up slider
+    ui->horizontalSlider->setMinimum(400);
+    ui->horizontalSlider->setMaximum(1000 - 400);
+
+
+    //set up secondScene
+    m_secondScene = new QGraphicsScene;
+    m_item = new QGraphicsPixmapItem;
+    m_item = m_secondScene->addPixmap(QString(":/images/none"));
+    ui->graphicsView_2->setScene(m_secondScene);
+    ui->graphicsView_2->setSceneRect(0,0,80,80);
+    m_secondScene->setBackgroundBrush(Qt::lightGray);
+
+    //set up combobox with items
+    itemsCount = 7;
+    ui->comboBox->addItem("**None**",":/images/none");
+    ui->comboBox->addItem("**Eraser**",":/images/rubber");
+    ui->comboBox->addItem("Chest",":/images/chest");
+    ui->comboBox->addItem("Dirt",":/images/dirt");
+    ui->comboBox->addItem("Stone",":/images/stone");
+    ui->comboBox->addItem("Wood",":/images/wood");
+    ui->comboBox->addItem("Online",":/images/online");
+
+    //set up combobox with backgrounds
+    bgCount = 2;
+    ui->comboBox_2->addItem("background1",":/images/background");
+    ui->comboBox_2->addItem("online",":/images/online");
+
+    //set up combobox with layres
+    ui->comboBoxLayer->addItem("all *");
+    for(int i = 1; i < 11; i++)
+        ui->comboBoxLayer->addItem(QString::number(i) + ". layer");
+
+
+    m_mainScene->setSaved(true);
 }
 
-void MainWindow::setMapInfo(QString mapName, QString info){
-    //SLOT that set new info about map to scene
-    m_mainScene->setInfo(mapName, info);
+
+void MainWindow::saveAs(){
+    //show dialog to save map as
+    QString path = QFileDialog::getSaveFileName(this, "Save File",0, "*.map");
+    if(path!="")
+        saveMap(path);
 }
 
-void MainWindow::loadMap(){
+void MainWindow::importImage(QString path ,importType whatImporting){
+    //import image
+
+    //find if directory with images exist
+    QDir folder;
+    QString folderPath = fileSavePath;
+    folderPath.remove(".map",Qt::CaseSensitive);
+    folderPath.append("_images");
+    //if directory doesnt exist make a directory
+    if(!folder.exists())
+        folder.mkdir(folderPath);
+    folder.cd(folderPath);
+
+    //copy image to folder
+    QString imagePath = path;
+    QFile image;
+    QString newImagePath = folder.path() + "/" + imagePath.split("/").last();
+    image.copy(imagePath, newImagePath);
+
+    QString imageName = imagePath.split("/").last();
+
+    imageName.remove(".png",Qt::CaseSensitive);
+    //what user what to import
+    if(whatImporting == background){
+        ui->comboBox_2->addItem(imageName, newImagePath);
+    }
+    else if(whatImporting == item){
+        ui->comboBox->addItem(imageName, newImagePath);
+
+    }
+
+
+}
+
+void MainWindow::loadMap(QString path){
     //load map
     //first load map and if its not ok show messagebox
-    if(m_mainScene->loadMap(loadDialog->selectedFiles().last())){
+    if(m_mainScene->loadMap(path)){
         //save path
-        fileSavePath = loadDialog->selectedFiles().last();
+        fileSavePath = path;
         m_saved = true;
         //set width, background picture path and if background repeats
         int width = m_mainScene->getSceneWidth();
@@ -357,9 +392,13 @@ void MainWindow::loadMap(){
 
 }
 
-void MainWindow::saveMap(){
+void MainWindow::saveMap(QString path){
     //saved map path to fileSavePath
-    fileSavePath = saveDialog->selectedFiles().last() + ".map";
+    fileSavePath = path;
+
+    if(fileSavePath.contains(".map",Qt::CaseSensitive)==false)
+        fileSavePath.append(".map");
+
     //if map doesnt save properly messageBox else set save values to true
     if(!m_mainScene->saveMap(fileSavePath))
         QMessageBox::warning(this, "Saving Map", "Cant save file!");
@@ -369,3 +408,41 @@ void MainWindow::saveMap(){
     }
 
 }
+
+//---------------------------SLOTS----------------------------
+
+void MainWindow::clearForm(int width,QString mapName,QString info){
+
+    //slot witch clears the scene
+    m_mainScene->clearlyNewScene(width,mapName,info);
+    //set objects to default values
+    ui->graphicsView->setSceneRect(0,0,width,600);
+    ui->horizontalSlider->setMaximum(width - 400);
+    ui->graphicsView->update();
+    ui->actionShow_Grid->setChecked(true);
+    ui->actionShow_Background->setChecked(true);
+    ui->checkBoxBackgRepeat->setChecked(false);
+    ui->horizontalSlider->setValue(0);
+    //remove imported items
+    for(int i = 0; i < (itemsCount -1);i++){
+        ui->comboBox->removeItem(i);
+    }
+    for(int i = 0; i < (bgCount-1);i++){
+        ui->comboBox_2->removeItem(i);
+    }
+
+    //set saved
+    m_mainScene->setSaved(false);
+    m_saved = false;
+}
+
+void MainWindow::setMapInfo(QString mapName, QString info){
+    //SLOT that set new info about map to scene
+    m_mainScene->setInfo(mapName, info);
+}
+
+
+
+
+
+
