@@ -7,16 +7,37 @@ MapInfo::MapInfo()
 
 }
 
-void MapInfo::setItems(QList<QGraphicsPixmapItem *> items){
+void MapInfo::setItems(QList<QGraphicsPixmapItem *> items,QString imageFolder){
     //set items
     m_items = items;
+
+    //remove absolute image path if image has any (has been imported)
+    QString itemPath;
+    for(int index = 0; index < m_items.count(); index++){
+        itemPath = m_items[index]->data(0).toString();
+        if(!itemPath.contains(":/images/",Qt::CaseSensitive)){
+            QMessageBox::information(0,"",itemPath);
+            itemPath = "/" + imageFolder + "/" + itemPath.split("/").last();
+            QMessageBox::information(0,"",itemPath);
+            m_items[index]->setData(0,itemPath) ;
+        }
+    }
 }
 
-void MapInfo::setBackground(QGraphicsPixmapItem* newBackground, bool repeat){
+void MapInfo::setBackground(QGraphicsPixmapItem* newBackground, bool repeat,QString imageFolder){
     //set background and bgRepeat
     //if background repeat true else false
-    m_background = newBackground;
     m_bgRepeat = repeat;
+
+
+    QString itemPath = newBackground->data(0).toString();
+    if(!itemPath.contains(":/images/",Qt::CaseSensitive)){
+        itemPath = "/" + imageFolder + "/" + itemPath.split("/").last();
+        newBackground->setData(0,itemPath);
+    }
+    m_background = newBackground;
+
+
 }
 
 void MapInfo::setMap(QString name, int width,QString info = ""){

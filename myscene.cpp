@@ -474,10 +474,16 @@ bool MyScene::saveMap(QString mapPath){
         repeat = false;
     else
         repeat = true;
-    m_map.setBackground(m_background.first(),repeat);
+
+    //define folder with images
+    QString folderName = mapPath.split("/").last();
+    folderName.remove(".map",Qt::CaseSensitive);
+    folderName.append("_images");
+
+    m_map.setBackground(m_background.first(),repeat,folderName);
     removeNone();
     //items informations
-    m_map.setItems(m_images);
+    m_map.setItems(m_images,folderName);
     //save map
     return m_map.saveFile(mapPath);
 

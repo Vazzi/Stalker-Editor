@@ -328,8 +328,7 @@ void MainWindow::importImage(QString path ,importType whatImporting){
     folderPath.remove(".map",Qt::CaseSensitive);
     folderPath.append("_images");
     //if directory doesnt exist make a directory
-    if(!folder.exists())
-        folder.mkdir(folderPath);
+    folder.mkdir(folderPath);
     folder.cd(folderPath);
 
     //copy image to folder
@@ -424,10 +423,10 @@ void MainWindow::clearForm(int width,QString mapName,QString info){
     ui->checkBoxBackgRepeat->setChecked(false);
     ui->horizontalSlider->setValue(0);
     //remove imported items
-    for(int i = 0; i < (itemsCount -1);i++){
+    for(int i = itemsCount; i < ui->comboBox->count() ;i++){
         ui->comboBox->removeItem(i);
     }
-    for(int i = 0; i < (bgCount-1);i++){
+    for(int i = bgCount; i < ui->comboBox_2->count();i++){
         ui->comboBox_2->removeItem(i);
     }
 

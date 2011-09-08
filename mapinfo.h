@@ -8,8 +8,8 @@ class MapInfo
 public:
     MapInfo();
 
-    void setItems(QList <QGraphicsPixmapItem *> items);
-    void setBackground(QGraphicsPixmapItem* newBackground, bool repeat);
+    void setItems(QList <QGraphicsPixmapItem *> items,QString imageFolder);
+    void setBackground(QGraphicsPixmapItem* newBackground, bool repeat,QString imageFolder );
     QString itemsToString();
     QString backgroundToString();
     void setMap(QString name, int width, QString info );
