@@ -297,6 +297,7 @@
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionInformation"/>
+    <addaction name="actionImport"/>
    </widget>
    <widget class="QMenu" name="menuMap">
     <property name="title">
@@ -407,6 +408,11 @@
   <action name="actionImport_Background">
    <property name="text">
     <string>Import Background</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import</string>
    </property>
   </action>
  </widget>

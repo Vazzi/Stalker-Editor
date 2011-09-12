@@ -50,6 +50,10 @@ private slots:
     void on_actionImport_Background_triggered();
 
 
+    void on_actionInformation_triggered();
+
+    void on_actionImport_triggered();
+
 private:
 
     void start();
