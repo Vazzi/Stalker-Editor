@@ -49,7 +49,6 @@ private slots:
 
     void on_actionImport_Background_triggered();
 
-    void on_MainWindow_destroyed();
 
 private:
 
