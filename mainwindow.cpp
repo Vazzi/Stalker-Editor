@@ -261,6 +261,33 @@ void MainWindow::on_actionImport_Background_triggered(){
 
 }
 
+
+void MainWindow::on_actionInformation_triggered()
+{
+    QString text;
+    text = " <u><b>Basic help:</b></u><br>";
+    text += "Simply by click in edit place you add new item. First you must choose item and then you can add it into map.<br> <br>";
+    text += "By holding <b><font color=blue>shift key</b></font>. you are able to add more items at one click.<br><br>";
+    text +=  "<b><font color=blue>***Eraser***</font></b> is use for removing items. Just select (with shift key) items you want to delete and click.<br><br>";
+    text += "<b><font color=blue>***None ***</font></b> is a special item that will be remove at saving map. It is only for help you with creating map.<br><br>";
+    text += "<b><font color=blue>Show / hide grid</font> </b>will show or hide grid in edit region. It takes a second to depict. Final map will not have grid.<br><br>";
+    text += "<b><font color=blue>Show / hide background</font> </b>is only for this editor. Finall map will have bacground always visible.<br><br>";
+    text += "<b><font color=blue>Layer & zValue Lock </font></b>will lock show Layer with zValue, So when you show layer 3 the zValue will automatically change to 3.<br><br>" ;
+    QMessageBox::information(this,"Help",text);
+}
+
+void MainWindow::on_actionImport_triggered()
+{
+    QString text;
+    text = "<u>Import images:</u><br>";
+    text += "When you import image it will be copy to image folder next to map with name <b>mapname_images </b>.<br><br>";
+    text += "If you want to import image you have to save map first.<br><br>";
+    text += "Can import only <font color=red><b>PNG</b></font> images.<br><br>";
+    text += "To load map correctly with imported images you should have image folder with images next to map file.<font color=red> DO NOT CHANGE IMAGES NAME OR FOLDER NAME!</font><br><br>";
+    QMessageBox::information(this,"Help",text);
+}
+
+
 //---------------------------PRIVATE FUNCTIONS----------------------------
 
 void MainWindow::start(){
@@ -457,8 +484,12 @@ void MainWindow::loadImportedItems(){
     if(!path.startsWith(":/images/")){
         imageName = path.split("/").last();
         imageName.remove(".png");
-        ui->comboBox_2->addItem(imageName,path);
+        if(ui->comboBox_2->findText(imageName,Qt::MatchCaseSensitive)==-1){
+             ui->comboBox_2->addItem(imageName,path);
+        }
+
     }
+
 
 }
 
@@ -496,29 +527,3 @@ void MainWindow::setMapInfo(QString mapName, QString info){
 
 
 
-
-void MainWindow::on_actionInformation_triggered()
-{
-    QString text;
-    text = " <u><b>Basic help:</b></u><br>";
-    text += "Simply by click in edit place you add new item. First you must choose item and then you can add it into map.<br> <br>";
-    text += "By holding <b><font color=blue>shift key</b></font>. you are able to add more items at one click.<br><br>";
-    text +=  "<b><font color=blue>***Eraser***</font></b> is use for removing items. Just select (with shift key) items you want to delete and click.<br><br>";
-    text += "<b><font color=blue>***None ***</font></b> is a special item that will be remove at saving map. It is only for help you with creating map.<br><br>";
-    text += "<b><font color=blue>Show / hide grid</font> </b>will show or hide grid in edit region. It takes a second to depict. Final map will not have grid.<br><br>";
-    text += "<b><font color=blue>Show / hide background</font> </b>is only for this editor. Finall map will have bacground always visible.<br><br>";
-    text += "<b><font color=blue>Layer & zValue Lock </font></b>will lock show Layer with zValue, So when you show layer 3 the zValue will automatically change to 3.<br><br>" ;
-
-    QMessageBox::information(this,"Help",text);
-}
-
-void MainWindow::on_actionImport_triggered()
-{
-    QString text;
-    text = "<u>Import images:</u><br>";
-    text += "When you import image it will be copy to image folder next to map with name <b>mapname_images </b>.<br><br>";
-    text += "If you want to import image you have to save map first.<br><br>";
-    text += "Can import only <font color=red><b>PNG</b></font> images.<br><br>";
-    text += "To load map correctly with imported images you should have image folder with images next to map file.<font color=red> DO NOT CHANGE IMAGES NAME OR FOLDER NAME!</font><br><br>";
-    QMessageBox::information(this,"Help",text);
-}
