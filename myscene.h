@@ -26,6 +26,8 @@ public:
     void setSaved(bool saved) {m_saved = saved;};
     int getSceneWidth() {return m_sceneWidth;};
     QString getBgPath(){return m_background.first()->data(0).toString();};
+    QString getItemPath(int i) {return m_images[i]->data(0).toString(); };
+    int getItemsCount() {return m_images.count();};
     bool getBgRepeat();
     void fill();
     bool saveMap(QString mapPath);

@@ -346,10 +346,7 @@ void MainWindow::importImage(QString path ,importType whatImporting){
     }
     else if(whatImporting == item){
         ui->comboBox->addItem(imageName, newImagePath);
-
     }
-
-
 }
 
 void MainWindow::loadMap(QString path){
@@ -359,6 +356,8 @@ void MainWindow::loadMap(QString path){
         //save path
         fileSavePath = path;
         m_saved = true;
+        //load imported items from map into comboboxes
+        loadImportedItems();
         //set width, background picture path and if background repeats
         int width = m_mainScene->getSceneWidth();
         QString bgPathTemp = m_mainScene->getBgPath();
@@ -388,11 +387,44 @@ void MainWindow::loadMap(QString path){
     }
     else
         QMessageBox::warning(this, "Loading Map", "Cant load file!");
-
 }
+
 
 void MainWindow::saveMap(QString path){
     //saved map path to fileSavePath
+
+
+    QDir folder;
+    QString folderPath = path;
+    folderPath.remove(".map",Qt::CaseSensitive);
+    folderPath.append("_images");
+    //if directory doesnt exist make a directory
+    if(!folder.cd(folderPath) && m_saved){
+
+        folder.mkdir(folderPath);
+        folder.cd(folderPath);
+
+        //copy images to folder
+
+        //old path
+        QString imagePath = fileSavePath;
+        imagePath.remove(".map",Qt::CaseSensitive);
+        imagePath.append("_images/");
+
+        QFile images;
+        //new path
+        QString newImagePath = folder.path() + "/";
+        folder.cd(imagePath);
+
+        //take every file and copy
+        foreach (QString file, folder.entryList()){
+            if(file.endsWith(".png",Qt::CaseSensitive)){
+                images.copy(imagePath + file,newImagePath  + file);
+            }
+
+        }
+    }
+
     fileSavePath = path;
 
     if(fileSavePath.contains(".map",Qt::CaseSensitive)==false)
@@ -404,6 +436,28 @@ void MainWindow::saveMap(QString path){
     else{
         m_mainScene->setSaved(true);
         m_saved = true;
+    }
+}
+
+void MainWindow::loadImportedItems(){
+    QString imageName;
+    QString path;
+    for(int i = 0; i < m_mainScene->getItemsCount();i++){
+        path = m_mainScene->getItemPath(i);
+        if(!path.startsWith(":/images/")){
+            imageName = path.split("/").last();
+            imageName.remove(".png");
+            if(ui->comboBox->findText(imageName,Qt::MatchCaseSensitive)==-1){
+                ui->comboBox->addItem(imageName,path);
+            }
+        }
+
+    }
+    path = m_mainScene->getBgPath();
+    if(!path.startsWith(":/images/")){
+        imageName = path.split("/").last();
+        imageName.remove(".png");
+        ui->comboBox_2->addItem(imageName,path);
     }
 
 }
@@ -439,9 +493,6 @@ void MainWindow::setMapInfo(QString mapName, QString info){
     //SLOT that set new info about map to scene
     m_mainScene->setInfo(mapName, info);
 }
-
-
-
 
 
 

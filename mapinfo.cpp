@@ -16,9 +16,7 @@ void MapInfo::setItems(QList<QGraphicsPixmapItem *> items,QString imageFolder){
     for(int index = 0; index < m_items.count(); index++){
         itemPath = m_items[index]->data(0).toString();
         if(!itemPath.contains(":/images/",Qt::CaseSensitive)){
-            QMessageBox::information(0,"",itemPath);
             itemPath = "/" + imageFolder + "/" + itemPath.split("/").last();
-            QMessageBox::information(0,"",itemPath);
             m_items[index]->setData(0,itemPath) ;
         }
     }
@@ -28,7 +26,6 @@ void MapInfo::setBackground(QGraphicsPixmapItem* newBackground, bool repeat,QStr
     //set background and bgRepeat
     //if background repeat true else false
     m_bgRepeat = repeat;
-
 
     QString itemPath = newBackground->data(0).toString();
     if(!itemPath.contains(":/images/",Qt::CaseSensitive)){
@@ -116,8 +113,8 @@ bool MapInfo::loadFile(QString filePath){
 
     data = loadMap.readAll();
     members = data.split(";");
-    //control basics
 
+    //control basics
     if(members[0] == "")
         return false;
     m_mapName = members[0];
@@ -148,6 +145,22 @@ bool MapInfo::loadFile(QString filePath){
         m_itemsX.append(membersInItems[1].toInt(&ok, 10));
         m_itemsY.append(membersInItems[2].toInt(&ok, 10));
         m_itemsZ.append(membersInItems[3].toInt(&ok, 10));
+    }
+
+    QString imageFolderPath = filePath.remove(".map",Qt::CaseSensitive);
+    imageFolderPath.append("_images/");
+    QDir imageFolder;
+    filePath.remove(filePath.split("/").last());
+    filePath = filePath.left(filePath.count()-1);
+    if(imageFolder.cd(imageFolderPath)){
+        if(!m_bgPath.startsWith(":/images/",Qt::CaseSensitive)){
+            m_bgPath = filePath + m_bgPath;
+        }
+        for(i = 0; i < m_itemsPath.count(); i++ ){
+            if(!m_itemsPath[i].startsWith(":/images/",Qt::CaseSensitive)){
+                m_itemsPath[i] = filePath + m_itemsPath[i];
+            }
+        }
     }
 
     return true;

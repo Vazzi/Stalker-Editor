@@ -49,6 +49,8 @@ private slots:
 
     void on_actionImport_Background_triggered();
 
+    void on_MainWindow_destroyed();
+
 private:
 
     void start();
@@ -56,6 +58,7 @@ private:
     void importImage(QString path, importType whatImporting);
     void saveMap(QString path);
     void loadMap(QString path);
+    void loadImportedItems();
 
     Ui::MainWindow *ui;
     MyScene *m_mainScene;
@@ -64,13 +67,11 @@ private:
     bool m_layerZLock, m_saved;
 
 
+
+
 public slots:
     void clearForm(int width,QString mapName,QString info);
     void setMapInfo(QString mapName,QString info);
-
-
-
-
 
 
 };

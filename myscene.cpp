@@ -1,4 +1,5 @@
 #include "myscene.h"
+#include "mainwindow.h"
 
 int ZValueCursorImage;
 
@@ -509,7 +510,6 @@ bool MyScene::loadMap(QString mapPath){
 
         //paint images
         for(int i = 0 ; i < m_map.getItemsCount();i++){
-
             m_images.append(this->addPixmap(m_map.getItemPath(i)));
             m_images.last()->setZValue(m_map.getItemZ(i));
             m_images.last()->setData(1, m_map.getItemZ(i));
